@@ -9,7 +9,7 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Mali', sans-serif; user-select: none; }
         
-        /* 🇮🇹 พื้นหลังลายตาราง Gingham สีแดง-ขาว ผ้าปูโต๊ะอิตาลี */
+        /* 🇮🇹 พื้นหลังลายตาราง Gingham สีแดง-ขาว ผ้าปูโต๊ะอิตาลี[cite: 4] */
         body { 
             background-color: #fffcf4;
             background-image: 
@@ -22,11 +22,11 @@
             overflow: hidden; touch-action: none;
         }
 
-        /* 📱 กรอบเกม โต๊ะไม้ทำพิซซ่า */
+        /* 📱 กรอบเกม โต๊ะไม้ทำพิซซ่า[cite: 4] */
         #app-container {
             width: 100%; max-width: 420px; 
             height: 100%; height: 100dvh; 
-            background-color: #8d6e63; /* สีเนื้อไม้ */
+            background-color: #8d6e63; 
             background-image: repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(0,0,0,0.03) 40px, rgba(0,0,0,0.03) 80px);
             border-radius: 35px; border: 8px solid #5d4037;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(0,0,0,0.2);
@@ -35,34 +35,33 @@
             overflow: hidden; 
         }
 
-        /* ---------------- HUD (คะแนน ปุ่มหยุด & หัวใจ) ---------------- */
+        /* ---------------- HUD (คะแนน ปุ่มหยุด & หัวใจ)[cite: 4] ---------------- */
         .hud-info {
             width: 100%; display: flex; justify-content: space-between; align-items: center;
-            padding: 0 5px; margin-bottom: 10px; z-index: 20;
+            padding: 0 5px; margin-bottom: 6px; z-index: 20;
         }
-        .score-board { font-size: 1.1rem; color: #fff; font-weight: 900; background: #d32f2f; padding: 4px 15px; border-radius: 12px; box-shadow: 0 4px 0 #b71c1c; border: 2px solid #ffcdd2;}
-        .lives-board { font-size: 1.3rem; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2)); letter-spacing: 2px; background: rgba(255,255,255,0.9); padding: 4px 12px; border-radius: 12px; border: 2px solid #d7ccc8; }
+        .score-board { font-size: 1.1rem; color: #fff; font-weight: 900; background: #d32f2f; padding: 4px 15px; border-radius: 15px; box-shadow: 0 4px 0 #b71c1c; border: 2px solid #ffcdd2;}
+        .lives-board { font-size: 1.3rem; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2)); letter-spacing: 2px; background: rgba(255,255,255,0.9); padding: 4px 12px; border-radius: 15px; border: 2px solid #d7ccc8; }
         
-        /* ปุ่มหยุดเกมขนาดเล็ก */
         .btn-pause-small {
             width: 38px; height: 38px; background: #fffcf4; border: 3px solid #d32f2f;
-            border-radius: 10px; font-size: 1rem; color: #b71c1c; font-weight: 900;
+            border-radius: 12px; font-size: 1rem; color: #b71c1c; font-weight: 900;
             cursor: pointer; display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 0 #b71c1c; transition: 0.1s; -webkit-tap-highlight-color: transparent;
         }
         .btn-pause-small:active { transform: translateY(4px); box-shadow: 0 0px 0 transparent; }
 
-        /* ---------------- โซนพิซซ่า (Pizza Zone) - เขียงไม้รองพิซซ่า ---------------- */
+        /* ---------------- โซนพิซซ่า (Pizza Zone)[cite: 4] ---------------- */
         .pizza-zone {
-            width: 100%; height: 200px; background: #d7ccc8;
+            width: 100%; height: 160px; background: #d7ccc8;
             border: 4px solid #a1887f; border-radius: 50% 50% 20px 20px;
             display: flex; justify-content: center; align-items: center;
             box-shadow: 0 10px 15px rgba(0,0,0,0.2), inset 0 0 20px rgba(93, 64, 55, 0.1); 
-            margin-bottom: 15px; position: relative;
+            margin-bottom: 10px; position: relative;
         }
         
         .pizza-svg {
-            width: 170px; height: 170px;
+            width: 130px; height: 130px;
             filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
@@ -77,86 +76,74 @@
         .pizza-complete-msg.show { animation: popText 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         @keyframes popText { 0% { transform: translate(-50%, -50%) scale(0); opacity: 0; } 20% { transform: translate(-50%, -50%) scale(1.1) rotate(-5deg); opacity: 1; } 80% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; } 100% { transform: translate(-50%, -80%) scale(0); opacity: 0; } }
 
-        /* ---------------- โซนโจทย์ (Order Ticket) ---------------- */
+        /* ---------------- โซนโจทย์ (Ticket) - ขยายใหญ่ขึ้น & ฟอนต์น่ารักขึ้น ---------------- */
         .question-zone {
-            width: 95%; height: 140px; background: #fffde7; 
-            border-top: 15px solid #e0e0e0; border-radius: 5px 5px 15px 15px;
+            width: 95%; height: 175px; background: #ffffff; 
+            border: 3px solid #ffccbc; border-radius: 20px;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2); margin-bottom: 20px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15); margin-bottom: 12px;
             position: relative; overflow: hidden;
-        }
-        .question-zone::before { 
-            content: ''; position: absolute; top: -5px; left: 0; width: 100%; height: 10px;
-            background: radial-gradient(circle, #fffde7 50%, transparent 50%); background-size: 20px 20px;
+            padding-top: 15px;
         }
 
         .ticket-title {
-            position: absolute; top: 8px; font-size: 0.85rem; color: #795548; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;
+            position: absolute; top: 8px; font-size: 0.9rem; color: #e57373; font-weight: 700; letter-spacing: 0.5px; text-transform: none;
         }
 
-        /* ---------------- บรรทัด 5 เส้น ---------------- */
-        .mini-staff { width: 85%; height: 50px; position: relative; margin-top: 15px;}
-        .mini-line { width: 100%; height: 2px; background: #3e2723; position: absolute; border-radius: 2px;}
-        
-        .m-line-1 { bottom: 0px; } 
-        .m-line-2 { bottom: 10px; } 
-        .m-line-3 { bottom: 20px; } 
-        .m-line-4 { bottom: 30px; } 
-        .m-line-5 { bottom: 40px; }
-
-        .mini-clef {
-            position: absolute; left: 0px; bottom: -18px; 
-            font-family: 'Times New Roman', serif; font-size: 85px; color: #3e2723; 
-            line-height: 1; pointer-events: none; z-index: 1; text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+        .question-img-container {
+            width: 98%; height: 135px; display: flex; justify-content: center; align-items: center; margin-top: 8px;
+        }
+        .question-img-container img {
+            width: 100%; height: 100%; object-fit: contain; 
         }
 
-        /* ---------------- โซนปุ่มกด (Menu Controls) ---------------- */
+        .flash-red-bg { animation: flashRedBg 0.4s; }
+        @keyframes flashRedBg { 0% { background-color: #ffcdd2; } 100% { background-color: #ffffff; } }
+
+        /* ---------------- โซนปุ่มกด (Menu Controls)[cite: 4] ---------------- */
         .controls-zone {
-            width: 100%; flex: 1; display: flex; flex-direction: column; gap: 12px; justify-content: flex-end; padding-bottom: calc(10px + env(safe-area-inset-bottom));
+            width: 100%; flex: 1; display: flex; flex-direction: column; gap: 8px; justify-content: flex-end; padding-bottom: calc(10px + env(safe-area-inset-bottom));
         }
 
-        .btn-row { display: flex; justify-content: space-between; gap: 8px; width: 100%; }
+        .btn-row { display: flex; justify-content: space-between; gap: 6px; width: 100%; }
 
         .input-btn {
-            flex: 1; height: 50px; background: #d7ccc8; border: 3px solid #795548;
-            border-radius: 12px; font-size: 1.4rem; font-weight: 900; color: #4e342e;
+            flex: 1; height: 46px; background: #fffcf4; border: 3px solid #d7ccc8;
+            border-radius: 15px; font-size: 1.3rem; font-weight: 900; color: #4e342e;
             cursor: pointer; display: flex; align-items: center; justify-content: center;
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.3), 0 5px 0 #5d4037; 
+            box-shadow: 0 5px 0 #bcaaa4, inset 0 2px 4px rgba(255,255,255,0.8); 
             transition: all 0.1s; -webkit-tap-highlight-color: transparent;
         }
         .input-btn:active { transform: translateY(5px); box-shadow: 0 0px 0 transparent; }
         
         .input-btn.selected {
             background: #ffccbc; border-color: #d84315; color: #b71c1c; 
-            transform: translateY(2px); box-shadow: 0 3px 0 #b71c1c, inset 0 0 10px rgba(255,255,255,0.5);
+            transform: translateY(2px); box-shadow: 0 3px 0 #b71c1c;
         }
 
-        .flash-red-bg { animation: flashRedBg 0.4s; }
-        @keyframes flashRedBg { 0% { background-color: #ffcdd2; } 100% { background-color: #fffde7; } }
-
-        /* ---------------- ☕ เมนู Overlay ---------------- */
+        /* ---------------- ☕ เมนู Overlay[cite: 4] ---------------- */
         .overlay-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(78, 52, 46, 0.9); z-index: 1000; display: none;
             flex-direction: column; align-items: center; justify-content: center;
             backdrop-filter: blur(8px); text-align: center; padding: 20px;
         }
-        .overlay-title { font-size: 2.5rem; color: #fff; font-weight: 900; margin-bottom: 5px; text-shadow: 0px 4px 0px #d32f2f; line-height: 1.2;}
+        .overlay-title { font-size: 2.3rem; color: #fff; font-weight: 900; margin-bottom: 5px; text-shadow: 0px 4px 0px #d32f2f; line-height: 1.2;}
         
         .start-instruction-box {
-            background: #fffcf4; padding: 25px 20px; 
-            border-radius: 25px; width: 95%; text-align: center; margin-bottom: 25px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.05), 0 15px 25px rgba(0,0,0,0.4);
+            background: #fffcf4; padding: 20px; 
+            border-radius: 25px; width: 95%; text-align: center; margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
             border: 4px dashed #d32f2f;
         }
 
         .btn-action {
-            padding: 16px 30px; font-size: 1.3rem; font-weight: 900; color: #fff;
+            padding: 15px; font-size: 1.2rem; font-weight: 900; color: #fff;
             background: #d32f2f; border: 4px solid #fff; border-radius: 30px;
-            cursor: pointer; box-shadow: 0 8px 0 #b71c1c, 0 15px 20px rgba(0, 0, 0, 0.4); transition: all 0.15s; width: 85%; max-width: 250px; margin-bottom: 12px;
+            cursor: pointer; box-shadow: 0 8px 0 #b71c1c, 0 15px 20px rgba(0, 0, 0, 0.3); transition: all 0.15s; width: 85%; max-width: 250px; margin-bottom: 10px;
         }
         .btn-action:active { transform: translateY(8px); box-shadow: 0 0px 0 transparent; }
-        .btn-secondary { background: #fffcf4; color: #d32f2f; box-shadow: 0 8px 0 #e6d8ce, 0 15px 20px rgba(0, 0, 0, 0.4); font-size: 1.15rem; }
+        .btn-secondary { background: #fffcf4; color: #d32f2f; box-shadow: 0 8px 0 #e6d8ce, 0 15px 20px rgba(0, 0, 0, 0.3); font-size: 1.1rem; }
 
         .go-box { background: #fffcf4; padding: 30px 25px; border-radius: 35px; box-shadow: 0 10px 0 #e6d8ce, 0 20px 40px rgba(0,0,0,0.5); width: 100%; text-align: center; border: 4px dashed #d32f2f; }
         .go-box h2 { font-size: 2.2rem; margin-bottom: 20px; font-weight: 900; }
@@ -165,55 +152,42 @@
         .result-table td:first-child { text-align: left; color: #5d4037; font-weight: bold; }
         .result-table td:last-child { text-align: right; font-weight: 900; font-size: 1.6rem;}
 
-        /* ---------------- 📖 กล่องคู่มือการเล่นและบทเรียน ---------------- */
+        /* ---------------- 📖 กล่องคู่มือการเล่นและบทเรียน[cite: 4] ---------------- */
         .how-to-overlay { background: rgba(78, 52, 46, 0.88); z-index: 1200; }
         .guide-modal { position: relative; width: 100%; max-width: 360px; display: flex; flex-direction: column; align-items: center; }
-        .guide-header { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .guide-header { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .guide-title { font-size: 2.2rem; color: #aed581; font-weight: 900; text-shadow: 0 3px 0 #33691e; }
 
         .btn-close-x {
-            width: 45px; height: 45px; background: #ff5252; border: 3px solid #fff; border-radius: 50%;
-            color: #fff; font-size: 1.5rem; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            width: 42px; height: 42px; background: #ff5252; border: 3px solid #fff; border-radius: 50%;
+            color: #fff; font-size: 1.4rem; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.4); transition: 0.1s; -webkit-tap-highlight-color: transparent;
         }
         .btn-close-x:active { transform: scale(0.9); }
 
         .guide-diagram-canvas {
-            width: 100%; height: auto; max-height: 65vh; position: relative; overflow-y: auto; overflow-x: hidden;
-            background: rgba(0,0,0,0.25); border-radius: 20px; padding: 20px 15px 30px 15px;
-            border: 2px dashed rgba(255,255,255,0.2); display: flex; flex-direction: column; align-items: center; gap: 10px;
+            width: 100%; max-height: 60vh; position: relative; overflow-y: auto; overflow-x: hidden;
+            background: rgba(0,0,0,0.25); border-radius: 20px; padding: 15px;
+            border: 2px dashed rgba(255,255,255,0.2); display: flex; flex-direction: column; align-items: center; gap: 8px;
         }
         .guide-diagram-canvas::-webkit-scrollbar { width: 6px; } 
         .guide-diagram-canvas::-webkit-scrollbar-thumb { background: #aed581; border-radius: 10px; }
 
-        .demo-ticket { 
-            background: #fffde7; border-top: 10px solid #e0e0e0; border-radius: 5px 5px 10px 10px; 
-            width: 90%; padding: 15px 10px 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); position: relative; 
-            display:flex; flex-direction:column; align-items:center; flex-shrink: 0;
-        }
-        .demo-ticket::before { content: ''; position: absolute; top: -5px; left: 0; width: 100%; height: 10px; background: radial-gradient(circle, #fffde7 50%, transparent 50%); background-size: 15px 15px; }
-
-        .demo-keyboard { background: #d7ccc8; border: 3px solid #795548; border-radius: 12px; padding: 10px; width: 100%; box-shadow: 0 4px 8px rgba(0,0,0,0.2); flex-shrink: 0;}
-        .demo-key-row { display: flex; gap: 4px; justify-content: center; margin-bottom: 6px; }
-        .demo-key-sm { flex: 1; height: 35px; background: #fff; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.9rem; font-weight: 900; color: #5d4037; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 0 #d7ccc8; }
-        
-        .demo-pizza { width: 110px; height: 110px; border-radius: 50%; box-shadow: 0 5px 10px rgba(0,0,0,0.3); flex-shrink: 0; }
-
-        .chalk-text { color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); font-weight: 700; line-height: 1.4; text-align: center; width: 100%; font-size: 1.05rem; }
-        .down-arrow { width: 30px; height: 30px; margin: -5px 0; opacity: 0.9; flex-shrink: 0; }
+        .chalk-text { color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); font-weight: 700; line-height: 1.4; text-align: center; width: 100%; font-size: 0.95rem; }
+        .down-arrow { width: 25px; height: 25px; margin: -3px 0; opacity: 0.9; flex-shrink: 0; }
 
         .review-box {
             background: #fffcf4; padding: 20px; 
             border-radius: 25px; width: 100%; text-align: left; margin-bottom: 20px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.05), 0 15px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
             border: 4px dashed #d32f2f; max-height: 55vh; overflow-y: auto;
         }
         .review-box::-webkit-scrollbar { width: 6px; }
         .review-box::-webkit-scrollbar-thumb { background: #d32f2f; border-radius: 10px; }
 
-        .theory-info { margin-bottom: 12px; font-size: 0.95rem; padding: 14px; border-radius: 16px; background: #fff; border: 2px dashed #ffccbc; }
-        .theory-title { font-weight: 900; color: #d32f2f; font-size: 1.1rem;}
-        .theory-desc { color: #5d4037; font-weight: 600; display: block; margin-top: 5px; line-height: 1.5; }
+        .theory-info { margin-bottom: 10px; font-size: 0.9rem; padding: 12px; border-radius: 15px; background: #fff; border: 2px dashed #ffccbc; }
+        .theory-title { font-weight: 900; color: #d32f2f; font-size: 1rem;}
+        .theory-desc { color: #5d4037; font-weight: 600; display: block; margin-top: 4px; line-height: 1.4; font-size: 0.85rem; }
     </style>
 </head>
 <body>
@@ -239,14 +213,9 @@
         </div>
 
         <div class="question-zone" id="questionZone">
-            <div class="ticket-title">Ticket #02 - Interval Order</div>
-            <div class="mini-staff" id="staffContainer">
-                <div class="mini-clef">&#119070;</div>
-                <div class="mini-line m-line-1"></div>
-                <div class="mini-line m-line-2"></div>
-                <div class="mini-line m-line-3"></div>
-                <div class="mini-line m-line-4"></div>
-                <div class="mini-line m-line-5"></div>
+            <div class="ticket-title">✨ ออเดอร์ขั้นคู่ (Interval Order) ✨</div>
+            <div class="question-img-container">
+                <img id="questionImg" src="" alt="Interval Question">
             </div>
         </div>
 
@@ -272,13 +241,13 @@
             <h1 class="overlay-title">Pizza Interval 🍕</h1>
             
             <div class="start-instruction-box">
-                <p style="font-size: 1.25rem; color: #d32f2f; font-weight: 900; line-height: 1.5; margin-bottom:10px;">
+                <p style="font-size: 1.2rem; color: #d32f2f; font-weight: 900; line-height: 1.5; margin-bottom:8px;">
                     🍕 พร้อมอบพิซซ่าหรือยังเชฟ?
                 </p>
-                <p style="font-size: 1rem; color: #4e342e; font-weight: 700;">จำให้แม่น! โครงสร้างของขั้นคู่แต่ละชนิด</p>
-                <div style="background:#fff; border-radius:15px; padding:12px; margin-top:15px; border:2px dashed #d32f2f;">
-                    <p style="font-size: 0.95rem; color: #2e7d32; font-weight: 900;">✅ ตอบถูก 1 ข้อ = ได้ 10 คะแนน + ส่วนผสม</p>
-                    <p style="font-size: 0.95rem; color: #c62828; font-weight: 900; margin-top:8px;">🎯 สะสมครบ 80 คะแนน เพื่อปลดล็อคด่าน 3!</p>
+                <p style="font-size: 0.95rem; color: #4e342e; font-weight: 700;">จำให้แม่น! โครงสร้างของขั้นคู่แต่ละชนิด</p>
+                <div style="background:#fff; border-radius:15px; padding:10px; margin-top:12px; border:2px dashed #d32f2f;">
+                    <p style="font-size: 0.9rem; color: #2e7d32; font-weight: 900;">✅ ตอบถูก 1 ข้อ = ได้ 10 คะแนน + ส่วนผสม</p>
+                    <p style="font-size: 0.9rem; color: #c62828; font-weight: 900; margin-top:6px;">🎯 สะสมครบ 80 คะแนน เพื่อปลดล็อคด่าน 3!</p>
                 </div>
             </div>
             
@@ -294,26 +263,8 @@
                 </div>
 
                 <div class="guide-diagram-canvas">
-                    <div class="demo-ticket">
-                        <div style="font-size: 0.7rem; color: #795548; font-weight: 900; margin-bottom: 5px;">TICKET #01 - INTERVAL ORDER</div>
-                        <div class="mini-staff" style="width: 100%; margin-top: 15px; margin-bottom: 10px;">
-                            <div class="mini-clef">&#119070;</div>
-                            <div class="mini-line m-line-1"></div>
-                            <div class="mini-line m-line-2"></div>
-                            <div class="mini-line m-line-3"></div>
-                            <div class="mini-line m-line-4"></div>
-                            <div class="mini-line m-line-5"></div>
-                            
-                            <svg class="note-svg" style="position: absolute; overflow: visible; width: 24px; height: 40px; bottom: -30px; left: 45px; z-index: 5;">
-                                <line x1="-4" y1="20" x2="28" y2="20" stroke="#3e2723" stroke-width="2" />
-                                <ellipse cx="12" cy="20" rx="7.5" ry="5.5" transform="rotate(-15 12 20)" fill="transparent" stroke="#212121" stroke-width="2.5" />
-                            </svg>
-                            
-                            <svg class="note-svg" style="position: absolute; overflow: visible; width: 24px; height: 40px; bottom: -20px; left: 45px; z-index: 5;">
-                                <text x="2" y="25.5" text-anchor="end" font-family="'Times New Roman', serif" font-size="24" font-weight="bold" fill="#212121">♭</text>
-                                <ellipse cx="12" cy="20" rx="7.5" ry="5.5" transform="rotate(-15 12 20)" fill="transparent" stroke="#212121" stroke-width="2.5" />
-                            </svg>
-                        </div>
+                    <div style="width: 120px; height: 75px; background: #ffffff; border-radius: 12px; display: flex; justify-content: center; align-items: center; border: 2px solid #ffccbc; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                        <img src="IMG_100.JPG" alt="Example" style="max-width: 90%; max-height: 90%; object-fit: contain;">
                     </div>
                     <div class="chalk-text">ดูบิลออเดอร์ขั้นคู่<br>ตรงกลาง</div>
 
@@ -322,48 +273,27 @@
                         <polyline points="19 15 12 22 5 15"></polyline>
                     </svg>
 
-                    <div class="demo-keyboard">
-                        <div class="demo-key-row">
-                            <div class="demo-key-sm">2</div><div class="demo-key-sm">3</div><div class="demo-key-sm">4</div>
-                            <div class="demo-key-sm">5</div><div class="demo-key-sm">6</div><div class="demo-key-sm">7</div>
+                    <div style="background: #d7ccc8; border: 3px solid #795548; border-radius: 12px; padding: 8px; width: 100%;">
+                        <div style="display: flex; gap: 4px; justify-content: center; margin-bottom: 4px;">
+                            <div style="flex:1; height:30px; background:#fff; border-radius:6px; font-size:0.8rem; font-weight:900; display:flex; align-items:center; justify-content:center;">2</div>
+                            <div style="flex:1; height:30px; background:#fff; border-radius:6px; font-size:0.8rem; font-weight:900; display:flex; align-items:center; justify-content:center;">3</div>
+                            <div style="flex:1; height:30px; background:#fff; border-radius:6px; font-size:0.8rem; font-weight:900; display:flex; align-items:center; justify-content:center;">4</div>
                         </div>
-                        <div class="demo-key-row">
-                            <div class="demo-key-sm">M</div><div class="demo-key-sm">m</div><div class="demo-key-sm">P</div>
-                            <div class="demo-key-sm">A</div><div class="demo-key-sm">d</div>
+                        <div style="display: flex; gap: 4px; justify-content: center;">
+                            <div style="flex:1; height:30px; background:#fff; border-radius:6px; font-size:0.8rem; font-weight:900; display:flex; align-items:center; justify-content:center;">M</div>
+                            <div style="flex:1; height:30px; background:#fff; border-radius:6px; font-size:0.8rem; font-weight:900; display:flex; align-items:center; justify-content:center;">m</div>
+                            <div style="flex:1; height:30px; background:#fff; border-radius:6px; font-size:0.8rem; font-weight:900; display:flex; align-items:center; justify-content:center;">P</div>
                         </div>
                     </div>
-                    <div class="chalk-text">กดเลือกชนิดและเลข</div>
-
-                    <svg class="down-arrow" viewBox="0 0 24 24" fill="none" stroke="#aed581" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="2" x2="12" y2="22"></line>
-                        <polyline points="19 15 12 22 5 15"></polyline>
-                    </svg>
-
-                    <svg class="demo-pizza" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="100" cy="100" r="95" fill="#f5deb3" stroke="#d4a373" stroke-width="8" />
-                        <circle cx="100" cy="100" r="85" fill="#e53935" opacity="0.85" />
-                        <circle cx="100" cy="100" r="80" fill="#ffe082" />
-                        <g transform="translate(60,60)"><circle r="16" fill="#d32f2f"/><circle r="12" fill="#e53935"/></g>
-                        <g transform="translate(140,110)"><circle r="16" fill="#d32f2f"/><circle r="12" fill="#e53935"/></g>
-                        <g transform="translate(90,140)"><circle r="16" fill="#d32f2f"/><circle r="12" fill="#e53935"/></g>
-                        <g transform="translate(110,50)"><path d="M0,15 C-15,5 -5,-15 0,-15 C5,-15 15,5 0,15 Z" fill="#4caf50" stroke="#2e7d32" stroke-width="1"/></g>
-                        <g transform="translate(70,140)"><path d="M0,15 C-15,5 -5,-15 0,-15 C5,-15 15,5 0,15 Z" fill="#4caf50" stroke="#2e7d32" stroke-width="1"/></g>
-                        <g transform="translate(140,150)"><path d="M-10,0 C-10,-10 10,-10 10,0 L5,0 L5,8 L-5,8 L-5,0 Z" fill="#f5f5f5" stroke="#8d6e63" stroke-width="1.5"/></g>
-                        <g transform="translate(50,100)"><path d="M-10,0 C-10,-10 10,-10 10,0 L5,0 L5,8 L-5,8 L-5,0 Z" fill="#f5f5f5" stroke="#8d6e63" stroke-width="1.5"/></g>
-                    </svg>
-
-                    <div class="chalk-text" style="font-size: 0.95rem;">
-                        ถ้าหากตอบถูกจะได้ส่วนผสมทีละชั้น<br>
-                        <span style="color:#ffccbc;">ถ้าหากตอบผิดจะได้ส่วนผสมแปลก<br>และเสียหัวใจ</span>
-                    </div>
+                    <div class="chalk-text">กดเลือกชนิดและเลขขั้นคู่</div>
                 </div>
             </div>
         </div>
 
         <div id="pauseModal" class="overlay-screen">
             <h1 class="overlay-title" style="color: #ffccbc;">พักดื่มน้ำ 🥤</h1>
-            <p class="overlay-subtitle">เชฟเหนื่อยแล้วหรอ?</p>
-            <div style="display: flex; flex-direction: column; width:100%; align-items:center; margin-top:15px;">
+            <p class="overlay-subtitle" style="color: #fff; font-weight: 700; margin-bottom: 10px;">เชฟเหนื่อยแล้วหรอ?</p>
+            <div style="display: flex; flex-direction: column; width:100%; align-items:center;">
                 <button class="btn-action" onclick="resumeGame()">▶ อบพิซซ่าต่อ</button>
                 <button class="btn-action btn-secondary" onclick="openReviewFromPause()">ทบทวนสูตรขั้นคู่ 📖</button>
                 <button class="btn-action btn-secondary" onclick="restartGame()">🔄 เทแป้งทิ้งเริ่มใหม่</button>
@@ -372,24 +302,24 @@
         </div>
 
         <div id="reviewScreen" class="overlay-screen">
-            <h1 class="overlay-title" style="font-size: 2rem;">📖 สูตรลับขั้นคู่</h1>
+            <h1 class="overlay-title" style="font-size: 1.8rem;">📖 สูตรลับขั้นคู่</h1>
             
             <div class="review-box">
                 <div class="theory-info">
                     <span class="theory-title">🍕 Perfect (P) - สมบูรณ์แบบ</span>
-                    <span class="theory-desc">รสชาติเข้ากันกลมกล่อมสุดๆ<br>มีเฉพาะคู่ <b>1, 4, 5, 8</b> เท่านั้น</span>
+                    <span class="theory-desc">มีเฉพาะคู่ <b>1, 4, 5, 8</b> เท่านั้น</span>
                 </div>
                 <div class="theory-info">
                     <span class="theory-title">☀️ Major (M) - สว่าง/ใหญ่</span>
-                    <span class="theory-desc">รสชาติสว่าง สดใส อารมณ์ดี<br>มีเฉพาะคู่ <b>2, 3, 6, 7</b> (ตัวที่เหลือจาก Perfect)</span>
+                    <span class="theory-desc">มีเฉพาะคู่ <b>2, 3, 6, 7</b></span>
                 </div>
                 <div class="theory-info">
                     <span class="theory-title">🌧️ minor (m) - หม่น/เล็ก</span>
-                    <span class="theory-desc">รสชาติซ่อนเปรี้ยว หม่นๆ<br>คือคู่ Major ที่<b>แคบลงครึ่งเสียง</b> (มักติดแฟลต ♭)</span>
+                    <span class="theory-desc">คือคู่ Major ที่<b>แคบลงครึ่งเสียง</b> (มักติดแฟลต ♭)</span>
                 </div>
                 <div class="theory-info">
                     <span class="theory-title">🌶️ Augmented (A) & diminished (d)</span>
-                    <span class="theory-desc"><b>A (กว้างขึ้น):</b> รสจัดจ้าน (มักติดชาร์ป ♯)<br><b>d (แคบลง):</b> รสอึดอัด ลึกลับ</span>
+                    <span class="theory-desc"><b>A:</b> กว้างขึ้น (ติดชาร์ป ♯)<br><b>d:</b> แคบลง</span>
                 </div>
             </div>
             
@@ -432,44 +362,41 @@
         }
 
         const questionBank = [
-            { bPos: 0, bAcc: '', tPos: 2, tAcc: '', num: 3, qual: 'M' },   
-            { bPos: 4, bAcc: '', tPos: 7, tAcc: '#', num: 4, qual: 'A' },  
-            { bPos: 1, bAcc: '', tPos: 5, tAcc: 'b', num: 5, qual: 'd' },  
-            { bPos: 1, bAcc: '', tPos: 7, tAcc: '', num: 7, qual: 'm' },   
-            { bPos: 5, bAcc: '', tPos: 6, tAcc: '#', num: 2, qual: 'A' },  
-            { bPos: 5, bAcc: '', tPos: 10, tAcc: '##', num: 6, qual: 'A' },
-            { bPos: 2, bAcc: '', tPos: 4, tAcc: 'b', num: 3, qual: 'd' },  
-            { bPos: 2, bAcc: '', tPos: 3, tAcc: '#', num: 2, qual: 'M' },  
-
-            { bPos: 3, bAcc: '', tPos: 8, tAcc: 'b', num: 6, qual: 'm' },  
-            { bPos: 3, bAcc: '', tPos: 5, tAcc: 'b', num: 3, qual: 'm' },  
-            { bPos: 6, bAcc: 'b', tPos: 7, tAcc: '#', num: 2, qual: 'A' }, 
-            { bPos: 6, bAcc: 'b', tPos: 11, tAcc: 'b', num: 6, qual: 'm' }, 
-            { bPos: 2, bAcc: 'b', tPos: 5, tAcc: '', num: 4, qual: 'A' },  
-            { bPos: 2, bAcc: 'b', tPos: 8, tAcc: '', num: 7, qual: 'M' },  
-            { bPos: 5, bAcc: 'b', tPos: 6, tAcc: 'bb', num: 2, qual: 'm' },
-            { bPos: 5, bAcc: 'b', tPos: 7, tAcc: '#', num: 3, qual: 'A' }, 
-
-            { bPos: 3, bAcc: '#', tPos: 6, tAcc: '#', num: 4, qual: 'A' }, 
-            { bPos: 3, bAcc: '#', tPos: 5, tAcc: 'b', num: 3, qual: 'd' }, 
-            { bPos: 2, bAcc: '#', tPos: 3, tAcc: '', num: 2, qual: 'd' },  
-            { bPos: 2, bAcc: '#', tPos: 6, tAcc: '##', num: 5, qual: 'A' },
-            { bPos: 0, bAcc: '#', tPos: 5, tAcc: '', num: 6, qual: 'm' },  
-            { bPos: 3, bAcc: 'b', tPos: 7, tAcc: '', num: 5, qual: 'A' },  
-            { bPos: 3, bAcc: 'b', tPos: 4, tAcc: 'b', num: 2, qual: 'M' }, 
-            { bPos: 4, bAcc: 'b', tPos: 9, tAcc: 'bb', num: 6, qual: 'm' },
-            { bPos: 4, bAcc: 'b', tPos: 5, tAcc: 'b', num: 2, qual: 'M' }, 
-            { bPos: 1, bAcc: 'b', tPos: 3, tAcc: '#', num: 3, qual: 'A' }, 
-            { bPos: 0, bAcc: 'b', tPos: 6, tAcc: 'bb', num: 7, qual: 'm' },
-            { bPos: 4, bAcc: '#', tPos: 7, tAcc: '#', num: 4, qual: 'P' }, 
-            { bPos: 4, bAcc: '#', tPos: 10, tAcc: '##', num: 7, qual: 'M' },
-            { bPos: 5, bAcc: '#', tPos: 9, tAcc: '#', num: 5, qual: 'P' }, 
-
-            { bPos: -1, bAcc: '', tPos: 4, tAcc: 'b', num: 6, qual: 'd' }, 
-            { bPos: 1, bAcc: '', tPos: 6, tAcc: '', num: 6, qual: 'M' },   
-            { bPos: 5, bAcc: 'b', tPos: 11, tAcc: 'bb', num: 7, qual: 'd' },
-            { bPos: 0, bAcc: '', tPos: 6, tAcc: '#', num: 7, qual: 'A' },  
-            { bPos: 2, bAcc: '', tPos: 5, tAcc: 'b', num: 4, qual: 'd' }   
+            { img: "IMG_1.JPG", num: 3, qual: 'M' },
+            { img: "IMG_2.JPG", num: 4, qual: 'A' },
+            { img: "IMG_3.JPG", num: 5, qual: 'd' },
+            { img: "IMG_4.JPG", num: 7, qual: 'm' },
+            { img: "IMG_5.JPG", num: 2, qual: 'A' },
+            { img: "IMG_6.JPG", num: 6, qual: 'A' },
+            { img: "IMG_7.JPG", num: 3, qual: 'd' },
+            { img: "IMG_8.JPG", num: 2, qual: 'M' },
+            { img: "IMG_9.JPG", num: 6, qual: 'm' },
+            { img: "IMG_10.JPG", num: 3, qual: 'm' },
+            { img: "IMG_11.JPG", num: 2, qual: 'A' },
+            { img: "IMG_12.JPG", num: 5, qual: 'd' },
+            { img: "IMG_13.JPG", num: 4, qual: 'A' },
+            { img: "IMG_14.JPG", num: 7, qual: 'M' },
+            { img: "IMG_15.JPG", num: 2, qual: 'm' },
+            { img: "IMG_16.JPG", num: 3, qual: 'A' },
+            { img: "IMG_17.JPG", num: 4, qual: 'A' },
+            { img: "IMG_18.JPG", num: 3, qual: 'd' },
+            { img: "IMG_19.JPG", num: 2, qual: 'd' },
+            { img: "IMG_20.JPG", num: 5, qual: 'A' },
+            { img: "IMG_21.JPG", num: 6, qual: 'm' },
+            { img: "IMG_22.JPG", num: 5, qual: 'A' },
+            { img: "IMG_23.JPG", num: 2, qual: 'M' },
+            { img: "IMG_24.JPG", num: 6, qual: 'm' },
+            { img: "IMG_25.JPG", num: 2, qual: 'M' },
+            { img: "IMG_26.JPG", num: 3, qual: 'A' },
+            { img: "IMG_27.JPG", num: 7, qual: 'm' },
+            { img: "IMG_28.JPG", num: 4, qual: 'A' },
+            { img: "IMG_29.JPG", num: 7, qual: 'M' },
+            { img: "IMG_30.JPG", num: 5, qual: 'P' },
+            { img: "IMG_31.JPG", num: 6, qual: 'd' },
+            { img: "IMG_32.JPG", num: 6, qual: 'M' },
+            { img: "IMG_33.JPG", num: 7, qual: 'd' },
+            { img: "IMG_34.JPG", num: 7, qual: 'A' },
+            { img: "IMG_35.JPG", num: 4, qual: 'd' }
         ];
 
         function generateScatter(svgItem, count) {
@@ -499,12 +426,6 @@
             generateScatter(`<path d="M0,10 C-10,3 -4,-10 0,-10 C4,-10 10,3 0,10 Z" fill="#4caf50" stroke="#2e7d32" stroke-width="1"/>`, 6)
         ];
 
-        const badIngredients = [
-            `<g><ellipse rx="6" ry="12" fill="#212121"/><path d="M-6,-5 L-12,-8 M6,-5 L12,-8 M-6,0 L-14,0 M6,0 L14,0 M-6,5 L-12,8 M6,5 L12,8" stroke="#212121" stroke-width="1.5"/></g>`, 
-            `<g><path d="M0,-15 L0,15 M-8,-8 L8,-2 M-8,-2 L8,4 M-8,4 L8,10" stroke="#e0e0e0" stroke-width="2" stroke-linecap="round"/><polygon points="0,-15 -5,-20 5,-20" fill="#e0e0e0"/></g>`, 
-            `<g><path d="M-10,5 Q-5,-15 5,-5 T15,10 Q5,15 -10,5 Z" fill="#7cb342" opacity="0.9"/></g>` 
-        ];
-
         let score = 0;
         let lives = 3;
         let pizzaStep = 0; 
@@ -513,12 +434,12 @@
         let selectedQual = null;
         let isPaused = false;
 
-        const staffContainer = document.getElementById('staffContainer');
         const scoreDisplay = document.getElementById('scoreDisplay');
         const livesDisplay = document.getElementById('livesDisplay');
         const ingredientsLayer = document.getElementById('ingredientsLayer');
         const pizzaSvg = document.getElementById('pizzaSvg');
         const questionZone = document.getElementById('questionZone');
+        const questionImg = document.getElementById('questionImg');
 
         function updateUI() {
             scoreDisplay.textContent = score; 
@@ -553,51 +474,6 @@
         function winGame() { playSound(popSound); localStorage.setItem('chordkupp_progress', 3); window.location.href = 'home.html'; }
         function loseGameBackToMap() { playSound(popSound); window.location.href = 'home.html'; }
 
-        function createNoteSVG(pos, accidental, offsetX, bottomY, accOffsetX = 0) {
-            let ledgerHTML = '';
-            
-            if (pos === 0) { 
-                ledgerHTML = `<line x1="-4" y1="20" x2="28" y2="20" stroke="#3e2723" stroke-width="2" />`;
-            } else if (pos === -1) { 
-                ledgerHTML = `<line x1="-4" y1="15" x2="28" y2="15" stroke="#3e2723" stroke-width="2" />`;
-            } else if (pos <= -2) { 
-                ledgerHTML = `<line x1="-4" y1="10" x2="28" y2="10" stroke="#3e2723" stroke-width="2" /><line x1="-4" y1="20" x2="28" y2="20" stroke="#3e2723" stroke-width="2" />`;
-            } else if (pos === 12) {
-                ledgerHTML = `<line x1="-4" y1="20" x2="28" y2="20" stroke="#3e2723" stroke-width="2" />`;
-            } else if (pos >= 13) {
-                ledgerHTML = `<line x1="-4" y1="25" x2="28" y2="25" stroke="#3e2723" stroke-width="2" />`;
-            }
-
-            let accHTML = '';
-            if (accidental) {
-                let fontFam = "'Times New Roman', serif";
-                // ปรับ baseX ให้เข้าใกล้โน้ตมากขึ้น (จากเดิม 2 ปรับเป็น 4)
-                let baseX = 4 + accOffsetX;
-
-                if (accidental === 'b') { 
-                    accHTML = `<text x="${baseX}" y="25.5" text-anchor="end" font-family="${fontFam}" font-size="24" font-weight="bold" fill="#212121">♭</text>`;
-                }
-                else if (accidental === '#') { 
-                    accHTML = `<text x="${baseX}" y="26.5" text-anchor="end" font-family="${fontFam}" font-size="24" font-weight="normal" fill="#212121">♯</text>`;
-                }
-                else if (accidental === 'bb') { 
-                    accHTML = `<text x="${baseX - 8.5}" y="25.5" text-anchor="end" font-family="${fontFam}" font-size="24" font-weight="bold" fill="#212121">♭</text>
-                               <text x="${baseX}" y="25.5" text-anchor="end" font-family="${fontFam}" font-size="24" font-weight="bold" fill="#212121">♭</text>`;
-                }
-                else if (accidental === '##') { 
-                    accHTML = `<text x="${baseX}" y="24" text-anchor="end" font-family="sans-serif" font-size="18" font-weight="bold" fill="#212121">x</text>`;
-                }
-            }
-
-            return `
-            <svg class="note-svg" style="position: absolute; overflow: visible; width: 24px; height: 40px; bottom: ${bottomY - 20}px; left: ${offsetX}px; z-index: 5;">
-                ${ledgerHTML}
-                ${accHTML}
-                <ellipse cx="12" cy="20" rx="7.5" ry="5.5" transform="rotate(-15 12 20)" fill="transparent" stroke="#212121" stroke-width="2.5" />
-            </svg>
-            `;
-        }
-
         function startGame() {
             playSound(popSound);
             document.getElementById('startOverlay').style.display = 'none';
@@ -618,45 +494,7 @@
 
         function generateQuestion() {
             currentQuestion = questionBank[Math.floor(Math.random() * questionBank.length)];
-            
-            const oldNotes = staffContainer.querySelectorAll('.note-svg');
-            oldNotes.forEach(n => n.remove());
-
-            let bottomY = (currentQuestion.bPos - 2) * 5;
-            let topY = (currentQuestion.tPos - 2) * 5;
-            
-            let leftPxBottom = 120;
-            let leftPxTop = 120;
-            let topAccOffset = 0;
-            let bottomAccOffset = 0;
-            
-            // กรณีเป็นขั้นคู่ 2 (หัวโน้ตอยู่ติดกัน)
-            if (currentQuestion.num === 2) {
-                leftPxBottom = 112.5;
-                leftPxTop = 127.5; 
-
-                if (currentQuestion.bAcc && currentQuestion.tAcc) {
-                    topAccOffset = -14; // ให้เครื่องหมายบนชิดหัวโน้ตบนปกติ 
-                    
-                    let isTopDouble = (currentQuestion.tAcc === 'bb' || currentQuestion.tAcc === '##');
-                    // ผลักเครื่องหมายตัวล่างหนีไปซ้ายแค่พอพ้นตัวบน
-                    bottomAccOffset = isTopDouble ? -25 : -18; 
-                } else if (!currentQuestion.bAcc && currentQuestion.tAcc) {
-                    topAccOffset = -14; 
-                }
-            } 
-            // กรณีเป็นขั้นคู่ 3 ขึ้นไป (หัวโน้ตตั้งตรงกัน)
-            else {
-                if (currentQuestion.bAcc && currentQuestion.tAcc) {
-                    // ถ้ามีเครื่องหมายทั้งคู่ ผลักเครื่องหมายตัวบนไปทางซ้ายนิดนึง ให้ดูเหลื่อมกัน
-                    topAccOffset = -12; 
-                }
-            }
-
-            let bottomNoteHTML = createNoteSVG(currentQuestion.bPos, currentQuestion.bAcc, leftPxBottom, bottomY, bottomAccOffset);
-            let topNoteHTML = createNoteSVG(currentQuestion.tPos, currentQuestion.tAcc, leftPxTop, topY, topAccOffset);
-
-            staffContainer.insertAdjacentHTML('beforeend', bottomNoteHTML + topNoteHTML);
+            questionImg.src = currentQuestion.img;
         }
 
         function selectInput(type, value, btnElement) {
@@ -707,8 +545,6 @@
                 lives--;
                 updateUI();
                 
-                addBadIngredient();
-                
                 questionZone.classList.add('flash-red-bg');
                 setTimeout(() => questionZone.classList.remove('flash-red-bg'), 400);
 
@@ -718,23 +554,6 @@
                     generateQuestion();
                 }
             }
-        }
-
-        function addBadIngredient() {
-            let angle = Math.random() * 360;
-            let radius = Math.random() * 70;
-            let cx = 100 + radius * Math.cos(angle * Math.PI/180);
-            let cy = 100 + radius * Math.sin(angle * Math.PI/180);
-            let rot = Math.random() * 360;
-            let item = badIngredients[Math.floor(Math.random() * badIngredients.length)];
-            
-            ingredientsLayer.innerHTML += `<g transform="translate(${cx}, ${cy}) rotate(${rot})">
-                <animateTransform attributeName="transform" type="scale" from="0" to="1.5" dur="0.3s" fill="freeze" additive="sum"/>
-                ${item}
-            </g>`;
-            
-            pizzaSvg.classList.add('pop');
-            setTimeout(() => pizzaSvg.classList.remove('pop'), 200);
         }
 
         function pizzaComplete() {
