@@ -18,18 +18,17 @@
             --nav-blue-active: #4a90e2;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; font-family: 'Mali', sans-serif; }
         
         body { 
             background-color: #e5f0f9; 
             display: flex; justify-content: center; align-items: center;
             height: 100vh; height: 100dvh; overflow: hidden;
-            font-family: 'Quicksand', 'Mali', sans-serif;
         }
 
         #app-container {
             width: 100%; max-width: 400px; 
-            height: 100%; max-height: 850px;
+            height: 100vh; height: 100dvh; 
             display: flex; flex-direction: column;
             background: linear-gradient(180deg, var(--bg-grass-light) 0%, var(--bg-grass-mid) 60%, var(--bg-grass-dark) 100%);
             position: relative; overflow: hidden;
@@ -38,7 +37,7 @@
 
         /* ================= TOP BAR ================= */
         .top-bar {
-            height: 70px; padding: 0 20px;
+            height: 65px; padding: 0 20px;
             display: flex; justify-content: space-between; align-items: center;
             color: rgba(255,255,255,0.9); font-weight: 700; font-size: 1.1rem;
             letter-spacing: 1px; z-index: 100;
@@ -50,10 +49,11 @@
         .map-area {
             flex: 1; position: relative; 
             display: flex; justify-content: center; align-items: center;
+            overflow: hidden;
         }
 
         .map-content-fixed {
-            position: relative; width: 100%; max-width: 400px; height: 650px; z-index: 10;
+            position: relative; width: 100%; max-width: 400px; height: 100%; z-index: 10;
         }
 
         /* ================= DECORATIONS ================= */
@@ -62,10 +62,10 @@
         .mushroom { position: absolute; font-size: 1.2rem; z-index: 2; }
         .butterfly { position: absolute; font-size: 1rem; z-index: 2; opacity: 0.6; }
 
-        /* ================= SVG PATH ================= */
+        /* ================= SVG PATH (เส้นทางรูปตัว S สีครีมละมุน) ================= */
         .path-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        .path-line { fill: none; stroke: rgba(220, 245, 190, 0.6); stroke-width: 28; stroke-linecap: round; stroke-linejoin: round; }
-        .path-shadow { fill: none; stroke: rgba(129, 200, 76, 0.3); stroke-width: 34; stroke-linecap: round; stroke-linejoin: round; transform: translateY(4px); }
+        .path-line { fill: none; stroke: #fdfaf0; stroke-width: 26; stroke-linecap: round; stroke-linejoin: round; }
+        .path-shadow { fill: none; stroke: rgba(180, 165, 140, 0.35); stroke-width: 32; stroke-linecap: round; stroke-linejoin: round; transform: translateY(4px); }
 
         /* ================= LEVEL NODES ================= */
         .level-node {
@@ -75,14 +75,14 @@
         .level-node:active { transform: scale(0.92); }
 
         .node-circle-outer {
-            width: 80px; height: 80px; border-radius: 50%;
+            width: 75px; height: 75px; border-radius: 50%;
             background: #eaf6d9; display: flex; justify-content: center; align-items: center;
             box-shadow: 0 8px 15px var(--node-shadow-outer), inset 0 -3px 6px rgba(0,0,0,0.05), inset 0 3px 6px #fff;
             position: relative;
         }
 
         .node-circle-inner {
-            width: 62px; height: 62px; border-radius: 50%;
+            width: 58px; height: 58px; border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
             box-shadow: inset 0 2px 5px rgba(255,255,255,0.8), inset 0 -2px 5px rgba(0,0,0,0.1);
             overflow: hidden; 
@@ -94,36 +94,62 @@
             filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15)); 
         }
 
-        .node-icon { font-size: 1.8rem; color: white; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1)); }
-
-        .bg-orange { background: linear-gradient(135deg, #ffb347, #ff7b00); }
-        .bg-purple { background: linear-gradient(135deg, #d387ff, #9d4edd); }
-        .bg-green { background: linear-gradient(135deg, #bcf596, #74c636); }
-        .bg-blue { background: linear-gradient(135deg, #6dd5fa, #2980b9); }
-        .bg-yellow { background: linear-gradient(135deg, #ffe259, #ffa751); }
-
         .node-title {
-            margin-top: 8px; font-size: 0.85rem; font-weight: 700;
+            margin-top: 6px; font-size: 0.8rem; font-weight: 700;
             color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.3); letter-spacing: 0.5px; white-space: nowrap;
         }
 
-        .star-badge { position: absolute; top: -6px; right: -6px; font-size: 1.1rem; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); z-index: 5; }
-
-        .level-node.locked .node-circle-inner { background: linear-gradient(135deg, #c5f0a0, #96d860); }
-        .level-node.locked .node-image { filter: grayscale(100%) opacity(0.7); } 
-        .level-node.locked .node-icon { color: rgba(255,255,255,0.7); }
+        .star-badge { position: absolute; top: -6px; right: -6px; font-size: 1rem; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); z-index: 5; }
 
         /* ================= WATER / RIVER ================= */
-        .river-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 160px; z-index: 5; pointer-events: none; background: linear-gradient(180deg, transparent 0%, var(--bg-water-light) 30%, var(--bg-water-dark) 100%); }
+        .river-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 130px; z-index: 5; pointer-events: none; background: linear-gradient(180deg, transparent 0%, var(--bg-water-light) 30%, var(--bg-water-dark) 100%); }
         .wave-svg { position: absolute; top: 0; left: 0; width: 100%; }
 
         /* ================= BOTTOM NAVIGATION ================= */
-        .bottom-nav { height: 70px; background: #fff; width: 100%; display: flex; justify-content: space-around; align-items: center; z-index: 200; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); padding-bottom: env(safe-area-inset-bottom); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; width: 50px; }
-        .nav-icon { font-size: 1.4rem; color: var(--nav-blue); opacity: 0.6; transition: 0.2s;}
-        .nav-dot { width: 5px; height: 5px; border-radius: 50%; background: transparent; transition: 0.2s;}
+        .bottom-nav { 
+            height: 65px; background: #fff; width: 100%; 
+            display: flex; justify-content: space-around; align-items: center; 
+            z-index: 200; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); 
+            padding-bottom: env(safe-area-inset-bottom); 
+            flex-shrink: 0;
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; width: 50px; }
+        .nav-icon { font-size: 1.3rem; color: var(--nav-blue); opacity: 0.6; transition: 0.2s;}
+        .nav-dot { width: 4px; height: 4px; border-radius: 50%; background: transparent; transition: 0.2s;}
         .nav-item.active .nav-icon { opacity: 1; transform: translateY(-2px); }
         .nav-item.active .nav-dot { background: var(--nav-blue-active); }
+
+        /* ================= MODAL POPUP STYLES ================= */
+        .modal-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(58, 42, 34, 0.85); z-index: 1000; display: none;
+            flex-direction: column; align-items: center; justify-content: center;
+            backdrop-filter: blur(5px); padding: 20px; animation: fadeIn 0.2s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .modal-box {
+            background: #fffcf4; width: 100%; max-width: 350px; max-height: 80vh;
+            border-radius: 30px; padding: 25px 20px; display: flex; flex-direction: column;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3); border: 4px dashed #81c84c; position: relative;
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .modal-title { font-size: 1.5rem; font-weight: 900; color: #5d4037; }
+        .btn-close {
+            width: 36px; height: 36px; background: #ff5252; color: #fff; border: 2px solid #fff;
+            border-radius: 50%; font-size: 1.2rem; font-weight: 900; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .modal-body { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding-right: 4px; }
+        .modal-body::-webkit-scrollbar { width: 6px; }
+        .modal-body::-webkit-scrollbar-thumb { background: #9cdb66; border-radius: 10px; }
+
+        .theory-card {
+            background: #fff; padding: 12px 15px; border-radius: 15px; border: 2px solid #e0e0e0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        }
+        .theory-card h4 { color: #5d4037; font-size: 1rem; font-weight: 900; margin-bottom: 4px; }
+        .theory-card p { color: #795548; font-size: 0.85rem; font-weight: 600; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -147,24 +173,24 @@
             </div>
 
             <div class="map-content-fixed">
-                <svg class="path-svg" viewBox="0 0 400 650" preserveAspectRatio="none">
-                    <path class="path-shadow" d="M 140,570 C 240,610 320,530 260,440 C 200,350 70,390 120,310 C 170,230 340,250 280,180 C 220,110 80,100 140,60"></path>
-                    <path class="path-line" d="M 140,570 C 240,610 320,530 260,440 C 200,350 70,390 120,310 C 170,230 340,250 280,180 C 220,110 80,100 140,60"></path>
+                <svg class="path-svg" viewBox="0 0 400 580" preserveAspectRatio="none">
+                    <path class="path-shadow" d="M 200,510 C 200,450 110,440 110,380 C 110,320 290,310 290,250 C 290,190 110,180 110,120 C 110,60 210,70 210,30"></path>
+                    <path class="path-line" d="M 200,510 C 200,450 110,440 110,380 C 110,320 290,310 290,250 C 290,190 110,180 110,120 C 110,60 210,70 210,30"></path>
                 </svg>
 
-                <div class="grass-patch" style="top: 150px; left: 10px;"></div>
-                <div class="grass-patch" style="top: 360px; right: 10px; width: 100px;"></div>
-                <div class="grass-patch" style="top: 550px; left: 60px; width: 80px;"></div>
+                <div class="grass-patch" style="top: 130px; left: 10px;"></div>
+                <div class="grass-patch" style="top: 300px; right: 10px; width: 100px;"></div>
+                <div class="grass-patch" style="top: 470px; left: 60px; width: 80px;"></div>
 
-                <div class="tree" style="top: 80px; right: 15%;">🌳</div>
-                <div class="mushroom" style="top: 130px; left: 12%;">🍄</div>
-                <div class="tree" style="top: 250px; left: 5%;">🌲</div>
-                <div class="butterfly" style="top: 320px; right: 20%;">🦋</div>
-                <div class="tree" style="top: 450px; left: 10%;">🌳</div>
-                <div class="tree" style="top: 580px; right: 25%;">🌲</div>
+                <div class="tree" style="top: 50px; right: 15%;">🌳</div>
+                <div class="mushroom" style="top: 100px; left: 12%;">🍄</div>
+                <div class="tree" style="top: 200px; left: 5%;">🌲</div>
+                <div class="butterfly" style="top: 260px; right: 20%;">🦋</div>
+                <div class="tree" style="top: 380px; left: 10%;">🌳</div>
+                <div class="tree" style="top: 490px; right: 25%;">🌲</div>
 
-                <!-- ด่าน 5: Inversion (ปลดล็อกแล้ว) -->
-                <div class="level-node" style="top: 20px; left: 25%;" onclick="window.location.href='level-inversion.html'">
+                <!-- ด่าน 5: Inversion -->
+                <div class="level-node" style="top: 5px; left: calc(52.5% - 40px);" onclick="window.location.href='level-inversion.html'">
                     <div class="star-badge" style="color: #ffb74d;">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner bg-yellow"><img src="shop-inversion.png" alt="Inversion" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍱</div>'"></div>
@@ -172,8 +198,8 @@
                     <div class="node-title">Inversion</div>
                 </div>
 
-                <!-- ด่าน 4: 7th Chord (ปลดล็อกแล้ว) -->
-                <div class="level-node" style="top: 140px; left: 60%;" onclick="window.location.href='level-chord7.html'">
+                <!-- ด่าน 4: 7th Chord -->
+                <div class="level-node" style="top: 105px; left: calc(27.5% - 40px);" onclick="window.location.href='level-chord7.html'">
                     <div class="star-badge" style="color: #ffb74d;">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner bg-green"><img src="shop-chord7.png" alt="7th Chord" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍣</div>'"></div>
@@ -182,7 +208,7 @@
                 </div>
 
                 <!-- ด่าน 3: Triad -->
-                <div class="level-node" style="top: 270px; left: 20%;" onclick="window.location.href='level-triad.html'">
+                <div class="level-node" style="top: 230px; left: calc(72.5% - 40px);" onclick="window.location.href='level-triad.html'">
                     <div class="star-badge" style="color: #ffb74d;">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner bg-purple"><img src="shop-triad.png" alt="Triad" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🥪</div>'"></div>
@@ -191,7 +217,7 @@
                 </div>
 
                 <!-- ด่าน 2: Interval -->
-                <div class="level-node" style="top: 400px; left: 55%;" onclick="window.location.href='level-interval.html'">
+                <div class="level-node" style="top: 360px; left: calc(27.5% - 40px);" onclick="window.location.href='level-interval.html'">
                     <div class="star-badge" style="color: #ffb74d;">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner bg-blue"><img src="shop-interval.png" alt="Interval" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍕</div>'"></div>
@@ -200,7 +226,7 @@
                 </div>
 
                 <!-- ด่าน 1: Scale -->
-                <div class="level-node" style="top: 530px; left: 25%;" onclick="window.location.href='level-scale.html'">
+                <div class="level-node" style="top: 485px; left: calc(50% - 40px);" onclick="window.location.href='level-scale.html'">
                     <div class="star-badge" style="color: #ffb74d;">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner bg-orange"><img src="shop-scale.png" alt="Scale" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>☕</div>'"></div>
@@ -211,14 +237,134 @@
             </div>
         </div>
 
+        <!-- ================= แถบเมนูด้านล่าง ================= -->
         <div class="bottom-nav">
-            <div class="nav-item active"><div class="nav-icon">🎓</div><div class="nav-dot"></div></div>
-            <div class="nav-item"><div class="nav-icon">📖</div><div class="nav-dot"></div></div>
-            <div class="nav-item"><div class="nav-icon">🎮</div><div class="nav-dot"></div></div>
-            <div class="nav-item"><div class="nav-icon">🔤</div><div class="nav-dot"></div></div>
+            <div class="nav-item active" onclick="switchTab(0)"><div class="nav-icon">🎓</div><div class="nav-dot"></div></div>
+            <div class="nav-item" onclick="switchTab(1)"><div class="nav-icon">📖</div><div class="nav-dot"></div></div>
+            <div class="nav-item" onclick="switchTab(2)"><div class="nav-icon">🎮</div><div class="nav-dot"></div></div>
+            <div class="nav-item" onclick="switchTab(3)"><div class="nav-icon">🔤</div><div class="nav-dot"></div></div>
         </div>
 
     </div>
+
+    <!-- ================= MODALS ================= -->
+
+    <!-- Modal 1: 📖 คลังความรู้ -->
+    <div id="theoryModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <div class="modal-title">📖 คลังความรู้ดนตรี</div>
+                <button class="btn-close" onclick="closeModal('theoryModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="theory-card">
+                    <h4>☕ 1. Scale (บันไดเสียง)</h4>
+                    <p>กลุ่มโน้ตที่เรียงลำดับตามความถี่เสียง เช่น Major Scale มีสูตร T-T-S-T-T-T-S</p>
+                </div>
+                <div class="theory-card">
+                    <h4>🍕 2. Interval (ขั้นคู่เสียง)</h4>
+                    <p>ระยะห่างระหว่างโน้ต 2 ตัว แบ่งเป็น Perfect, Major, minor, Augmented และ diminished</p>
+                </div>
+                <div class="theory-card">
+                    <h4>🥪 3. Triad (คอร์ดสามเสียง)</h4>
+                    <p>ประกอบด้วย Root, 3rd และ 5th มี 4 ชนิดหลักคือ Major, minor, Augmented, diminished</p>
+                </div>
+                <div class="theory-card">
+                    <h4>🍣 4. 7th Chord (คอร์ดเจ็ด)</h4>
+                    <p>เพิ่มโน้ตตัวที่ 7 เข้าไปในคอร์ดสามเสียง เช่น Maj7, min7, Dominant 7</p>
+                </div>
+                <div class="theory-card">
+                    <h4>🍱 5. Inversion (การพลิกกลับคอร์ด)</h4>
+                    <p>การสลับโน้ตตัวล่างสุดไปไว้ข้างบน แบ่งเป็น Root, 1st, 2nd และ 3rd Inversion</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: 🎮 สถิติและรางวัลผู้เล่น (เปลี่ยนเป็นใส่รูปภาพผ่าน src) -->
+    <div id="statsModal" class="modal-overlay">
+        <div class="modal-box" style="border-color: #6dd5fa; align-items: center;">
+            <div class="modal-header" style="width: 100%;">
+                <div class="modal-title">🎮 สถิติของคุณเชฟ</div>
+                <button class="btn-close" onclick="closeModal('statsModal')">✕</button>
+            </div>
+            <div class="modal-body" style="align-items: center; justify-content: center; width: 100%;">
+                <!-- เปลี่ยนข้อความในกรอบ เป็นการดึงรูปภาพผ่าน src -->
+                <img src="IMG_BAM.jpg" alt="Player Stats" style="width: 100%; max-height: 50vh; object-fit: contain; border-radius: 20px; border: 2px dashed #6dd5fa;">
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: 🔤 คำศัพท์และสัญลักษณ์ดนตรี -->
+    <div id="vocabModal" class="modal-overlay">
+        <div class="modal-box" style="border-color: #ffb347;">
+            <div class="modal-header">
+                <div class="modal-title">🔤 คำศัพท์ดนตรีสากล</div>
+                <button class="btn-close" onclick="closeModal('vocabModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="theory-card">
+                    <h4>Treble Clef (กุญแจซอล)</h4>
+                    <p>สัญลักษณ์บันทึกเสียงสูง เริ่มต้นเส้นแรกที่ตัว E4</p>
+                </div>
+                <div class="theory-card">
+                    <h4>Sharp (♯ / ชาร์ป)</h4>
+                    <p>เครื่องหมายแปลงเสียงที่ทำให้โน้ตสูงขึ้นครึ่งเสียง</p>
+                </div>
+                <div class="theory-card">
+                    <h4>Flat (♭ / แฟลต)</h4>
+                    <p>เครื่องหมายแปลงเสียงที่ทำให้โน้ตต่ำลงครึ่งเสียง</p>
+                </div>
+                <div class="theory-card">
+                    <h4>Root Note (โน้ตราก)</h4>
+                    <p>โน้ตตัวแรกที่เป็นฐานชื่อเรียกของคอร์ดนั้นๆ</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT ================= -->
+    <script>
+        function switchTab(index) {
+            const items = document.querySelectorAll('.bottom-nav .nav-item');
+            items.forEach((item, i) => {
+                if (i === index) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+
+            if (index === 0) {
+                closeAllModals();
+            } else if (index === 1) {
+                openModal('theoryModal');
+            } else if (index === 2) {
+                openModal('statsModal');
+            } else if (index === 3) {
+                openModal('vocabModal');
+            }
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            const items = document.querySelectorAll('.bottom-nav .nav-item');
+            items.forEach((item, i) => {
+                if (i === 0) item.classList.add('active');
+                else item.classList.remove('active');
+            });
+        }
+
+        function closeAllModals() {
+            document.querySelectorAll('.modal-overlay').forEach(modal => {
+                modal.style.display = 'none';
+            });
+        }
+    </script>
 
 </body>
 </html>
