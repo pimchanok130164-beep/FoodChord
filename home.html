@@ -21,7 +21,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; font-family: 'Mali', sans-serif; }
         
         body { 
-            background-color: #e5f0f9; 
+            background-color: #2c221e; 
             display: flex; justify-content: center; align-items: center;
             height: 100vh; height: 100dvh; overflow: hidden;
         }
@@ -37,10 +37,10 @@
 
         /* ================= TOP BAR ================= */
         .top-bar {
-            height: 65px; padding: 0 20px;
+            height: 60px; padding: 0 20px;
             display: flex; justify-content: space-between; align-items: center;
             color: rgba(255,255,255,0.9); font-weight: 700; font-size: 1.1rem;
-            letter-spacing: 1px; z-index: 100;
+            letter-spacing: 1px; z-index: 100; flex-shrink: 0;
         }
         .icon-btn { font-size: 1.2rem; cursor: pointer; opacity: 0.8; }
         .icon-btn:active { opacity: 0.5; }
@@ -57,10 +57,10 @@
         }
 
         /* ================= DECORATIONS ================= */
-        .grass-patch { position: absolute; width: 120px; height: 40px; background: rgba(129, 200, 76, 0.3); border-radius: 20px; z-index: 0; }
-        .tree { position: absolute; font-size: 1.8rem; z-index: 2; opacity: 0.9; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));}
-        .mushroom { position: absolute; font-size: 1.2rem; z-index: 2; }
-        .butterfly { position: absolute; font-size: 1rem; z-index: 2; opacity: 0.6; }
+        .grass-patch { position: absolute; width: 120px; height: 35px; background: rgba(129, 200, 76, 0.3); border-radius: 20px; z-index: 0; }
+        .tree { position: absolute; font-size: 1.6rem; z-index: 2; opacity: 0.9; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));}
+        .mushroom { position: absolute; font-size: 1.1rem; z-index: 2; }
+        .butterfly { position: absolute; font-size: 0.9rem; z-index: 2; opacity: 0.6; }
 
         /* ================= SVG PATH (เส้นทางรูปตัว S สีครีมละมุน) ================= */
         .path-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
@@ -70,19 +70,20 @@
         /* ================= LEVEL NODES ================= */
         .level-node {
             position: absolute; display: flex; flex-direction: column; align-items: center;
-            cursor: pointer; z-index: 10; width: 80px; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer; z-index: 10; width: 75px; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translate(-50%, -50%);
         }
-        .level-node:active { transform: scale(0.92); }
+        .level-node:active { transform: translate(-50%, -50%) scale(0.92); }
 
         .node-circle-outer {
-            width: 75px; height: 75px; border-radius: 50%;
+            width: 70px; height: 70px; border-radius: 50%;
             background: #eaf6d9; display: flex; justify-content: center; align-items: center;
             box-shadow: 0 8px 15px var(--node-shadow-outer), inset 0 -3px 6px rgba(0,0,0,0.05), inset 0 3px 6px #fff;
             position: relative;
         }
 
         .node-circle-inner {
-            width: 58px; height: 58px; border-radius: 50%;
+            width: 54px; height: 54px; border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
             box-shadow: inset 0 2px 5px rgba(255,255,255,0.8), inset 0 -2px 5px rgba(0,0,0,0.1);
             overflow: hidden; 
@@ -95,26 +96,26 @@
         }
 
         .node-title {
-            margin-top: 6px; font-size: 0.8rem; font-weight: 700;
+            margin-top: 4px; font-size: 0.75rem; font-weight: 700;
             color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.3); letter-spacing: 0.5px; white-space: nowrap;
         }
 
-        .star-badge { position: absolute; top: -6px; right: -6px; font-size: 1rem; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); z-index: 5; }
+        .star-badge { position: absolute; top: -6px; right: -6px; font-size: 0.95rem; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); z-index: 5; }
 
         /* ================= WATER / RIVER ================= */
-        .river-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 130px; z-index: 5; pointer-events: none; background: linear-gradient(180deg, transparent 0%, var(--bg-water-light) 30%, var(--bg-water-dark) 100%); }
+        .river-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 110px; z-index: 5; pointer-events: none; background: linear-gradient(180deg, transparent 0%, var(--bg-water-light) 30%, var(--bg-water-dark) 100%); }
         .wave-svg { position: absolute; top: 0; left: 0; width: 100%; }
 
         /* ================= BOTTOM NAVIGATION ================= */
         .bottom-nav { 
-            height: 65px; background: #fff; width: 100%; 
+            height: 60px; background: #fff; width: 100%; 
             display: flex; justify-content: space-around; align-items: center; 
             z-index: 200; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); 
             padding-bottom: env(safe-area-inset-bottom); 
             flex-shrink: 0;
         }
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; width: 50px; }
-        .nav-icon { font-size: 1.3rem; color: var(--nav-blue); opacity: 0.6; transition: 0.2s;}
+        .nav-icon { font-size: 1.2rem; color: var(--nav-blue); opacity: 0.6; transition: 0.2s;}
         .nav-dot { width: 4px; height: 4px; border-radius: 50%; background: transparent; transition: 0.2s;}
         .nav-item.active .nav-icon { opacity: 1; transform: translateY(-2px); }
         .nav-item.active .nav-dot { background: var(--nav-blue-active); }
@@ -173,24 +174,25 @@
             </div>
 
             <div class="map-content-fixed">
-                <svg class="path-svg" viewBox="0 0 400 580" preserveAspectRatio="none">
-                    <path class="path-shadow" d="M 200,510 C 200,450 110,440 110,380 C 110,320 290,310 290,250 C 290,190 110,180 110,120 C 110,60 210,70 210,30"></path>
-                    <path class="path-line" d="M 200,510 C 200,450 110,440 110,380 C 110,320 290,310 290,250 C 290,190 110,180 110,120 C 110,60 210,70 210,30"></path>
+                <!-- เส้นทางเดินโค้งรูปตัว S ใช้พิกัดตัวเลขมาตรฐาน SVG -->
+                <svg class="path-svg" viewBox="0 0 400 600" preserveAspectRatio="none">
+                    <path class="path-shadow" d="M 200,515 C 200,460 110,460 110,408 C 110,350 290,350 290,288 C 290,220 110,220 110,168 C 110,110 200,90 200,60"></path>
+                    <path class="path-line" d="M 200,515 C 200,460 110,460 110,408 C 110,350 290,350 290,288 C 290,220 110,220 110,168 C 110,110 200,90 200,60"></path>
                 </svg>
 
-                <div class="grass-patch" style="top: 130px; left: 10px;"></div>
-                <div class="grass-patch" style="top: 300px; right: 10px; width: 100px;"></div>
-                <div class="grass-patch" style="top: 470px; left: 60px; width: 80px;"></div>
+                <div class="grass-patch" style="top: 130px; left: 8%;"></div>
+                <div class="grass-patch" style="top: 300px; right: 8%; width: 100px;"></div>
+                <div class="grass-patch" style="top: 470px; left: 15%; width: 80px;"></div>
 
-                <div class="tree" style="top: 50px; right: 15%;">🌳</div>
-                <div class="mushroom" style="top: 100px; left: 12%;">🍄</div>
-                <div class="tree" style="top: 200px; left: 5%;">🌲</div>
-                <div class="butterfly" style="top: 260px; right: 20%;">🦋</div>
-                <div class="tree" style="top: 380px; left: 10%;">🌳</div>
-                <div class="tree" style="top: 490px; right: 25%;">🌲</div>
+                <div class="tree" style="top: 60px; right: 15%;">🌳</div>
+                <div class="mushroom" style="top: 110px; left: 12%;">🍄</div>
+                <div class="tree" style="top: 210px; left: 5%;">🌲</div>
+                <div class="butterfly" style="top: 270px; right: 20%;">🦋</div>
+                <div class="tree" style="top: 390px; left: 10%;">🌳</div>
+                <div class="tree" style="top: 490px; right: 22%;">🌲</div>
 
-                <!-- ด่าน 5: Inversion -->
-                <div class="level-node" style="top: 5px; left: calc(52.5% - 40px);" onclick="window.location.href='level-inversion.html'">
+                <!-- ด่าน 5: Inversion (ด้านบนสุด y = 60px) -->
+                <div class="level-node" style="top: 10%; left: 50%;" onclick="window.location.href='level-inversion.html'">
                     <div class="star-badge" style="color: #ffb74d;">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner bg-yellow"><img src="shop-inversion.png" alt="Inversion" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍱</div>'"></div>
@@ -198,8 +200,8 @@
                     <div class="node-title">Inversion</div>
                 </div>
 
-                <!-- ด่าน 4: 7th Chord -->
-                <div class="level-node" style="top: 105px; left: calc(27.5% - 40px);" onclick="window.location.href='level-chord7.html'">
+                <!-- ด่าน 4: 7th Chord (โค้งซ้าย y = 168px) -->
+                <div class="level-node" style="top: 28%; left: 27.5%;" onclick="window.location.href='level-chord7.html'">
                     <div class="star-badge" style="color: #ffb74d;">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner bg-green"><img src="shop-chord7.png" alt="7th Chord" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍣</div>'"></div>
@@ -207,8 +209,8 @@
                     <div class="node-title">7th Chord</div>
                 </div>
 
-                <!-- ด่าน 3: Triad -->
-                <div class="level-node" style="top: 230px; left: calc(72.5% - 40px);" onclick="window.location.href='level-triad.html'">
+                <!-- ด่าน 3: Triad (โค้งขวา y = 288px) -->
+                <div class="level-node" style="top: 48%; left: 72.5%;" onclick="window.location.href='level-triad.html'">
                     <div class="star-badge" style="color: #ffb74d;">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner bg-purple"><img src="shop-triad.png" alt="Triad" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🥪</div>'"></div>
@@ -216,8 +218,8 @@
                     <div class="node-title">Triad</div>
                 </div>
 
-                <!-- ด่าน 2: Interval -->
-                <div class="level-node" style="top: 360px; left: calc(27.5% - 40px);" onclick="window.location.href='level-interval.html'">
+                <!-- ด่าน 2: Interval (โค้งซ้าย y = 408px) -->
+                <div class="level-node" style="top: 68%; left: 27.5%;" onclick="window.location.href='level-interval.html'">
                     <div class="star-badge" style="color: #ffb74d;">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner bg-blue"><img src="shop-interval.png" alt="Interval" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍕</div>'"></div>
@@ -225,8 +227,8 @@
                     <div class="node-title">Interval</div>
                 </div>
 
-                <!-- ด่าน 1: Scale -->
-                <div class="level-node" style="top: 485px; left: calc(50% - 40px);" onclick="window.location.href='level-scale.html'">
+                <!-- ด่าน 1: Scale (ล่างสุด y = 515px) -->
+                <div class="level-node" style="top: 86%; left: 50%;" onclick="window.location.href='level-scale.html'">
                     <div class="star-badge" style="color: #ffb74d;">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner bg-orange"><img src="shop-scale.png" alt="Scale" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>☕</div>'"></div>
@@ -249,7 +251,6 @@
 
     <!-- ================= MODALS ================= -->
 
-    <!-- Modal 1: 📖 คลังความรู้ -->
     <div id="theoryModal" class="modal-overlay">
         <div class="modal-box">
             <div class="modal-header">
@@ -281,7 +282,6 @@
         </div>
     </div>
 
-    <!-- Modal 2: 🎮 สถิติและรางวัลผู้เล่น (เปลี่ยนเป็นใส่รูปภาพผ่าน src) -->
     <div id="statsModal" class="modal-overlay">
         <div class="modal-box" style="border-color: #6dd5fa; align-items: center;">
             <div class="modal-header" style="width: 100%;">
@@ -289,13 +289,11 @@
                 <button class="btn-close" onclick="closeModal('statsModal')">✕</button>
             </div>
             <div class="modal-body" style="align-items: center; justify-content: center; width: 100%;">
-                <!-- เปลี่ยนข้อความในกรอบ เป็นการดึงรูปภาพผ่าน src -->
                 <img src="IMG_BAM.jpg" alt="Player Stats" style="width: 100%; max-height: 50vh; object-fit: contain; border-radius: 20px; border: 2px dashed #6dd5fa;">
             </div>
         </div>
     </div>
 
-    <!-- Modal 3: 🔤 คำศัพท์และสัญลักษณ์ดนตรี -->
     <div id="vocabModal" class="modal-overlay">
         <div class="modal-box" style="border-color: #ffb347;">
             <div class="modal-header">
@@ -323,7 +321,6 @@
         </div>
     </div>
 
-    <!-- ================= JAVASCRIPT ================= -->
     <script>
         function switchTab(index) {
             const items = document.querySelectorAll('.bottom-nav .nav-item');
