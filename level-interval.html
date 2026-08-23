@@ -550,8 +550,8 @@
         function resumeGame() { playSound(popSound); isPaused = false; document.getElementById('pauseModal').style.display = 'none'; }
         function restartGame() { playSound(popSound); isPaused = false; document.getElementById('pauseModal').style.display = 'none'; document.getElementById('gameOverScreen').style.display = 'none'; document.getElementById('gameWinScreen').style.display = 'none'; startGame(); }
         
-        function winGame() { playSound(popSound); localStorage.setItem('chordkupp_progress', 3); window.location.href = 'Home.html'; }
-        function loseGameBackToMap() { playSound(popSound); window.location.href = 'Home.html'; }
+        function winGame() { playSound(popSound); localStorage.setItem('chordkupp_progress', 3); window.location.href = 'home.html'; }
+        function loseGameBackToMap() { playSound(popSound); window.location.href = 'home.html'; }
 
         function createNoteSVG(pos, accidental, offsetX, bottomY, accOffsetX = 0) {
             let ledgerHTML = '';

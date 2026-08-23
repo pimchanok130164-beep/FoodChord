@@ -578,13 +578,13 @@
             playSound(popSound);
             let currentProgress = parseInt(localStorage.getItem('chordkupp_progress')) || 1;
             if(currentProgress < 4) { localStorage.setItem('chordkupp_progress', 4); }
-            window.location.href = 'Home.html'; 
+            window.location.href = 'home.html'; 
         }
 
         // กลับหน้าแผนที่โดยไม่เซฟ หากกดออกจากหน้าแพ้หรือหยุดเกม
         function loseAndGoToMap() {
             playSound(popSound);
-            window.location.href = 'Home.html'; 
+            window.location.href = 'home.html'; 
         }
     </script>
 </body>
