@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Cozy Café Triad - คาเฟ่คอร์ดฮีลใจ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Mali', sans-serif; user-select: none; }
+        
+        /* 🤎 พื้นหลังหน้าจอด้านนอก สีน้ำตาลตุ่นๆ ดูอบอุ่น */
+        body { 
+            background: #a89f91;
+            color: #5d4037; 
+            height: 100vh; height: 100dvh; 
+            display: flex; align-items: center; justify-content: center; 
+            overflow: hidden; touch-action: none;
+        }
+
+        /* 📱 กรอบร้านคาเฟ่ สไตล์ Cozy Indie Game */
+        #app-container {
+            width: 100%; max-width: 420px; 
+            height: 100%; height: 100dvh; 
+            background-color: #fdfaf6;
+            background-image: radial-gradient(#d7ccc8 15%, transparent 16%), 
+                              radial-gradient(#d7ccc8 15%, transparent 16%);
+            background-size: 36px 36px;
+            background-position: 0 0, 18px 18px;
+            border-radius: 35px; /* ขอบจอโค้งมนละมุน */
+            box-shadow: 0 20px 50px rgba(93, 64, 55, 0.4), inset 0 0 0 8px #fff; 
+            position: relative; 
+            overflow: hidden; 
+            display: flex; flex-direction: column;
+        }
+
+        #warmOverlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.7) 0%, transparent 80%);
+            pointer-events: none; z-index: 1; animation: pulseGlow 4s infinite alternate ease-in-out;
+        }
+        @keyframes pulseGlow { 0% { opacity: 0.6; } 100% { opacity: 1; } }
+
+        .screen { 
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
+            width: 100%; height: 100%; padding: 25px 20px; z-index: 10; 
+        }
+
+        /* ---------------- 🏠 หน้า Lobby ---------------- */
+        .lobby-header { width: 100%; flex-shrink: 0; text-align: center; margin-top: 10px; }
+
+        .game-logo {
+            background: #fff; border-radius: 30px;
+            padding: 12px 35px; font-size: 2.2rem; color: #8d6e63; margin-bottom: 25px;
+            font-weight: 900; text-align: center; 
+            box-shadow: 0 8px 0 #e6d8ce, 0 15px 20px rgba(93, 64, 55, 0.15);
+            display: inline-block; 
+        }
+
+        .start-instruction-box {
+            background: #fff; padding: 22px 18px; 
+            border-radius: 25px; width: 100%; text-align: center; margin-bottom: 25px;
+            box-shadow: 0 8px 0 #e6d8ce, 0 15px 20px rgba(93, 64, 55, 0.08);
+            border: 3px dashed #d7ccc8;
+        }
+
+        .difficulty-zone { width: 100%; background: transparent; margin-bottom: 30px;}
+        .diff-title { font-size: 1.15rem; color: #8d6e63; margin-bottom: 15px; font-weight: 900; text-align: center;}
+        .diff-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        
+        .btn-diff {
+            padding: 12px 18px; font-size: 1rem; font-weight: 900; color: #8d6e63;
+            background: #fff; border: none; border-radius: 20px; cursor: pointer; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); -webkit-tap-highlight-color: transparent;
+            box-shadow: 0 6px 0 #e6d8ce, 0 10px 10px rgba(93, 64, 55, 0.1);
+        }
+        .btn-diff:active { transform: translateY(6px); box-shadow: 0 0px 0 #e6d8ce, 0 2px 5px rgba(93, 64, 55, 0.1); }
+        .btn-diff.active.diff-easy { background: #ffe0b2; color: #e65100; box-shadow: 0 6px 0 #ffb300; } 
+        .btn-diff.active.diff-medium { background: #c8e6c9; color: #2e7d32; box-shadow: 0 6px 0 #81c784; } 
+        .btn-diff.active.diff-hard { background: #ffcdd2; color: #c62828; box-shadow: 0 6px 0 #e57373; } 
+
+        /* 📦 กล่องจัดระเบียบปุ่ม (แก้ปุ่มทับกัน) */
+        .btn-group-vertical { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 280px; margin: 0 auto; }
+        
+        .btn-action {
+            padding: 16px; font-size: 1.3rem; font-weight: 900; color: #fff;
+            background: #d4a373; border: none; border-radius: 30px;
+            cursor: pointer; box-shadow: 0 8px 0 #b37e4c, 0 15px 20px rgba(93, 64, 55, 0.2); transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); width: 100%;
+        }
+        .btn-action:active { transform: translateY(8px); box-shadow: 0 0px 0 transparent, 0 5px 10px rgba(93, 64, 55, 0.2); }
+        
+        .btn-secondary {
+            background: #fff; color: #8d6e63;
+            box-shadow: 0 8px 0 #e6d8ce, 0 15px 20px rgba(93, 64, 55, 0.1);
+            font-size: 1.15rem;
+        }
+
+        /* ---------------- 📖 หน้าต่างป๊อปอัป ---------------- */
+        .overlay-screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(244, 235, 226, 0.95); z-index: 100; display: none;
+            flex-direction: column; align-items: center; justify-content: center;
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); text-align: center; padding: 20px;
+        }
+        .overlay-title { font-size: 2.2rem; color: #d4a373; font-weight: 900; margin-bottom: 15px; text-shadow: 0px 3px 0px #fff; line-height: 1.2;}
+        
+        .review-box {
+            background: #fff; padding: 20px; 
+            border-radius: 24px; width: 100%; text-align: left; margin-bottom: 25px;
+            box-shadow: 0 10px 0 #e6d8ce, 0 20px 25px rgba(93, 64, 55, 0.1);
+            max-height: 60vh; overflow-y: auto;
+        }
+        .review-box::-webkit-scrollbar { width: 6px; }
+        .review-box::-webkit-scrollbar-thumb { background: #d7ccc8; border-radius: 10px; }
+
+        .chord-info { margin-bottom: 12px; font-size: 0.95rem; padding: 12px; border-radius: 16px; background: #fdfaf6; border: 2px dashed #d7ccc8; }
+        .chord-title { font-weight: 900; color: #8d6e63; font-size: 1.1rem;}
+        .chord-formula { color: #d4a373; font-weight: bold; }
+        .chord-desc { color: #795548; display: block; margin-top: 6px; font-size: 0.85rem; line-height: 1.5;}
+
+        /* ---------------- 📖 หน้าต่างคู่มือการเล่น (How to Play Modal) ---------------- */
+        .how-to-overlay { 
+            background: rgba(46, 30, 24, 0.85); 
+            z-index: 200; 
+            backdrop-filter: blur(8px); 
+            -webkit-backdrop-filter: blur(8px); 
+        }
+        .guide-modal { position: relative; width: 100%; max-width: 360px; display: flex; flex-direction: column; align-items: center; }
+        .guide-header { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .guide-title { font-size: 2.2rem; color: #78c850; font-weight: 900; text-shadow: 0 3px 0 #1b2e22, 0 0 12px rgba(120, 200, 80, 0.4); }
+
+        .btn-close-x {
+            width: 50px; height: 50px; background: #ff5252; border: 4px solid #fff; border-radius: 50%;
+            color: #fff; font-size: 1.8rem; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4); transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275); -webkit-tap-highlight-color: transparent;
+        }
+        .btn-close-x:active { transform: scale(0.9); }
+
+        .guide-diagram-canvas {
+            width: 100%; height: 480px; position: relative; background: rgba(0,0,0,0.15); border-radius: 25px;
+            border: 2px dashed rgba(255,255,255,0.2); margin-bottom: 15px;
+        }
+
+        .demo-plate {
+            position: absolute; background: #fff; color: #795548; font-size: 1.1rem; font-weight: 900; display: flex; align-items: center; justify-content: center;
+            border-radius: 30px; box-shadow: 0 6px 0 #e6d8ce; padding: 10px 18px; white-space: nowrap;
+        }
+
+        .demo-answer-zone {
+            position: absolute; bottom: 80px; width: 90%; left: 5%; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+        }
+        .demo-btn { padding: 14px 5px; font-size: 1rem; font-weight: 900; color: #fff; border: none; border-radius: 16px; text-align: center; line-height: 1; }
+
+        .arrow-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        .chalk-text-box { position: absolute; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); font-weight: 700; line-height: 1.35; text-align: center; width: 100%; }
+
+        /* ---------------- 🥐 หน้าจอเล่นเกมหลัก ---------------- */
+        #gameWrapper { justify-content: space-between; padding: 20px 15px 0 15px; display: none; flex-direction: column;}
+        
+        .game-header { width: 100%; flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; padding: 0 0 15px 0;}
+        .score-board { font-size: 1.05rem; padding: 8px 16px; background: #fff; color: #8d6e63; border-radius: 20px; font-weight: 900; box-shadow: 0 6px 0 #e6d8ce; }
+        .miss-board { font-size: 1.05rem; padding: 8px 16px; background: #ffebee; color: #c62828; border-radius: 20px; font-weight: 900; box-shadow: 0 6px 0 #ffcdd2; }
+
+        .btn-pause {
+            width: 45px; height: 45px; background: #fff; border: none;
+            border-radius: 15px; font-size: 1.2rem; font-weight: 900; color: #8d6e63;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 6px 0 #e6d8ce; transition: 0.15s cubic-bezier(0.4, 0, 0.2, 1); -webkit-tap-highlight-color: transparent;
+        }
+        .btn-pause:active { transform: translateY(6px); box-shadow: 0 0px 0 transparent; }
+
+        .game-area {
+            position: relative; width: 100%; flex: 1; min-height: 0; 
+            background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(253,250,246,0.9) 100%);
+            border-radius: 30px 30px 0 0; overflow: hidden; box-shadow: inset 0 10px 20px rgba(93, 64, 55, 0.03);
+            border: 4px dashed rgba(141, 110, 99, 0.2); border-bottom: none;
+        }
+
+        /* 🍽️ จานขนม ปรับให้ยืดขยายตามข้อความโจทย์ */
+        .cafe-plate {
+            position: absolute; min-width: 110px; width: auto; height: 55px; background: #fff;
+            color: #795548; font-size: 1.15rem; font-weight: 900; display: flex; align-items: center; justify-content: center;
+            border-radius: 30px; box-shadow: 0 8px 0 #e6d8ce, 0 15px 15px rgba(93, 64, 55, 0.1); left: 50%; transform: translateX(-50%); transition: top 0.016s linear; white-space: nowrap; padding: 0 15px;
+        }
+
+        /* 📌 แผงปุ่มตอบ */
+        .answer-zone {
+            width: 100%; flex-shrink: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 20px 15px calc(20px + env(safe-area-inset-bottom)) 15px; 
+            background: #fff; border-radius: 35px 35px 35px 35px; box-shadow: 0 -10px 25px rgba(93, 64, 55, 0.08);
+            margin-bottom: -15px; padding-bottom: calc(35px + env(safe-area-inset-bottom));
+        }
+
+        .btn-answer { padding: 18px 5px; font-size: 1.1rem; font-weight: 900; color: #fff; border: none; border-radius: 20px; cursor: pointer; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); -webkit-tap-highlight-color: transparent;}
+        .btn-answer:active { transform: translateY(8px); box-shadow: 0 0px 0 transparent !important; }
+        
+        .btn-major { background-color: #fbc02d; box-shadow: 0 8px 0 #f57f17; color: #fff; } 
+        .btn-minor { background-color: #8d6e63; box-shadow: 0 8px 0 #5d4037; } 
+        .btn-aug { background-color: #ff9800; box-shadow: 0 8px 0 #e65100; color: #fff; } 
+        .btn-dim { background-color: #90a4ae; box-shadow: 0 8px 0 #607d8b; } 
+
+        .feedback { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2.2rem; font-weight: 900; opacity: 0; pointer-events: none; transition: opacity 0.2s; text-shadow: 0px 4px 0px #fff; z-index: 50; white-space: nowrap; }
+        .feedback.show { opacity: 1; animation: popFeedback 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popFeedback { 0% { transform: translate(-50%, -30%) scale(0.5); } 100% { transform: translate(-50%, -50%) scale(1); } }
+        .correct { color: #8d6e63; }
+        .wrong { color: #e57373; }
+
+        /* ---------------- 💀 หน้าจอจบเกมส์ และ ชนะเกม ---------------- */
+        .go-box { background: #fff; padding: 30px 20px; border-radius: 30px; box-shadow: 0 10px 0 #e6d8ce, 0 20px 40px rgba(93, 64, 55, 0.15); width: 100%; text-align: center; }
+        .go-box h2 { font-size: 2.2rem; color: #d4a373; margin-bottom: 15px; font-weight: 900; }
+        .result-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; background: #fdfaf6; border-radius: 16px; overflow: hidden; border: 2px dashed #d7ccc8;}
+        .result-table td { padding: 15px; border-bottom: 1px dashed #d7ccc8; font-size: 1.1rem; }
+        .result-table td:first-child { text-align: left; color: #795548; font-weight: bold; }
+        .result-table td:last-child { text-align: right; font-weight: 900; color: #d4a373; font-size: 1.4rem;}
+
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <div id="warmOverlay"></div>
+
+        <!-- 🏠 หน้า Lobby -->
+        <div id="setupScreen" class="screen" style="display: flex;">
+            <div class="lobby-header">
+                <div class="game-logo">Café Triad ☕</div>
+                
+                <div class="start-instruction-box">
+                    <p style="font-size: 1.25rem; color: #8d6e63; font-weight: 900; line-height: 1.5; margin-bottom:10px;">
+                        🥪 พร้อมเสิร์ฟออเดอร์หรือยัง?
+                    </p>
+                    <p style="font-size: 0.95rem; color: #795548; font-weight: 700;">จำให้แม่น! โครงสร้างของคอร์ดแต่ละชนิด</p>
+                    <div style="background:#fff; border-radius:15px; padding:12px; margin-top:15px; border:2px dashed #d4a373;">
+                        <p style="font-size: 0.95rem; color: #2e7d32; font-weight: 900;">✅ ตอบถูก 1 ข้อ = ได้ 10 ยอดขาย</p>
+                        <p style="font-size: 0.95rem; color: #c62828; font-weight: 900; margin-top:8px;">🎯 สะสมครบ 180 คะแนน เพื่อปลดล็อคด่าน 4!</p>
+                    </div>
+                </div>
+
+                <div class="difficulty-zone">
+                    <p class="diff-title">ระดับความรวดเร็ว ⏱️</p>
+                    <div class="diff-buttons">
+                        <button type="button" class="btn-diff diff-easy" onclick="setDifficulty('Easy')">ชิลๆ 🧇</button>
+                        <button type="button" class="btn-diff diff-medium active" onclick="setDifficulty('Medium')">ปานกลาง 🥐</button>
+                        <button type="button" class="btn-diff diff-hard" onclick="setDifficulty('Hard')">เร่งด่วน 🍫</button>
+                    </div>
+                </div>
+
+                <div class="btn-group-vertical">
+                    <button class="btn-action" onclick="startGameFromScreen()">เริ่มรับออเดอร์ 🛎️</button>
+                    <button class="btn-action btn-secondary" onclick="openReview()">ทบทวนเมนูขนม 📖</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 📖 หน้าต่างคู่มือการเล่น (How to Play) -->
+        <div id="howToPlayScreen" class="overlay-screen how-to-overlay" style="display: flex;">
+            <div class="guide-modal">
+                <div class="guide-header">
+                    <span class="guide-title">คู่มือการเล่น</span>
+                    <button class="btn-close-x" onclick="closeHowToPlay()">✕</button>
+                </div>
+
+                <div class="guide-diagram-canvas">
+                    <div class="demo-plate" style="top: 20px; left: 30px;">D - F - A</div>
+                    <div class="demo-plate" style="top: 75px; left: 60px;">A - C - E</div>
+                    <div class="demo-plate" style="top: 130px; left: 30px;">A - C# - E</div>
+
+                    <div class="chalk-text-box" style="top: 200px; font-size: 1.15rem; transform: rotate(-2deg); padding-right: 80px;">
+                        วิเคราะห์ว่าเป็น<br>คอร์ดชนิดใด
+                    </div>
+
+                    <svg class="arrow-svg" viewBox="0 0 360 480">
+                        <defs>
+                            <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#8bc34a" />
+                            </marker>
+                        </defs>
+                        <path d="M 170, 110 Q 320, 110 270, 270" fill="none" stroke="#8bc34a" stroke-width="4" stroke-dasharray="6,4" marker-end="url(#arrow)" />
+                    </svg>
+
+                    <div class="demo-answer-zone">
+                        <div class="demo-btn btn-major" style="box-shadow: 0 6px 0 #f57f17;">Major 🧇</div>
+                        <div class="demo-btn btn-minor" style="box-shadow: 0 6px 0 #5d4037;">Minor 🍫</div>
+                        <div class="demo-btn btn-aug" style="box-shadow: 0 6px 0 #e65100;">Augmented 🥐</div>
+                        <div class="demo-btn btn-dim" style="box-shadow: 0 6px 0 #607d8b;">Diminished 🧀</div>
+                    </div>
+
+                    <div class="chalk-text-box" style="bottom: 15px; font-size: 1.15rem;">
+                        และกดชนิดให้ถูกต้อง<br>เพื่อสะสมคะแนน!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 📖 หน้าต่างทบทวนเมนู -->
+        <div id="reviewScreen" class="overlay-screen">
+            <h1 class="overlay-title">📖 เมนูคลาสสิก</h1>
+            
+            <div class="review-box">
+                <p style="text-align: center; color: #8d6e63; font-weight: 700; margin-bottom: 15px;"><b>Triad Chords</b> คือคอร์ดที่มีโน้ต 3 ตัว<br>เรียงซ้อนกันเป็นคู่ 3</p>
+                
+                <div class="chord-info">
+                    <span class="chord-title">🧇 Major (เมเจอร์)</span><br>
+                    <span class="chord-formula">โครงสร้าง: 1 - 3 - 5</span>
+                    <span class="chord-desc">อารมณ์: สว่าง อบอุ่น เหมือนวาฟเฟิลอบใหม่<br>ตัวอย่าง: C = C - E - G</span>
+                </div>
+                <div class="chord-info">
+                    <span class="chord-title">🍫 Minor (ไมเนอร์)</span><br>
+                    <span class="chord-formula">โครงสร้าง: 1 - ♭3 - 5</span>
+                    <span class="chord-desc">อารมณ์: หม่น เข้มข้น เหมือนดาร์กช็อกโกแลต<br>ตัวอย่าง: Dm = D - F - A</span>
+                </div>
+                <div class="chord-info">
+                    <span class="chord-title">🥐 Augmented (ออกเมนเต็ด)</span><br>
+                    <span class="chord-formula">โครงสร้าง: 1 - 3 - ♯5</span>
+                    <span class="chord-desc">อารมณ์: ลอยๆ พองโต เหมือนครัวซองต์<br>ตัวอย่าง: Faug = F - A - C♯</span>
+                </div>
+                <div class="chord-info">
+                    <span class="chord-title">🧀 Diminished (ดิมินิช)</span><br>
+                    <span class="chord-formula">โครงสร้าง: 1 - ♭3 - ♭5</span>
+                    <span class="chord-desc">อารมณ์: อึดอัด กลิ่นแรง เหมือนบลูชีสฝรั่งเศส<br>ตัวอย่าง: Bdim = B - D - F</span>
+                </div>
+            </div>
+            
+            <div class="btn-group-vertical">
+                <button class="btn-action btn-secondary" onclick="closeReview()">ปิดเมนู ❌</button>
+            </div>
+        </div>
+
+        <!-- ⏸️ หน้าต่างหยุดเกม -->
+        <div id="pauseScreen" class="overlay-screen">
+            <h1 class="overlay-title" style="color: #d4a373;">พักจิบชา ☕</h1>
+            <div class="btn-group-vertical" style="margin-top: 20px;">
+                <button class="btn-action" onclick="resumeGame()">▶ ลุยงานต่อ</button>
+                <button class="btn-action btn-secondary" onclick="openReview()">ทบทวนเมนู 📖</button>
+                <button class="btn-action" style="background:#fff; color:#e57373; box-shadow: 0 8px 0 #ffcdd2;" onclick="loseAndGoToMap()">🗺️ กลับหน้าแผนที่</button>
+            </div>
+        </div>
+
+        <!-- 🥐 หน้าจอเล่นเกมหลัก -->
+        <div id="gameWrapper" class="screen" style="display: none;">
+            <div class="game-header">
+                <div class="score-board">ยอดขาย: €<span id="score">0</span></div>
+                <button class="btn-pause" onclick="pauseGame()">⏸</button>
+                <div class="miss-board">พลาด: <span id="misses">0</span>/3</div>
+            </div>
+
+            <div class="game-area" id="gameArea">
+                <div id="feedbackText" class="feedback"></div>
+            </div>
+
+            <div class="answer-zone">
+                <button class="btn-answer btn-major" onclick="checkAnswer('Major')">Major 🧇</button>
+                <button class="btn-answer btn-minor" onclick="checkAnswer('Minor')">Minor 🍫</button>
+                <button class="btn-answer btn-aug" onclick="checkAnswer('Augmented')">Augmented 🥐</button>
+                <button class="btn-answer btn-dim" onclick="checkAnswer('Diminished')">Diminished 🧀</button>
+            </div>
+        </div>
+
+        <!-- 🎉 หน้าจอชนะเกม (ผ่านด่าน) -->
+        <div id="gameWinScreen" class="screen" style="display: none; position: absolute; z-index: 1000; top: 0; left: 0; background: rgba(244, 235, 226, 0.95); justify-content: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
+            <div class="go-box" style="border: 4px dashed #81c784; background: #fff;">
+                <h2 style="color: #2e7d32;">ผ่านด่านสำเร็จ! 🎉</h2>
+                <table class="result-table" style="border-color: #a5d6a7;">
+                    <tr><td style="border-bottom: 2px dashed #a5d6a7;">ยอดขายสุทธิ</td><td style="border-bottom: 2px dashed #a5d6a7;">€<span id="winScore" style="color: #2e7d32;">0</span></td></tr>
+                    <tr><td colspan="2" style="text-align: center; border-bottom: none;"><span style="font-size:1.1rem; color:#5d4037; font-weight: 700;">ยินดีด้วย! คุณปลดล็อคด่านที่ 4 แล้ว</span></td></tr>
+                </table>
+                <div class="btn-group-vertical">
+                    <button class="btn-action" style="background: #2e7d32; box-shadow: 0 8px 0 #1b5e20;" onclick="winAndGoToMap()">รับรางวัล & กลับแผนที่ 🗺️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 💀 หน้าจอจบเกมส์ (ไม่ผ่าน) -->
+        <div id="gameOverScreen" class="screen" style="display: none; position: absolute; z-index: 1000; top: 0; left: 0; background: rgba(244, 235, 226, 0.95); justify-content: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
+            <div class="go-box" style="border: 4px dashed #e57373;">
+                <h2 style="color: #c62828;">ออเดอร์ล้น! 😱</h2>
+                <table class="result-table" style="border-color: #ffccbc;">
+                    <tr><td style="border-bottom: 2px dashed #ffccbc;">ยอดขายที่ได้</td><td style="border-bottom: 2px dashed #ffccbc;">€<span id="resScore">0</span></td></tr>
+                    <tr><td colspan="2" style="text-align: center; border-bottom: none;"><span style="font-size:1rem; color:#5d4037;">ยังไม่ถึงเป้าหมาย 180 ลองสู้ใหม่นะ!</span></td></tr>
+                </table>
+                <div class="btn-group-vertical">
+                    <button class="btn-action" onclick="restartGame()">เริ่มกะใหม่ 🔄</button>
+                    <button class="btn-action btn-secondary" onclick="loseAndGoToMap()">กลับหน้าแผนที่ 🗺️</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const startSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3');
+        const popSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');
+        
+        // 🎵 เปลี่ยนเสียงตอบถูกให้เป็นเสียงปิ๊ง สว่าง สดใสขึ้น (Magic/Coin Style)
+        const correctSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3'); 
+        const errorSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2572/2572-preview.mp3');
+
+        function playSound(audio) { 
+            audio.currentTime = 0; 
+            audio.volume = 0.4;
+            audio.play().catch(e => console.log("Sound error")); 
+        }
+
+        const chordPool = [
+            { text: 'G - B - D', type: 'Major' },
+            { text: 'D - F# - A', type: 'Major' },
+            { text: 'Eb - G - Bb', type: 'Major' },
+            { text: 'B - D# - F#', type: 'Major' },
+            { text: 'F# - A# - C#', type: 'Major' },
+            { text: 'E - G# - B', type: 'Major' },
+            { text: 'Gb - Bb - Db', type: 'Major' },
+            { text: 'Cb - Eb - Gb', type: 'Major' },
+            { text: 'C - Eb - G', type: 'Minor' },
+            { text: 'G - Bb - D', type: 'Minor' },
+            { text: 'E - G - B', type: 'Minor' },
+            { text: 'F - Ab - C', type: 'Minor' },
+            { text: 'Bb - Db - F', type: 'Minor' },
+            { text: 'Eb - Gb - Bb', type: 'Minor' },
+            { text: 'Ab - Cb - Eb', type: 'Minor' },
+            { text: 'Gb - Bbb - Db', type: 'Minor' },
+            { text: 'C - E - G#', type: 'Augmented' },
+            { text: 'D - F# - A#', type: 'Augmented' },
+            { text: 'Ab - C - E', type: 'Augmented' },
+            { text: 'Cb - Eb - G', type: 'Augmented' },
+            { text: 'F# - A# - Cx', type: 'Augmented' },
+            { text: 'C# - E# - Gx', type: 'Augmented' },
+            { text: 'E - G# - B#', type: 'Augmented' },
+            { text: 'C - Eb - Gb', type: 'Diminished' },
+            { text: 'G - Bb - Db', type: 'Diminished' },
+            { text: 'E - G - Bb', type: 'Diminished' },
+            { text: 'C# - E - G', type: 'Diminished' },
+            { text: 'Bb - Db - Fb', type: 'Diminished' },
+            { text: 'Gb - Bbb - Dbb', type: 'Diminished' },
+            { text: 'Cb - Ebb - Gbb', type: 'Diminished' }
+        ];
+
+        let activeChords = []; 
+        let score = 0; 
+        let misses = 0; 
+        let gameSpeed = 1.5; 
+        let spawnRate = 2500; 
+        let gameLoopId, spawnId; 
+        let chordsCleared = 0; 
+        let selectedDifficulty = 'Medium';
+        let isPaused = false; 
+        let lastSpawnedChordText = ""; 
+
+        const gameArea = document.getElementById('gameArea');
+        const scoreDisplay = document.getElementById('score');
+        const missesDisplay = document.getElementById('misses');
+        const feedbackText = document.getElementById('feedbackText');
+
+        function closeHowToPlay() { playSound(popSound); document.getElementById('howToPlayScreen').style.display = 'none'; }
+        function openReview() { playSound(popSound); document.getElementById('setupScreen').style.display = 'none'; document.getElementById('pauseScreen').style.display = 'none'; document.getElementById('reviewScreen').style.display = 'flex'; }
+        function closeReview() { playSound(popSound); document.getElementById('reviewScreen').style.display = 'none'; if(isPaused) { document.getElementById('pauseScreen').style.display = 'flex'; } else { document.getElementById('setupScreen').style.display = 'flex'; } }
+
+        function setDifficulty(level) {
+            selectedDifficulty = level; 
+            document.querySelectorAll('.btn-diff').forEach(btn => btn.classList.remove('active'));
+            if(level === 'Easy') document.querySelector('.diff-easy').classList.add('active'); 
+            if(level === 'Medium') document.querySelector('.diff-medium').classList.add('active'); 
+            if(level === 'Hard') document.querySelector('.diff-hard').classList.add('active'); 
+            playSound(popSound);
+        }
+
+        function startGameFromScreen() {
+            playSound(startSound);
+            isPaused = false;
+            document.getElementById('setupScreen').style.display = 'none'; 
+            document.getElementById('pauseScreen').style.display = 'none';
+            document.getElementById('gameOverScreen').style.display = 'none'; 
+            document.getElementById('gameWinScreen').style.display = 'none'; 
+            document.getElementById('gameWrapper').style.display = 'flex';
+            
+            score = 0; misses = 0; chordsCleared = 0; activeChords = []; lastSpawnedChordText = "";
+            
+            if (selectedDifficulty === 'Easy') { gameSpeed = 0.6; spawnRate = 4000; }
+            else if (selectedDifficulty === 'Medium') { gameSpeed = 1.5; spawnRate = 2500; }
+            else if (selectedDifficulty === 'Hard') { gameSpeed = 2.0; spawnRate = 1800; }
+            
+            document.querySelectorAll('.cafe-plate').forEach(b => b.remove());
+            scoreDisplay.textContent = score; missesDisplay.textContent = misses; 
+            
+            clearInterval(spawnId);
+            cancelAnimationFrame(gameLoopId);
+            
+            spawnChord(); 
+            spawnId = setInterval(spawnChord, spawnRate); 
+            updateGame();
+        }
+
+        function restartGame() { document.getElementById('gameOverScreen').style.display = 'none'; document.getElementById('gameWinScreen').style.display = 'none'; startGameFromScreen(); }
+
+        function pauseGame() {
+            if(isPaused || activeChords.length === 0 && score === 0 && misses === 0) return;
+            playSound(popSound);
+            isPaused = true;
+            clearInterval(spawnId);
+            cancelAnimationFrame(gameLoopId);
+            document.getElementById('pauseScreen').style.display = 'flex';
+        }
+
+        function resumeGame() { playSound(popSound); isPaused = false; document.getElementById('pauseScreen').style.display = 'none'; spawnId = setInterval(spawnChord, spawnRate); gameLoopId = requestAnimationFrame(updateGame); }
+
+        function spawnChord() {
+            if(isPaused) return;
+
+            let pool = chordPool;
+            if (pool.length > 1) { pool = pool.filter(c => c.text !== lastSpawnedChordText); }
+            const randomChord = pool[Math.floor(Math.random() * pool.length)];
+            lastSpawnedChordText = randomChord.text;
+
+            const chordEl = document.createElement('div'); 
+            chordEl.classList.add('cafe-plate'); 
+            chordEl.textContent = randomChord.text; 
+            
+            chordEl.style.left = (Math.floor(Math.random() * 45) + 20) + '%'; 
+            chordEl.style.top = '-60px';
+            gameArea.appendChild(chordEl); 
+            activeChords.push({ element: chordEl, type: randomChord.type, y: -60 });
+        }
+
+        function updateGame() {
+            if(isPaused) return; 
+            const areaHeight = gameArea.clientHeight;
+            for (let i = 0; i < activeChords.length; i++) {
+                let chord = activeChords[i]; 
+                chord.y += gameSpeed; 
+                chord.element.style.top = chord.y + 'px';
+                
+                if (chord.y > areaHeight - 60) { 
+                    chord.element.remove(); 
+                    activeChords.splice(i, 1); 
+                    i--; 
+                    handleMiss(); 
+                }
+            }
+            gameLoopId = requestAnimationFrame(updateGame);
+        }
+
+        function checkAnswer(selectedType) {
+            if (activeChords.length === 0 || isPaused) return; 
+            let lowestChord = activeChords[0];
+            
+            if (lowestChord.type === selectedType) {
+                score += 10; 
+                chordsCleared++; 
+                scoreDisplay.textContent = score;
+                playSound(correctSound); showFeedback(`Perfect! +10 🤎`, 'correct'); 
+
+                if (score >= 180) { gameWin(); } 
+                else {
+                    if (chordsCleared % 5 === 0) {
+                        if (selectedDifficulty === 'Easy') { gameSpeed += 0.05; clearInterval(spawnId); spawnRate = Math.max(3500, spawnRate - 50); } 
+                        else if (selectedDifficulty === 'Medium') { gameSpeed += 0.15; clearInterval(spawnId); spawnRate = Math.max(1200, spawnRate - 100); } 
+                        else if (selectedDifficulty === 'Hard') { gameSpeed += 0.25; clearInterval(spawnId); spawnRate = Math.max(800, spawnRate - 150); }
+                        spawnId = setInterval(spawnChord, spawnRate);
+                    }
+                }
+            } else { 
+                handleMiss(); showFeedback('ผิดสูตร! 😱', 'wrong'); 
+            }
+            lowestChord.element.remove(); activeChords.shift();
+        }
+
+        function handleMiss() { misses++; missesDisplay.textContent = misses; playSound(errorSound); if (misses >= 3) gameOver(); }
+        function showFeedback(msg, className) { feedbackText.textContent = msg; feedbackText.className = 'feedback show ' + className; setTimeout(() => { feedbackText.classList.remove('show'); }, 500); }
+
+        function gameOver() {
+            isPaused = true; cancelAnimationFrame(gameLoopId); clearInterval(spawnId);
+            setTimeout(() => { document.getElementById('gameWrapper').style.display = 'none'; document.getElementById('gameOverScreen').style.display = 'flex'; document.getElementById('resScore').textContent = score; }, 400);
+        }
+
+        function gameWin() {
+            isPaused = true; cancelAnimationFrame(gameLoopId); clearInterval(spawnId);
+            setTimeout(() => { document.getElementById('gameWrapper').style.display = 'none'; document.getElementById('gameWinScreen').style.display = 'flex'; document.getElementById('winScore').textContent = score; }, 400);
+        }
+
+        // เชื่อมระบบปลดล็อคกลับไปหน้า Home (แผนที่หลัก) หากชนะ
+        function winAndGoToMap() {
+            playSound(popSound);
+            let currentProgress = parseInt(localStorage.getItem('chordkupp_progress')) || 1;
+            if(currentProgress < 4) { localStorage.setItem('chordkupp_progress', 4); }
+            window.location.href = 'Home.html'; 
+        }
+
+        // กลับหน้าแผนที่โดยไม่เซฟ หากกดออกจากหน้าแพ้หรือหยุดเกม
+        function loseAndGoToMap() {
+            playSound(popSound);
+            window.location.href = 'Home.html'; 
+        }
+    </script>
+</body>
+</html>

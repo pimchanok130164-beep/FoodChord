@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Food Chord - App UX (Single Screen)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-grass-light: #b3e77f;
+            --bg-grass-mid: #9cdb66;
+            --bg-grass-dark: #81c84c;
+            --bg-water-light: #52c5f5;
+            --bg-water-dark: #1b85df;
+            
+            --node-shadow-outer: rgba(129, 200, 76, 0.4);
+            --nav-blue: #7bb5e8;
+            --nav-blue-active: #4a90e2;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+        
+        body { 
+            background-color: #e5f0f9; 
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; height: 100dvh; overflow: hidden;
+            font-family: 'Quicksand', 'Mali', sans-serif;
+        }
+
+        #app-container {
+            width: 100%; max-width: 400px; 
+            height: 100%; max-height: 850px;
+            display: flex; flex-direction: column;
+            background: linear-gradient(180deg, var(--bg-grass-light) 0%, var(--bg-grass-mid) 60%, var(--bg-grass-dark) 100%);
+            position: relative; overflow: hidden;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+        }
+
+        /* ================= TOP BAR ================= */
+        .top-bar {
+            height: 70px; padding: 0 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            color: rgba(255,255,255,0.9); font-weight: 700; font-size: 1.1rem;
+            letter-spacing: 1px; z-index: 100;
+        }
+        .icon-btn { font-size: 1.2rem; cursor: pointer; opacity: 0.8; }
+        .icon-btn:active { opacity: 0.5; }
+
+        /* ================= MAP AREA ================= */
+        .map-area {
+            flex: 1; position: relative; 
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        .map-content-fixed {
+            position: relative; width: 100%; max-width: 400px; height: 650px; z-index: 10;
+        }
+
+        /* ================= DECORATIONS ================= */
+        .grass-patch { position: absolute; width: 120px; height: 40px; background: rgba(129, 200, 76, 0.3); border-radius: 20px; z-index: 0; }
+        .tree { position: absolute; font-size: 1.8rem; z-index: 2; opacity: 0.9; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));}
+        .mushroom { position: absolute; font-size: 1.2rem; z-index: 2; }
+        .butterfly { position: absolute; font-size: 1rem; z-index: 2; opacity: 0.6; }
+
+        /* ================= SVG PATH ================= */
+        .path-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .path-line { fill: none; stroke: rgba(220, 245, 190, 0.6); stroke-width: 28; stroke-linecap: round; stroke-linejoin: round; }
+        .path-shadow { fill: none; stroke: rgba(129, 200, 76, 0.3); stroke-width: 34; stroke-linecap: round; stroke-linejoin: round; transform: translateY(4px); }
+
+        /* ================= LEVEL NODES ================= */
+        .level-node {
+            position: absolute; display: flex; flex-direction: column; align-items: center;
+            cursor: pointer; z-index: 10; width: 80px; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .level-node:active { transform: scale(0.92); }
+
+        .node-circle-outer {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: #eaf6d9; display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 8px 15px var(--node-shadow-outer), inset 0 -3px 6px rgba(0,0,0,0.05), inset 0 3px 6px #fff;
+            position: relative;
+        }
+
+        .node-circle-inner {
+            width: 62px; height: 62px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: inset 0 2px 5px rgba(255,255,255,0.8), inset 0 -2px 5px rgba(0,0,0,0.1);
+            overflow: hidden; 
+        }
+
+        .node-image {
+            width: 75%; height: 75%; 
+            object-fit: contain;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15)); 
+        }
+
+        .node-icon { font-size: 1.8rem; color: white; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1)); }
+
+        .bg-orange { background: linear-gradient(135deg, #ffb347, #ff7b00); }
+        .bg-purple { background: linear-gradient(135deg, #d387ff, #9d4edd); }
+        .bg-green { background: linear-gradient(135deg, #bcf596, #74c636); }
+        .bg-blue { background: linear-gradient(135deg, #6dd5fa, #2980b9); }
+        .bg-yellow { background: linear-gradient(135deg, #ffe259, #ffa751); }
+
+        .node-title {
+            margin-top: 8px; font-size: 0.85rem; font-weight: 700;
+            color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.3); letter-spacing: 0.5px; white-space: nowrap;
+        }
+
+        .star-badge { position: absolute; top: -6px; right: -6px; font-size: 1.1rem; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); z-index: 5; }
+
+        .level-node.locked .node-circle-inner { background: linear-gradient(135deg, #c5f0a0, #96d860); }
+        .level-node.locked .node-image { filter: grayscale(100%) opacity(0.7); } 
+        .level-node.locked .node-icon { color: rgba(255,255,255,0.7); }
+
+        /* ================= WATER / RIVER ================= */
+        .river-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 160px; z-index: 5; pointer-events: none; background: linear-gradient(180deg, transparent 0%, var(--bg-water-light) 30%, var(--bg-water-dark) 100%); }
+        .wave-svg { position: absolute; top: 0; left: 0; width: 100%; }
+
+        /* ================= BOTTOM NAVIGATION ================= */
+        .bottom-nav { height: 70px; background: #fff; width: 100%; display: flex; justify-content: space-around; align-items: center; z-index: 200; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); padding-bottom: env(safe-area-inset-bottom); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; width: 50px; }
+        .nav-icon { font-size: 1.4rem; color: var(--nav-blue); opacity: 0.6; transition: 0.2s;}
+        .nav-dot { width: 5px; height: 5px; border-radius: 50%; background: transparent; transition: 0.2s;}
+        .nav-item.active .nav-icon { opacity: 1; transform: translateY(-2px); }
+        .nav-item.active .nav-dot { background: var(--nav-blue-active); }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        
+        <div class="top-bar">
+            <div class="icon-btn">≡</div>
+            <div>FOOD CHORD</div>
+            <div class="icon-btn">⌵</div>
+        </div>
+
+        <div class="map-area">
+            
+            <div class="river-container">
+                <svg class="wave-svg" viewBox="0 0 400 120" preserveAspectRatio="none">
+                    <path d="M0,60 C100,20 250,90 400,40 L400,120 L0,120 Z" fill="#1b85df"></path>
+                    <path d="M0,45 C150,10 200,70 400,25 L400,120 L0,120 Z" fill="#32a8e8" opacity="0.7"></path>
+                    <path d="M0,30 C100,50 300,0 400,30 L400,120 L0,120 Z" fill="#52c5f5" opacity="0.6"></path>
+                </svg>
+            </div>
+
+            <div class="map-content-fixed">
+                <svg class="path-svg" viewBox="0 0 400 650" preserveAspectRatio="none">
+                    <path class="path-shadow" d="M 140,570 C 240,610 320,530 260,440 C 200,350 70,390 120,310 C 170,230 340,250 280,180 C 220,110 80,100 140,60"></path>
+                    <path class="path-line" d="M 140,570 C 240,610 320,530 260,440 C 200,350 70,390 120,310 C 170,230 340,250 280,180 C 220,110 80,100 140,60"></path>
+                </svg>
+
+                <div class="grass-patch" style="top: 150px; left: 10px;"></div>
+                <div class="grass-patch" style="top: 360px; right: 10px; width: 100px;"></div>
+                <div class="grass-patch" style="top: 550px; left: 60px; width: 80px;"></div>
+
+                <div class="tree" style="top: 80px; right: 15%;">🌳</div>
+                <div class="mushroom" style="top: 130px; left: 12%;">🍄</div>
+                <div class="tree" style="top: 250px; left: 5%;">🌲</div>
+                <div class="butterfly" style="top: 320px; right: 20%;">🦋</div>
+                <div class="tree" style="top: 450px; left: 10%;">🌳</div>
+                <div class="tree" style="top: 580px; right: 25%;">🌲</div>
+
+                <!-- ด่าน 5: Inversion (ปลดล็อกแล้ว) -->
+                <div class="level-node" style="top: 20px; left: 25%;" onclick="window.location.href='level-inversion.html'">
+                    <div class="star-badge" style="color: #ffb74d;">⭐</div>
+                    <div class="node-circle-outer">
+                        <div class="node-circle-inner bg-yellow"><img src="shop-inversion.png" alt="Inversion" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍱</div>'"></div>
+                    </div>
+                    <div class="node-title">Inversion</div>
+                </div>
+
+                <!-- ด่าน 4: 7th Chord (ปลดล็อกแล้ว) -->
+                <div class="level-node" style="top: 140px; left: 60%;" onclick="window.location.href='level-chord7.html'">
+                    <div class="star-badge" style="color: #ffb74d;">⭐</div>
+                    <div class="node-circle-outer">
+                        <div class="node-circle-inner bg-green"><img src="shop-chord7.png" alt="7th Chord" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍣</div>'"></div>
+                    </div>
+                    <div class="node-title">7th Chord</div>
+                </div>
+
+                <!-- ด่าน 3: Triad -->
+                <div class="level-node" style="top: 270px; left: 20%;" onclick="window.location.href='level-triad.html'">
+                    <div class="star-badge" style="color: #ffb74d;">⭐</div>
+                    <div class="node-circle-outer">
+                        <div class="node-circle-inner bg-purple"><img src="shop-triad.png" alt="Triad" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🥪</div>'"></div>
+                    </div>
+                    <div class="node-title">Triad</div>
+                </div>
+
+                <!-- ด่าน 2: Interval -->
+                <div class="level-node" style="top: 400px; left: 55%;" onclick="window.location.href='level-interval.html'">
+                    <div class="star-badge" style="color: #ffb74d;">⭐</div>
+                    <div class="node-circle-outer">
+                        <div class="node-circle-inner bg-blue"><img src="shop-interval.png" alt="Interval" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍕</div>'"></div>
+                    </div>
+                    <div class="node-title">Interval</div>
+                </div>
+
+                <!-- ด่าน 1: Scale -->
+                <div class="level-node" style="top: 530px; left: 25%;" onclick="window.location.href='level-scale.html'">
+                    <div class="star-badge" style="color: #ffb74d;">⭐</div>
+                    <div class="node-circle-outer">
+                        <div class="node-circle-inner bg-orange"><img src="shop-scale.png" alt="Scale" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>☕</div>'"></div>
+                    </div>
+                    <div class="node-title">Scale</div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <div class="nav-item active"><div class="nav-icon">🎓</div><div class="nav-dot"></div></div>
+            <div class="nav-item"><div class="nav-icon">📖</div><div class="nav-dot"></div></div>
+            <div class="nav-item"><div class="nav-icon">🎮</div><div class="nav-dot"></div></div>
+            <div class="nav-item"><div class="nav-icon">🔤</div><div class="nav-dot"></div></div>
+        </div>
+
+    </div>
+
+</body>
+</html>
