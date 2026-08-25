@@ -229,7 +229,7 @@
 
             <div class="map-content-fixed">
 
-                <!-- ด่าน 5: Inversion[cite: 2] (ดันลงมาที่ 18% และเว้นพื้นที่ด้านบนปลอดภัย) -->
+                <!-- ด่าน 5: Inversion[cite: 2] -->
                 <div class="level-node" style="top: 18%; left: 50%;" onclick="window.location.href='level-inversion.html'">
                     <div class="star-badge">⭐</div>
                     <div class="node-circle-outer">
@@ -325,27 +325,18 @@
         </div>
     </div>
 
-    <div id="detailModal" class="modal-overlay">
-        <div class="modal-box">
-            <div class="modal-header">
-                <div class="modal-title" id="detailTitle">รายละเอียดหัวข้อ</div>
-                <button class="btn-close" onclick="closeDetail()">✕</button>
-            </div>
-            <div class="modal-body" style="display: flex; flex-direction: column; gap: 12px;">
-                <div class="detail-content" id="detailText"></div>
-                <button class="btn-back" onclick="closeDetail()">⬅ กลับหน้าคลังความรู้</button>
-            </div>
-        </div>
-    </div>
-
+    <!-- Modal ย่อยสำหรับหน้าสถิติ (รองรับการเลื่อนดูรูปภาพ 2 รูปเรียงกัน) -->
     <div id="statsModal" class="modal-overlay">
         <div class="modal-box" style="border-color: var(--palette-orange); align-items: center;">
             <div class="modal-header" style="width: 100%;">
                 <div class="modal-title">🎮 สถิติของคุณเชฟ</div>
                 <button class="btn-close" onclick="closeModal('statsModal')">✕</button>
             </div>
-            <div class="modal-body" style="align-items: center; justify-content: center; width: 100%;">
-                <img src="IMG_BAM.jpg" alt="Player Stats" style="width: 100%; max-height: 50vh; object-fit: contain; border-radius: 20px; border: 2px dashed var(--palette-orange);">
+            <div class="modal-body" style="align-items: center; width: 100%; gap: 15px; overflow-y: auto;">
+                <!-- รูปภาพที่ 1 -->
+                <img src="IMG_BAM.jpg" alt="Player Stats 1" style="width: 100%; object-fit: contain; border-radius: 16px; border: 2px dashed var(--palette-orange); flex-shrink: 0;">
+                <!-- รูปภาพที่ 2 (สามารถเลื่อนลงมาเจอได้ทันที) -->
+                <img src="IMG_BAM2.jpg" alt="Player Stats 2" style="width: 100%; object-fit: contain; border-radius: 16px; border: 2px dashed var(--palette-orange); flex-shrink: 0;" onerror="this.style.display='none'">
             </div>
         </div>
     </div>
