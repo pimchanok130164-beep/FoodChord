@@ -33,7 +33,7 @@
             box-shadow: 0 0 30px rgba(0,0,0,0.3);
         }
 
-        /* ================= TOP BAR (ปรับตำแหน่งให้ปลอดภัย ไม่ทับด่าน) ================= */
+        /* ================= TOP BAR ================= */
         .top-bar {
             position: absolute;
             top: 12px;
@@ -71,11 +71,13 @@
             z-index: 1;
         }
 
+        /* ล็อคพื้นที่ด้านบน (Padding-top) ให้เว้นที่ให้ Top Bar เสมอ ไม่ให้ชนด่าน */
         .map-content-fixed {
             position: relative; width: 100%; max-width: 400px; height: 100%; z-index: 10;
+            padding-top: 60px; 
         }
 
-        /* ================= LEVEL NODES (ยรับตำแหน่งด่านที่ 5 ลงมานิดนึงเพื่อไม่ให้ชน Top Bar) ================= */
+        /* ================= LEVEL NODES ================= */
         .level-node {
             position: absolute; display: flex; flex-direction: column; align-items: center;
             cursor: pointer; z-index: 10; width: 100px; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -227,8 +229,8 @@
 
             <div class="map-content-fixed">
 
-                <!-- ด่าน 5: Inversion (ขยับลงมาที่ top: 15% เพื่อเว้นระยะจาก Top Bar ไม่ให้ทับซ้อนกัน) -->
-                <div class="level-node" style="top: 15%; left: 50%;" onclick="window.location.href='level-inversion.html'">
+                <!-- ด่าน 5: Inversion[cite: 2] (ดันลงมาที่ 18% และเว้นพื้นที่ด้านบนปลอดภัย) -->
+                <div class="level-node" style="top: 18%; left: 50%;" onclick="window.location.href='level-inversion.html'">
                     <div class="star-badge">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner"><img src="shop-inversion.png" alt="Inversion" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍱</div>'"></div>
@@ -236,8 +238,8 @@
                     <div class="node-title">Inversion</div>
                 </div>
 
-                <!-- ด่าน 4: 7th Chord -->
-                <div class="level-node" style="top: 32%; left: 27.5%;" onclick="window.location.href='level-chord7.html'">
+                <!-- ด่าน 4: 7th Chord[cite: 2] -->
+                <div class="level-node" style="top: 35%; left: 27.5%;" onclick="window.location.href='level-chord7.html'">
                     <div class="star-badge">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner"><img src="shop-chord7.png" alt="7th Chord" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍣</div>'"></div>
@@ -245,8 +247,8 @@
                     <div class="node-title">7th Chord</div>
                 </div>
 
-                <!-- ด่าน 3: Triad -->
-                <div class="level-node" style="top: 50%; left: 72.5%;" onclick="window.location.href='level-triad.html'">
+                <!-- ด่าน 3: Triad[cite: 2] -->
+                <div class="level-node" style="top: 52%; left: 72.5%;" onclick="window.location.href='level-triad.html'">
                     <div class="star-badge">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner"><img src="shop-triad.png" alt="Triad" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🥪</div>'"></div>
@@ -254,7 +256,7 @@
                     <div class="node-title">Triad</div>
                 </div>
 
-                <!-- ด่าน 2: Interval -->
+                <!-- ด่าน 2: Interval[cite: 2] -->
                 <div class="level-node" style="top: 68%; left: 27.5%;" onclick="window.location.href='level-interval.html'">
                     <div class="star-badge">⭐</div>
                     <div class="node-circle-outer">
