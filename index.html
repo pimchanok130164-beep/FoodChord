@@ -2,232 +2,238 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Food Chord - Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700;900&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Login - Food Chord Fairy Tale</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-yellow: #f8df9e;
-            --box-cream: #fbf5df;
-            --btn-green: #a7ba74;
-            --btn-navy: #5e627d;
-            --text-navy: #5e627d;
-            --text-placeholder: #d9e0b8;
-            --text-link: #a7ba74;
+            --palette-green: #ABC270;
+            --palette-yellow: #FEC868;
+            --palette-orange: #FDA769;
+            --palette-brown: #473C33;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; font-family: 'Quicksand', 'Mali', sans-serif; }
         
         body { 
-            background-color: #333; 
+            background-color: #2a1a10; 
             display: flex; justify-content: center; align-items: center;
-            height: 100vh; overflow: hidden;
-            font-family: 'Nunito', 'Mali', sans-serif;
+            height: 100vh; height: 100dvh; overflow: hidden;
         }
 
+        /* 📱 ล็อคสัดส่วนหน้าจอไว้ที่ 9:16 เป๊ะ ๆ ทุกอุปกรณ์ป้องกันจอโล่งเกินไป */
         #app-container {
             width: 100%; max-width: 400px; 
-            height: 100%; max-height: 850px;
-            background-color: var(--bg-yellow);
+            height: 100%; height: 100dvh; 
+            max-height: calc(100vh * (16 / 9));
+            aspect-ratio: 9 / 16; 
+            display: flex; flex-direction: column;
+            background: var(--palette-brown);
             position: relative; overflow: hidden;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            display: flex; flex-direction: column;
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            border-left: 6px solid rgba(254, 200, 104, 0.3);
+            border-right: 6px solid rgba(254, 200, 104, 0.3);
         }
 
-        .screen-flow {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 200%;
-            display: flex; flex-direction: column;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-        .show-login { transform: translateY(-50%); }
-
-        /* ================= หน้าที่ 1: START SCREEN ================= */
-        .screen-start {
-            width: 100%; height: 50%;
-            display: flex; flex-direction: column; align-items: center; justify-content: space-between;
-            padding: 100px 0 60px 0;
+        /* ================= BACKGROUND ================= */
+        .map-bg-image {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            filter: brightness(0.9);
         }
 
-        .logo-area { text-align: center; display: flex; flex-direction: column; align-items: center; }
-        
-        /* สไตล์สำหรับรูปภาพโลโก้ */
-        .logo-image {
-            width: 220px; /* ขนาดรูปในหน้าแรก */
-            height: auto;
-            filter: drop-shadow(0 8px 10px rgba(0,0,0,0.08)); /* เพิ่มเงาให้ภาพดูมีมิติ */
-            transition: all 0.5s ease;
-        }
-
-        .app-title {
-            font-size: 2.2rem; font-weight: 900;
-            color: var(--text-navy); margin-top: 15px;
-            text-transform: uppercase; letter-spacing: 2px;
-        }
-
-        .btn-start {
-            background-color: var(--btn-green);
-            color: #fff; font-size: 1.8rem; font-weight: 900;
-            padding: 15px 60px; border-radius: 40px; border: none;
-            box-shadow: 0 6px 0px #869856; 
-            cursor: pointer; transition: 0.1s; letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-        .btn-start:active { transform: translateY(6px); box-shadow: 0 0px 0px #869856; }
-
-        /* ================= หน้าที่ 2: LOGIN SCREEN ================= */
-        .screen-login {
-            width: 100%; height: 50%;
-            display: flex; flex-direction: column; align-items: center;
-            padding-top: 50px;
-        }
-
-        /* ปรับขนาดโลโก้เมื่ออยู่หน้าล็อกอินให้เล็กลง */
-        .screen-login .logo-image { width: 150px; }
-        .screen-login .app-title { font-size: 1.8rem; margin-bottom: 20px; margin-top: 10px; }
-
-        .login-card {
-            background-color: var(--box-cream);
-            width: 100%; flex: 1; 
-            border-top-left-radius: 40px; border-top-right-radius: 40px;
-            padding: 40px 30px;
-            display: flex; flex-direction: column; align-items: center;
-            box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
-        }
-
-        .input-group { position: relative; width: 100%; margin-bottom: 20px; }
-        
-        .input-icon {
-            position: absolute; left: 20px; top: 50%; transform: translateY(-50%);
-            font-size: 1.5rem; color: var(--text-placeholder);
+        /* เลเยอร์แสงเวทมนตร์แฟรี่เทลละมุนๆ */
+        .fairy-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 40%, rgba(255, 252, 244, 0.25) 0%, rgba(71, 60, 51, 0.75) 100%);
+            z-index: 2;
             pointer-events: none;
         }
 
-        .input-field {
-            width: 100%; padding: 18px 20px 18px 60px; 
-            background-color: var(--btn-green);
-            border: none; border-radius: 20px;
-            font-size: 1.2rem; font-weight: 700; color: #fff;
-            box-shadow: inset 0 4px 6px rgba(0,0,0,0.1); 
-            outline: none; transition: 0.2s;
-        }
-        
-        .input-field:focus { box-shadow: inset 0 4px 6px rgba(0,0,0,0.1), 0 0 0 3px rgba(94, 98, 125, 0.2); }
-        .input-field::placeholder { color: var(--text-placeholder); font-weight: 800;}
-
-        .forgot-link {
-            font-size: 1rem; font-weight: 800; color: var(--text-link);
-            cursor: pointer; margin-bottom: 30px; align-self: center;
+        /* ================= LOGIN CONTENT ================= */
+        .login-content {
+            position: relative;
+            z-index: 10;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 25px;
+            text-align: center;
         }
 
+        /* ป้ายชื่อเกมแฟรี่เทล */
+        .game-title-box {
+            background: rgba(255, 252, 244, 0.9);
+            padding: 15px 25px;
+            border-radius: 25px;
+            border: 3px solid var(--palette-yellow);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            animation: floatTitle 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatTitle {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-6px); }
+        }
+
+        .game-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--palette-brown);
+            letter-spacing: 2px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .game-subtitle {
+            font-size: 0.85rem;
+            color: #8c7355;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        /* กล่องฟอร์มล็อกอินทรงเวทมนตร์ */
+        .login-card {
+            background: rgba(255, 252, 244, 0.92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            width: 100%;
+            padding: 25px 20px;
+            border-radius: 30px;
+            border: 3px dashed var(--palette-green);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .input-group {
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-label {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--palette-brown);
+            padding-left: 5px;
+        }
+
+        .fairy-input {
+            width: 100%;
+            height: 48px;
+            padding: 0 16px;
+            background: #fff;
+            border: 2px solid #e0d4c3;
+            border-radius: 16px;
+            font-size: 1rem;
+            color: var(--palette-brown);
+            font-weight: 600;
+            outline: none;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .fairy-input:focus {
+            border-color: var(--palette-orange);
+            box-shadow: 0 0 10px rgba(253, 167, 105, 0.4), inset 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        /* ปุ่มเข้าสู่เกมแฟรี่เทล */
         .btn-login {
-            background-color: var(--btn-navy);
-            color: #fff; font-size: 1.8rem; font-weight: 900;
-            width: 100%; padding: 15px 0;
-            border-radius: 30px; border: none;
-            box-shadow: 0 6px 0px #3d4154; 
-            cursor: pointer; transition: 0.1s; letter-spacing: 1px;
+            margin-top: 10px;
+            width: 100%;
+            height: 50px;
+            background: var(--palette-green);
+            color: var(--palette-brown);
+            border: 2px solid var(--palette-yellow);
+            border-radius: 20px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(171, 194, 112, 0.4), inset 0 -2px 4px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.6);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-        .btn-login:active { transform: translateY(6px); box-shadow: 0 0px 0px #3d4154; }
 
+        .btn-login:active {
+            transform: scale(0.96);
+            box-shadow: 0 3px 8px rgba(171, 194, 112, 0.4);
+        }
+
+        .fairy-footer-text {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #fceea7;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
 <body>
 
     <div id="app-container">
         
-        <div class="screen-flow" id="screenFlow">
+        <!-- ใช้ภาพพื้นหลังอันเดียวกับหน้า home.html -->
+        <img src="S__1892359.jpg" alt="Forest Background" class="map-bg-image">
+        <div class="fairy-overlay"></div>
+
+        <div class="login-content">
             
-            <!-- ====== หน้า START ====== -->
-            <div class="screen-start">
-                <div class="logo-area">
-                    <!-- แทรกภาพโลโก้ตรงนี้ -->
-                    <img src="ดีไซน์ที่ยังไม่ได้ตั้งชื่อ.png" alt="Food Chord Peppers" class="logo-image">
-                    <div class="app-title">FOOD CHORD</div>
-                </div>
-                
-                <button class="btn-start" onclick="goToLogin()">START</button>
+            <!-- ป้ายชื่อหัวข้อเกม -->
+            <div class="game-title-box">
+                <div class="game-title">✨ FOOD CHORD ✨</div>
+                <div class="game-subtitle">ดินแดนแห่งเสียงดนตรีและเวทมนตร์อาหาร</div>
             </div>
 
-            <!-- ====== หน้า LOGIN ====== -->
-            <div class="screen-login">
-                <div class="logo-area" onclick="goBackToStart()" style="cursor:pointer;">
-                    <!-- แทรกภาพโลโก้ตรงนี้ (ขนาดจะถูกปรับให้เล็กลงด้วย CSS อัตโนมัติ) -->
-                    <img src="ดีไซน์ที่ยังไม่ได้ตั้งชื่อ.png" alt="Food Chord Peppers" class="logo-image">
-                    <div class="app-title">FOOD CHORD</div>
+            <!-- ฟอร์มกรอกชื่อเข้าเกม -->
+            <div class="login-card">
+                <div class="input-group">
+                    <label class="input-label" for="chefName">🪄 นามปากกา / ชื่อของคุณเชฟ</label>
+                    <input type="text" id="chefName" class="fairy-input" placeholder="เช่น เชฟน้อยหน่า..." maxlength="20" autocomplete="off">
                 </div>
 
-                <div class="login-card">
-                    <div class="input-group">
-                        <span class="input-icon">✉️</span>
-                        <input type="email" class="input-field" placeholder="Email" id="emailInput">
-                    </div>
+                <button class="btn-login" onclick="handleLogin()">
+                    <span>เริ่มต้นการเดินทาง</span> 🧚‍♂️
+                </button>
+            </div>
 
-                    <div class="input-group">
-                        <span class="input-icon">🔒</span>
-                        <input type="password" class="input-field" placeholder="Password" id="passwordInput">
-                    </div>
-
-                    <div class="forgot-link">Forgot Password</div>
-
-                    <button class="btn-login" onclick="loginToApp()">Login</button>
-                </div>
+            <div class="fairy-footer-text">
+                🌟 ขอให้สนุกกับการผจญภัยในโลกดนตรีนะเชฟ!
             </div>
 
         </div>
 
     </div>
-    <script type="module">
-        // 1. นำเข้า Firebase เครื่องมือล็อกอิน
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-        // 2. นำโค้ด Config ที่ก๊อปปี้จากเว็บ Firebase มาวางทับตรงนี้
-        const firebaseConfig = {
-  apiKey: "AIzaSyDh6w5rLvDsNHDyC3aR3Hv0MaMZClNF4T8",
-  authDomain: "food-chord.firebaseapp.com",
-  projectId: "food-chord",
-  storageBucket: "food-chord.firebasestorage.app",
-  messagingSenderId: "1017330442555",
-  appId: "1:1017330442555:web:0fbfff4b2295aee43fd71e",
-  measurementId: "G-4HZY941CT6"
-};
-
-        // 3. เริ่มต้นระบบหลังบ้าน
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        // 4. ฟังก์ชันสำหรับเลื่อนหน้าจอ (ยังคงไว้เหมือนเดิม)
-        window.goToLogin = function() {
-            document.getElementById('screenFlow').classList.add('show-login');
-        }
-        window.goBackToStart = function() {
-            document.getElementById('screenFlow').classList.remove('show-login');
-        }
-
-        // 5. ฟังก์ชัน Login ตัวจริงที่เชื่อมต่อฐานข้อมูล
-        window.loginToApp = function() {
-            const email = document.getElementById('emailInput').value;
-            const password = document.getElementById('passwordInput').value;
+    <script>
+        function handleLogin() {
+            const nameInput = document.getElementById('chefName').value.trim();
             
-            if(email === "" || password === "") {
-                alert("กรุณากรอกอีเมลและรหัสผ่านให้ครบถ้วนนะครับเชฟ!");
+            if (nameInput === "") {
+                alert("กรุณากรอกชื่อของคุณเชฟก่อนออกเดินทางนะเวทมนตร์รออยู่! ✨");
                 return;
             }
 
-            // สั่ง Firebase ให้ตรวจสอบรหัสผ่าน
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    // ล็อกอินสำเร็จ! ระบบจะพุ่งไปที่หน้า Home
-                    alert("เข้าสู่ระบบสำเร็จ! ไปลุยกันเลย");
-                    window.location.href = 'home.html'; 
-                })
-                .catch((error) => {
-                    // ล็อกอินไม่ผ่าน (รหัสผิด หรือยังไม่ได้สมัคร)
-                    alert("เข้าสู่ระบบไม่สำเร็จ: " + error.message);
-                });
+            // บันทึกชื่อเชฟลงในเครื่อง
+            localStorage.setItem('chef_name', nameInput);
+
+            // เอฟเฟกต์เสียงหรือพาไปยังหน้าแผนที่หลัก (home.html)
+            window.location.href = 'home.html';
         }
     </script>
+
 </body>
 </html>
