@@ -4,19 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Food Chord - Vertical Portrait Map</title>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Mali:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* โทนสีตาม Colour Palette */
             --palette-green: #ABC270;
             --palette-yellow: #FEC868;
             --palette-orange: #FDA769;
             --palette-brown: #473C33;
-
             --node-shadow-outer: rgba(71, 60, 51, 0.35);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; font-family: 'Mali', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; font-family: 'Quicksand', 'Mali', sans-serif; }
         
         body { 
             background-color: var(--palette-brown); 
@@ -24,7 +22,6 @@
             height: 100vh; height: 100dvh; overflow: hidden;
         }
 
-        /* ล็อคขนาดและสัดส่วนหน้าจอสำหรับมือถือ ไม่ให้ยืดหดจนไอคอนล้นหรือซ้อนทับ */
         #app-container {
             width: 100%; max-width: 400px; 
             height: 100vh; height: 100dvh; 
@@ -36,18 +33,25 @@
             box-shadow: 0 0 30px rgba(0,0,0,0.3);
         }
 
-        /* ================= TOP BAR ================= */
+        /* ================= TOP BAR (ปรับตำแหน่งให้ปลอดภัย ไม่ทับด่าน) ================= */
         .top-bar {
-            height: 60px; padding: 0 20px;
+            position: absolute;
+            top: 12px;
+            left: 20px;
+            right: 20px;
+            height: 44px; 
+            padding: 0 16px;
             display: flex; justify-content: space-between; align-items: center;
-            color: var(--palette-yellow); font-weight: 700; font-size: 1.1rem;
-            letter-spacing: 1px; z-index: 100; flex-shrink: 0;
-            background: rgba(71, 60, 51, 0.75);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(254, 200, 104, 0.2);
+            color: #fff; font-weight: 700; font-size: 0.9rem;
+            letter-spacing: 1.5px; z-index: 100; flex-shrink: 0;
+            background: rgba(71, 60, 51, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        .icon-btn { font-size: 1.2rem; cursor: pointer; opacity: 0.9; color: var(--palette-yellow); }
+        .icon-btn { font-size: 1.1rem; cursor: pointer; opacity: 0.9; color: var(--palette-yellow); transition: opacity 0.2s; }
         .icon-btn:active { opacity: 0.5; }
 
         /* ================= MAP AREA ================= */
@@ -57,7 +61,6 @@
             overflow: hidden;
         }
 
-        /* ภาพพื้นหลังแนวตั้ง S__1892359.jpg[cite: 2] */
         .map-bg-image {
             position: absolute;
             top: 0;
@@ -72,7 +75,7 @@
             position: relative; width: 100%; max-width: 400px; height: 100%; z-index: 10;
         }
 
-        /* ================= LEVEL NODES ================= */
+        /* ================= LEVEL NODES (ยรับตำแหน่งด่านที่ 5 ลงมานิดนึงเพื่อไม่ให้ชน Top Bar) ================= */
         .level-node {
             position: absolute; display: flex; flex-direction: column; align-items: center;
             cursor: pointer; z-index: 10; width: 100px; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -103,15 +106,15 @@
         }
 
         .node-title {
-            margin-top: 5px; font-size: 0.9rem; font-weight: 700;
+            margin-top: 5px; font-size: 0.85rem; font-weight: 700;
             color: var(--palette-brown); text-shadow: 0 1px 2px rgba(255,255,255,0.8); letter-spacing: 0.5px; white-space: nowrap;
-            background: rgba(255, 252, 244, 0.9); padding: 2px 8px; border-radius: 8px;
+            background: rgba(255, 252, 244, 0.9); padding: 2px 10px; border-radius: 12px;
             border: 1px solid var(--palette-orange);
         }
 
         .star-badge { position: absolute; top: -6px; right: -2px; font-size: 1.2rem; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); z-index: 5; color: var(--palette-yellow); }
 
-        /* ================= BOTTOM NAVIGATION (ปุ่มวงกลมลอยตัว) ================= */
+        /* ================= BOTTOM NAVIGATION ================= */
         .bottom-nav { 
             position: absolute;
             bottom: 15px;
@@ -161,23 +164,22 @@
 
         .modal-box {
             background: #fffcf4; width: 100%; max-width: 350px; max-height: 80vh;
-            border-radius: 30px; padding: 25px 20px; display: flex; flex-direction: column;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 4px dashed var(--palette-green); position: relative;
+            border-radius: 24px; padding: 25px 20px; display: flex; flex-direction: column;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 3px dashed var(--palette-green); position: relative;
         }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-shrink: 0; }
-        .modal-title { font-size: 1.3rem; font-weight: 900; color: var(--palette-brown); }
+        .modal-title { font-size: 1.2rem; font-weight: 700; color: var(--palette-brown); }
         .btn-close {
-            width: 36px; height: 36px; background: var(--palette-orange); color: #fff; border: 2px solid #fff;
-            border-radius: 50%; font-size: 1.2rem; font-weight: 900; cursor: pointer;
+            width: 32px; height: 32px; background: var(--palette-orange); color: #fff; border: 2px solid #fff;
+            border-radius: 50%; font-size: 1rem; font-weight: 700; cursor: pointer;
             display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         .modal-body { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding-right: 4px; }
         .modal-body::-webkit-scrollbar { width: 6px; }
         .modal-body::-webkit-scrollbar-thumb { background: var(--palette-green); border-radius: 10px; }
 
-        /* การ์ดความรู้กดได้เหมือนปุ่ม */
         .theory-card {
-            background: #fff; padding: 14px 16px; border-radius: 16px; border: 2px solid #e0e0e0;
+            background: #fff; padding: 14px 16px; border-radius: 16px; border: 2px solid #eee;
             box-shadow: 0 4px 10px rgba(0,0,0,0.03); cursor: pointer; transition: all 0.2s ease;
         }
         .theory-card:hover {
@@ -185,26 +187,25 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(253, 167, 105, 0.2);
         }
-        .theory-card h4 { color: var(--palette-brown); font-size: 1rem; font-weight: 900; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
-        .theory-card h4::after { content: '➔'; font-size: 0.9rem; color: var(--palette-orange); }
-        .theory-card p { color: #6d5b4c; font-size: 0.85rem; font-weight: 600; line-height: 1.4; }
+        .theory-card h4 { color: var(--palette-brown); font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+        .theory-card h4::after { content: '➔'; font-size: 0.85rem; color: var(--palette-orange); }
+        .theory-card p { color: #6d5b4c; font-size: 0.8rem; font-weight: 500; line-height: 1.4; }
 
-        /* สไตล์หน้าต่างรายละเอียดเจาะลึก (รองรับการเลื่อนอ่านข้อความยาว ๆ) */
         .detail-content {
             background: #fff; padding: 15px; border-radius: 16px; border: 2px solid var(--palette-orange);
-            color: #6d5b4c; font-size: 0.9rem; line-height: 1.6; font-weight: 600;
-            max-height: 48vh;   /* จำกัดความสูงให้อ่านง่าย */
-            overflow-y: auto;    /* เปิดใช้งานระบบเลื่อน Scrollbar เมื่อข้อความยาว */
+            color: #6d5b4c; font-size: 0.85rem; line-height: 1.6; font-weight: 500;
+            max-height: 48vh;   
+            overflow-y: auto;    
             padding-right: 8px;
         }
         .detail-content::-webkit-scrollbar { width: 6px; }
         .detail-content::-webkit-scrollbar-thumb { background: var(--palette-green); border-radius: 10px; }
 
-        .detail-content h3 { color: var(--palette-brown); font-size: 1.1rem; margin-bottom: 8px; font-weight: 900; }
+        .detail-content h3 { color: var(--palette-brown); font-size: 1rem; margin-bottom: 8px; font-weight: 700; }
         
         .btn-back {
-            background: var(--palette-green); color: var(--palette-brown); border: none; padding: 10px 20px;
-            border-radius: 12px; font-weight: 900; cursor: pointer; align-self: flex-start; margin-top: 5px;
+            background: var(--palette-green); color: var(--palette-brown); border: none; padding: 8px 16px;
+            border-radius: 10px; font-weight: 700; cursor: pointer; align-self: flex-start; margin-top: 5px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1); flex-shrink: 0;
         }
         .btn-back:active { transform: scale(0.95); }
@@ -222,13 +223,12 @@
 
         <div class="map-area">
             
-            <!-- ภาพพื้นหลังแนวตั้ง S__1892359.jpg[cite: 2] -->
             <img src="S__1892359.jpg" alt="Forest Map Background" class="map-bg-image">
 
             <div class="map-content-fixed">
 
-                <!-- ด่าน 5: Inversion[cite: 2] -->
-                <div class="level-node" style="top: 10%; left: 50%;" onclick="window.location.href='level-inversion.html'">
+                <!-- ด่าน 5: Inversion (ขยับลงมาที่ top: 15% เพื่อเว้นระยะจาก Top Bar ไม่ให้ทับซ้อนกัน) -->
+                <div class="level-node" style="top: 15%; left: 50%;" onclick="window.location.href='level-inversion.html'">
                     <div class="star-badge">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner"><img src="shop-inversion.png" alt="Inversion" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍱</div>'"></div>
@@ -236,8 +236,8 @@
                     <div class="node-title">Inversion</div>
                 </div>
 
-                <!-- ด่าน 4: 7th Chord[cite: 2] -->
-                <div class="level-node" style="top: 28%; left: 27.5%;" onclick="window.location.href='level-chord7.html'">
+                <!-- ด่าน 4: 7th Chord -->
+                <div class="level-node" style="top: 32%; left: 27.5%;" onclick="window.location.href='level-chord7.html'">
                     <div class="star-badge">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner"><img src="shop-chord7.png" alt="7th Chord" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍣</div>'"></div>
@@ -245,8 +245,8 @@
                     <div class="node-title">7th Chord</div>
                 </div>
 
-                <!-- ด่าน 3: Triad[cite: 2] -->
-                <div class="level-node" style="top: 48%; left: 72.5%;" onclick="window.location.href='level-triad.html'">
+                <!-- ด่าน 3: Triad -->
+                <div class="level-node" style="top: 50%; left: 72.5%;" onclick="window.location.href='level-triad.html'">
                     <div class="star-badge">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner"><img src="shop-triad.png" alt="Triad" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🥪</div>'"></div>
@@ -254,8 +254,8 @@
                     <div class="node-title">Triad</div>
                 </div>
 
-                <!-- ด่าน 2: Interval[cite: 2] -->
-                <div class="level-node" style="top: 66%; left: 27.5%;" onclick="window.location.href='level-interval.html'">
+                <!-- ด่าน 2: Interval -->
+                <div class="level-node" style="top: 68%; left: 27.5%;" onclick="window.location.href='level-interval.html'">
                     <div class="star-badge">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner"><img src="shop-interval.png" alt="Interval" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍕</div>'"></div>
@@ -264,7 +264,7 @@
                 </div>
 
                 <!-- ด่าน 1: Scale -->
-                <div class="level-node" style="top: 78%; left: 50%;" onclick="window.location.href='level-scale.html'">
+                <div class="level-node" style="top: 82%; left: 50%;" onclick="window.location.href='level-scale.html'">
                     <div class="star-badge">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner"><img src="shop-scale.png" alt="Scale" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>☕</div>'"></div>
@@ -275,7 +275,7 @@
             </div>
         </div>
 
-        <!-- ================= แถบเมนูด้านล่าง (ปุ่มวงกลมลอยตัว) ================= -->
+        <!-- ================= แถบเมนูด้านล่าง ================= -->
         <div class="bottom-nav">
             <div class="nav-item active" onclick="switchTab(0)"><div class="nav-icon">🎓</div></div>
             <div class="nav-item" onclick="switchTab(1)"><div class="nav-icon">📖</div></div>
@@ -285,7 +285,7 @@
 
     </div>
 
-    <!-- ================= MODALS (คลังความรู้ดนตรี) ================= -->
+    <!-- ================= MODALS ================= -->
     <div id="theoryModal" class="modal-overlay">
         <div class="modal-box">
             <div class="modal-header">
@@ -294,31 +294,26 @@
             </div>
             <div class="modal-body" id="theoryListBody">
                 
-                <!-- 1. Scale (บันไดเสียง) -->
                 <div class="theory-card" onclick="openDetail('Scale (บันไดเสียง)', 'บันไดเสียงเมเจอร์และไมเนอร์', '<b>บันไดเสียงเมเจอร์ (Major scale)</b><br>• โครงสร้าง: ตัวที่ 3,4 และ 7,8 ห่างกันครึ่งเสียง<br>• ทางชาร์ปสร้างจากตัวที่ 5, ทางแฟลตสร้างจากตัวที่ 4<br><br><b>บันไดเสียงไมเนอร์ (Minor)</b><br>• <strong>เนเชอรัล (Natural minor):</strong> สร้างจากตัวที่ 6 ของบันไดเสียงเมเจอร์<br>• <strong>ฮาโมนิค (Harmonic minor):</strong> โครงสร้างแบบเนเชอรัล แต่ตัวที่ 7 สูงขึ้นครึ่งเสียง<br>• <strong>เมโลดิก (Melodic minor):</strong> ขาขึ้นตัวที่ 6 และ 7 สูงขึ้นครึ่งเสียง ขาลงกลับไปเป็นเนเชอรัล')">
                     <h4>☕ 1. Scale (บันไดเสียง)</h4>
                     <p>บันไดเสียงเมเจอร์, เนเชอรัล, ฮาโมนิค และเมโลดิกไมเนอร์</p>
                 </div>
 
-                <!-- 2. Interval (ขั้นคู่เสียง) -->
                 <div class="theory-card" onclick="openDetail('Interval (ขั้นคู่เสียง)', 'ประเภทและโครงสร้างของขั้นคู่เสียงต่างๆ', '• <strong>เพอร์เฟค (Perfect):</strong> คือ คู่ 1, 4, 5 และ 8<br>• <strong>เมเจอร์ (Major):</strong> คือ คู่ที่ 2, 3, 6 และ 7<br>• <strong>ไมเนอร์ (Minor):</strong> คือ ขั้นคู่เมเจอร์ที่ลดลงมาครึ่งเสียง<br>• <strong>ดิมินิชท์ (Diminished):</strong> คือ ขั้นคู่เพอร์เฟคลดลงมาครึ่งเสียง และขั้นคู่เมเจอร์ลดลงมาเต็มเสียง<br>• <strong>อ็อกเมนเดท (Augmented):</strong> คือ ขั้นคู่เพอร์เฟคและขั้นคู่เมเจอร์เพิ่มขึ้นครึ่งเสียง')">
                     <h4>🍕 2. Interval (ขั้นคู่เสียง)</h4>
                     <p>เพอร์เฟค, เมเจอร์, ไมเนอร์, ดิมินิชท์ และอ็อกเมนเดท</p>
                 </div>
 
-                <!-- 3. Triad (คอร์ดสามเสียง) -->
                 <div class="theory-card" onclick="openDetail('Triad (ทรัยแอด)', 'โน้ต 3 ตัวที่เรียงต่อกัน', 'เป็นโน้ต 3 ตัวที่เรียงต่อกัน แบ่งได้ดังนี้<br>• <strong>เมเจอร์ (Major):</strong> คือ ตัวที่ 1, 3, 5 ของสเกลเมเจอร์<br>• <strong>ไมเนอร์ (Minor):</strong> คือ ตัวที่ 3 จากทรัยแอดเมเจอร์ลดลงครึ่งเสียง<br>• <strong>ดิมินิชท์ (Diminished):</strong> คือ ตัวที่ 3 และ 5 จากทรัยแอดเมเจอร์ลดลงครึ่งเสียง<br>• <strong>อ็อกเมนเทด (Augmented):</strong> คือ ตัวที่ 5 จากทรัยแอดเมเจอร์เพิ่มขึ้นครึ่งเสียง')">
                     <h4>🥪 3. Triad (คอร์ดสามเสียง)</h4>
                     <p>โน้ต 3 ตัวที่เรียงต่อกัน (Major, Minor, Diminished, Augmented)</p>
                 </div>
 
-                <!-- 4. 7th Chord (คอร์ดเจ็ด) - อัปเดตข้อมูลคอร์ดทบเจ็ดตามที่ขอ -->
                 <div class="theory-card" onclick="openDetail('7th Chord (คอร์ดทบเจ็ด)', 'คอร์ดพื้นฐานที่ทบด้วยโน้ตตัวที่ 7 เข้ามา', 'คอร์ดทบเจ็ด (Seventh chord) คือ คอร์ดพื้นฐานที่ทบด้วยโน้ตตัวที่ 7 เข้ามา ที่พบในการประสานเสียงพื้นฐานมีอยู่ 6 ชนิด ดังนี้<br><br>1) <strong>คอร์ดทบเจ็ดเมเจอร์ (Major seventh chord):</strong><br>• เกิดจากคอร์ดทรัยแอดเมเจอร์ (Major Triad) ซ้อนทับด้วยโน้ตตัวที่ 7 เมเจอร์ (Major 7th)<br><br>2) <strong>คอร์ดทบเจ็ดเมเจอร์-ไมเนอร์ (Major-minor seventh chord) หรือ คอร์ดโดมินันท์ (Dominant seventh chord):</strong><br>• เกิดจากคอร์ดทรัยแอดเมเจอร์ (Major Triad) ซ้อนทับด้วยโน้ตตัวที่ 7 ไมเนอร์ (Minor 7th)<br><br>3) <strong>คอร์ดทบเจ็ดไมเนอร์ (Minor seventh chord):</strong><br>• เกิดจากคอร์ดทรัยแอดไมเนอร์ (Minor Triad) ซ้อนทับด้วยโน้ตตัวที่ 7 ไมเนอร์ (Minor 7th)<br><br>4) <strong>คอร์ดทบเจ็ดไมเนอร์-เมเจอร์ (Minor-Major Seventh Chord):</strong><br>• เกิดจากคอร์ดทรัยแอดไมเนอร์ (Minor Triad) ซ้อนทับด้วยโน้ตตัวที่ 7 เมเจอร์ (Major 7th)<br><br>5) <strong>คอร์ดฮาล์ฟดิมินิชเซเวนธ์ (Half-Diminished Seventh Chord):</strong><br>• เกิดจากคอร์ดทรัยแอดดิมินิช (Diminished Triad) ซ้อนทับด้วยโน้ตตัวที่ 7 ไมเนอร์ (Minor 7th)<br><br>6) <strong>คอร์ดฟลูดิมินิชท์ (Fully-Diminished seventh chord):</strong><br>• เกิดจากคอร์ดทรัยแอดดิมินิช (Diminished Triad) ซ้อนทับด้วยโน้ตตัวที่ 7 ดิมินิช (Diminished 7th) ซึ่งมีระยะเสียงเท่ากับคู่ 6 เมเจอร์')">
                     <h4>🍣 4. 7th Chord (คอร์ดเจ็ด)</h4>
                     <p>คอร์ดพื้นฐานทบโน้ตตัวที่ 7 (6 ชนิดในการประสานเสียง)</p>
                 </div>
 
-                <!-- 5. Inversion (การพลิกกลับคอร์ด) -->
                 <div class="theory-card" onclick="openDetail('Inversion (การพลิกกลับคอร์ด)', 'การสลับโน้ตตัวล่างสุดมาเป็นเสียงเบส', '• <strong>รูปพื้นต้น (Root Position):</strong> มีโน้ตตัวราก (Root) อยู่ล่างสุดเป็นเสียงเบส<br>• <strong>การพลิกกลับครั้งที่ 1 (First Inversion):</strong> นำโน้ตตัวที่สาม (Third) มาเป็นเสียงเบสอยู่ล่างสุด<br>• <strong>การพลิกกลับครั้งที่ 2 (Second Inversion):</strong> นำโน้ตตัวที่ห้า (Fifth) มาเป็นเสียงเบสอยู่ล่างสุด<br>• <strong>การพลิกกลับครั้งที่ 3 (Third Inversion):</strong> (เฉพาะในคอร์ดทบเจ็ด) นำโน้ตตัวที่เจ็ด (Seventh) มาเป็นเสียงเบสอยู่ล่างสุด')">
                     <h4>🍱 5. Inversion (การพลิกกลับคอร์ด)</h4>
                     <p>รูปพื้นต้น และการพลิกกลับครั้งที่ 1, 2, 3</p>
@@ -328,7 +323,6 @@
         </div>
     </div>
 
-    <!-- Modal ย่อยสำหรับแสดงรายละเอียดเจาะลึก (พร้อม Scrollbar เลื่อนดูข้อความยาวๆ) -->
     <div id="detailModal" class="modal-overlay">
         <div class="modal-box">
             <div class="modal-header">
@@ -336,9 +330,7 @@
                 <button class="btn-close" onclick="closeDetail()">✕</button>
             </div>
             <div class="modal-body" style="display: flex; flex-direction: column; gap: 12px;">
-                <div class="detail-content" id="detailText">
-                    <!-- เนื้อหาเชิงลึกจะถูกแสดงตรงนี้และเลื่อนอ่านได้เมื่อยาวเกินไป -->
-                </div>
+                <div class="detail-content" id="detailText"></div>
                 <button class="btn-back" onclick="closeDetail()">⬅ กลับหน้าคลังความรู้</button>
             </div>
         </div>
