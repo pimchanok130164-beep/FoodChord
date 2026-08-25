@@ -64,20 +64,6 @@
             border: 3px dashed #d7ccc8;
         }
 
-        .difficulty-zone { width: 100%; background: transparent; margin-bottom: 30px;}
-        .diff-title { font-size: 1.15rem; color: #8d6e63; margin-bottom: 15px; font-weight: 900; text-align: center;}
-        .diff-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-        
-        .btn-diff {
-            padding: 12px 18px; font-size: 1rem; font-weight: 900; color: #8d6e63;
-            background: #fff; border: none; border-radius: 20px; cursor: pointer; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); -webkit-tap-highlight-color: transparent;
-            box-shadow: 0 6px 0 #e6d8ce, 0 10px 10px rgba(93, 64, 55, 0.1);
-        }
-        .btn-diff:active { transform: translateY(6px); box-shadow: 0 0px 0 #e6d8ce, 0 2px 5px rgba(93, 64, 55, 0.1); }
-        .btn-diff.active.diff-easy { background: #ffe0b2; color: #e65100; box-shadow: 0 6px 0 #ffb300; } 
-        .btn-diff.active.diff-medium { background: #c8e6c9; color: #2e7d32; box-shadow: 0 6px 0 #81c784; } 
-        .btn-diff.active.diff-hard { background: #ffcdd2; color: #c62828; box-shadow: 0 6px 0 #e57373; } 
-
         /* 📦 กล่องจัดระเบียบปุ่ม (แก้ปุ่มทับกัน) */
         .btn-group-vertical { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 280px; margin: 0 auto; }
         
@@ -234,15 +220,6 @@
                     </div>
                 </div>
 
-                <div class="difficulty-zone">
-                    <p class="diff-title">ระดับความรวดเร็ว ⏱️</p>
-                    <div class="diff-buttons">
-                        <button type="button" class="btn-diff diff-easy" onclick="setDifficulty('Easy')">ชิลๆ 🧇</button>
-                        <button type="button" class="btn-diff diff-medium active" onclick="setDifficulty('Medium')">ปานกลาง 🥐</button>
-                        <button type="button" class="btn-diff diff-hard" onclick="setDifficulty('Hard')">เร่งด่วน 🍫</button>
-                    </div>
-                </div>
-
                 <div class="btn-group-vertical">
                     <button class="btn-action" onclick="startGameFromScreen()">เริ่มรับออเดอร์ 🛎️</button>
                     <button class="btn-action btn-secondary" onclick="openReview()">ทบทวนเมนูขนม 📖</button>
@@ -387,8 +364,6 @@
     <script>
         const startSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3');
         const popSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');
-        
-        // 🎵 เปลี่ยนเสียงตอบถูกให้เป็นเสียงปิ๊ง สว่าง สดใสขึ้น (Magic/Coin Style)
         const correctSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3'); 
         const errorSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2572/2572-preview.mp3');
 
@@ -434,11 +409,10 @@
         let activeChords = []; 
         let score = 0; 
         let misses = 0; 
-        let gameSpeed = 1.5; 
-        let spawnRate = 2500; 
+        let gameSpeed = 1.0;  // ความเร็วปานกลางกำลังพอดี
+        let spawnRate = 3500; // เพิ่มระยะห่างให้โจทย์ร่วงช้าลงและห่างกันมากขึ้น
         let gameLoopId, spawnId; 
         let chordsCleared = 0; 
-        let selectedDifficulty = 'Medium';
         let isPaused = false; 
         let lastSpawnedChordText = ""; 
 
@@ -451,15 +425,6 @@
         function openReview() { playSound(popSound); document.getElementById('setupScreen').style.display = 'none'; document.getElementById('pauseScreen').style.display = 'none'; document.getElementById('reviewScreen').style.display = 'flex'; }
         function closeReview() { playSound(popSound); document.getElementById('reviewScreen').style.display = 'none'; if(isPaused) { document.getElementById('pauseScreen').style.display = 'flex'; } else { document.getElementById('setupScreen').style.display = 'flex'; } }
 
-        function setDifficulty(level) {
-            selectedDifficulty = level; 
-            document.querySelectorAll('.btn-diff').forEach(btn => btn.classList.remove('active'));
-            if(level === 'Easy') document.querySelector('.diff-easy').classList.add('active'); 
-            if(level === 'Medium') document.querySelector('.diff-medium').classList.add('active'); 
-            if(level === 'Hard') document.querySelector('.diff-hard').classList.add('active'); 
-            playSound(popSound);
-        }
-
         function startGameFromScreen() {
             playSound(startSound);
             isPaused = false;
@@ -471,9 +436,9 @@
             
             score = 0; misses = 0; chordsCleared = 0; activeChords = []; lastSpawnedChordText = "";
             
-            if (selectedDifficulty === 'Easy') { gameSpeed = 0.6; spawnRate = 4000; }
-            else if (selectedDifficulty === 'Medium') { gameSpeed = 1.5; spawnRate = 2500; }
-            else if (selectedDifficulty === 'Hard') { gameSpeed = 2.0; spawnRate = 1800; }
+            // ล็อกค่าความเร็วปานกลางตายตัว
+            gameSpeed = 1.0; 
+            spawnRate = 3500;
             
             document.querySelectorAll('.cafe-plate').forEach(b => b.remove());
             scoreDisplay.textContent = score; missesDisplay.textContent = misses; 
@@ -545,15 +510,7 @@
                 scoreDisplay.textContent = score;
                 playSound(correctSound); showFeedback(`Perfect! +10 🤎`, 'correct'); 
 
-                if (score >= 180) { gameWin(); } 
-                else {
-                    if (chordsCleared % 5 === 0) {
-                        if (selectedDifficulty === 'Easy') { gameSpeed += 0.05; clearInterval(spawnId); spawnRate = Math.max(3500, spawnRate - 50); } 
-                        else if (selectedDifficulty === 'Medium') { gameSpeed += 0.15; clearInterval(spawnId); spawnRate = Math.max(1200, spawnRate - 100); } 
-                        else if (selectedDifficulty === 'Hard') { gameSpeed += 0.25; clearInterval(spawnId); spawnRate = Math.max(800, spawnRate - 150); }
-                        spawnId = setInterval(spawnChord, spawnRate);
-                    }
-                }
+                if (score >= 180) { gameWin(); }
             } else { 
                 handleMiss(); showFeedback('ผิดสูตร! 😱', 'wrong'); 
             }
@@ -573,7 +530,6 @@
             setTimeout(() => { document.getElementById('gameWrapper').style.display = 'none'; document.getElementById('gameWinScreen').style.display = 'flex'; document.getElementById('winScore').textContent = score; }, 400);
         }
 
-        // เชื่อมระบบปลดล็อคกลับไปหน้า Home (แผนที่หลัก) หากชนะ
         function winAndGoToMap() {
             playSound(popSound);
             let currentProgress = parseInt(localStorage.getItem('chordkupp_progress')) || 1;
@@ -581,7 +537,6 @@
             window.location.href = 'home.html'; 
         }
 
-        // กลับหน้าแผนที่โดยไม่เซฟ หากกดออกจากหน้าแพ้หรือหยุดเกม
         function loseAndGoToMap() {
             playSound(popSound);
             window.location.href = 'home.html'; 
