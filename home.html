@@ -7,40 +7,47 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --node-shadow-outer: rgba(129, 200, 76, 0.4);
-            --nav-accent: #a3e635;
-            --nav-accent-active: #bef264;
+            /* โทนสีตาม Colour Palette */
+            --palette-green: #ABC270;
+            --palette-yellow: #FEC868;
+            --palette-orange: #FDA769;
+            --palette-brown: #473C33;
+
+            --node-shadow-outer: rgba(71, 60, 51, 0.35);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; font-family: 'Mali', sans-serif; }
         
         body { 
-            background-color: #2c221e; 
+            background-color: var(--palette-brown); 
             display: flex; justify-content: center; align-items: center;
             height: 100vh; height: 100dvh; overflow: hidden;
         }
 
+        /* ล็อคขนาดและสัดส่วนหน้าจอสำหรับมือถือ ไม่ให้ยืดหดจนไอคอนล้นหรือซ้อนทับ */
         #app-container {
             width: 100%; max-width: 400px; 
             height: 100vh; height: 100dvh; 
+            max-height: 844px; 
+            aspect-ratio: 9 / 19; 
             display: flex; flex-direction: column;
-            background: #2c221e;
+            background: var(--palette-brown);
             position: relative; overflow: hidden;
-            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
         }
 
         /* ================= TOP BAR ================= */
         .top-bar {
             height: 60px; padding: 0 20px;
             display: flex; justify-content: space-between; align-items: center;
-            color: #f3f4f6; font-weight: 700; font-size: 1.1rem;
+            color: var(--palette-yellow); font-weight: 700; font-size: 1.1rem;
             letter-spacing: 1px; z-index: 100; flex-shrink: 0;
-            background: rgba(30, 48, 34, 0.65);
+            background: rgba(71, 60, 51, 0.75);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            border-bottom: 1px solid rgba(254, 200, 104, 0.2);
         }
-        .icon-btn { font-size: 1.2rem; cursor: pointer; opacity: 0.9; color: #f3f4f6; }
+        .icon-btn { font-size: 1.2rem; cursor: pointer; opacity: 0.9; color: var(--palette-yellow); }
         .icon-btn:active { opacity: 0.5; }
 
         /* ================= MAP AREA ================= */
@@ -50,7 +57,7 @@
             overflow: hidden;
         }
 
-        /* ภาพพื้นหลังแนวตั้ง S__1892359.jpg */
+        /* ภาพพื้นหลังแนวตั้ง S__1892359.jpg[cite: 2] */
         .map-bg-image {
             position: absolute;
             top: 0;
@@ -65,7 +72,7 @@
             position: relative; width: 100%; max-width: 400px; height: 100%; z-index: 10;
         }
 
-        /* ================= LEVEL NODES (ขยายใหญ่ขึ้นประมาณ 0.5 / 50%) ================= */
+        /* ================= LEVEL NODES ================= */
         .level-node {
             position: absolute; display: flex; flex-direction: column; align-items: center;
             cursor: pointer; z-index: 10; width: 100px; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -74,16 +81,18 @@
         .level-node:active { transform: translate(-50%, -50%) scale(0.92); }
 
         .node-circle-outer {
-            width: 95px; height: 95px; border-radius: 50%;
-            background: #eaf6d9; display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 10px 20px var(--node-shadow-outer), inset 0 -4px 8px rgba(0,0,0,0.05), inset 0 4px 8px #fff;
+            width: 90px; height: 90px; border-radius: 50%;
+            background: var(--palette-green); display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 10px 20px var(--node-shadow-outer), inset 0 -4px 8px rgba(0,0,0,0.1), inset 0 4px 8px rgba(255,255,255,0.4);
             position: relative;
+            border: 3px solid var(--palette-yellow);
         }
 
         .node-circle-inner {
-            width: 75px; height: 75px; border-radius: 50%;
+            width: 70px; height: 70px; border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
-            box-shadow: inset 0 3px 6px rgba(255,255,255,0.8), inset 0 -3px 6px rgba(0,0,0,0.1);
+            background: #fffcf4;
+            box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
             overflow: hidden; 
         }
 
@@ -94,38 +103,56 @@
         }
 
         .node-title {
-            margin-top: 6px; font-size: 0.95rem; font-weight: 700;
-            color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); letter-spacing: 0.5px; white-space: nowrap;
-            background: rgba(0,0,0,0.4); padding: 2px 8px; border-radius: 8px;
+            margin-top: 5px; font-size: 0.9rem; font-weight: 700;
+            color: var(--palette-brown); text-shadow: 0 1px 2px rgba(255,255,255,0.8); letter-spacing: 0.5px; white-space: nowrap;
+            background: rgba(255, 252, 244, 0.9); padding: 2px 8px; border-radius: 8px;
+            border: 1px solid var(--palette-orange);
         }
 
-        .star-badge { position: absolute; top: -6px; right: -2px; font-size: 1.3rem; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); z-index: 5; }
+        .star-badge { position: absolute; top: -6px; right: -2px; font-size: 1.2rem; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); z-index: 5; color: var(--palette-yellow); }
 
-        /* ================= BOTTOM NAVIGATION ================= */
+        /* ================= BOTTOM NAVIGATION (ปุ่มวงกลมลอยตัว) ================= */
         .bottom-nav { 
-            height: 65px; 
-            background: rgba(30, 48, 34, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            height: auto; 
+            background: transparent; 
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
             width: 100%; 
             display: flex; justify-content: space-around; align-items: center; 
             z-index: 200; 
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.2); 
+            box-shadow: none; 
             padding-bottom: env(safe-area-inset-bottom); 
-            flex-shrink: 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border: none;
         }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; width: 50px; }
-        .nav-icon { font-size: 1.3rem; opacity: 0.75; transition: 0.2s; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
-        .nav-dot { width: 5px; height: 5px; border-radius: 50%; background: transparent; transition: 0.2s;}
+
+        .nav-item { 
+            width: 52px; height: 52px; 
+            background: var(--palette-green); 
+            border: 2px solid var(--palette-yellow);
+            border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center; 
+            cursor: pointer; 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4), inset 0 -2px 4px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.6);
+            transition: all 0.2s ease;
+        }
+        .nav-item:active { transform: scale(0.92); }
+        .nav-icon { font-size: 1.3rem; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3)); }
         
-        .nav-item.active .nav-icon { opacity: 1; transform: translateY(-2px); filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4)); }
-        .nav-item.active .nav-dot { background: var(--nav-accent-active); }
+        .nav-item.active { 
+            background: var(--palette-orange); 
+            border-color: #fff;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(253, 167, 105, 0.6), inset 0 -2px 4px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.7);
+        }
 
         /* ================= MODAL POPUP STYLES ================= */
         .modal-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(58, 42, 34, 0.85); z-index: 1000; display: none;
+            background: rgba(71, 60, 51, 0.85); z-index: 1000; display: none;
             flex-direction: column; align-items: center; justify-content: center;
             backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); 
             padding: 20px; animation: fadeIn 0.2s ease;
@@ -135,25 +162,52 @@
         .modal-box {
             background: #fffcf4; width: 100%; max-width: 350px; max-height: 80vh;
             border-radius: 30px; padding: 25px 20px; display: flex; flex-direction: column;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3); border: 4px dashed #81c84c; position: relative;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 4px dashed var(--palette-green); position: relative;
         }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .modal-title { font-size: 1.5rem; font-weight: 900; color: #5d4037; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-shrink: 0; }
+        .modal-title { font-size: 1.3rem; font-weight: 900; color: var(--palette-brown); }
         .btn-close {
-            width: 36px; height: 36px; background: #ff5252; color: #fff; border: 2px solid #fff;
+            width: 36px; height: 36px; background: var(--palette-orange); color: #fff; border: 2px solid #fff;
             border-radius: 50%; font-size: 1.2rem; font-weight: 900; cursor: pointer;
             display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         .modal-body { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding-right: 4px; }
         .modal-body::-webkit-scrollbar { width: 6px; }
-        .modal-body::-webkit-scrollbar-thumb { background: #9cdb66; border-radius: 10px; }
+        .modal-body::-webkit-scrollbar-thumb { background: var(--palette-green); border-radius: 10px; }
 
+        /* การ์ดความรู้กดได้เหมือนปุ่ม */
         .theory-card {
-            background: #fff; padding: 12px 15px; border-radius: 15px; border: 2px solid #e0e0e0;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            background: #fff; padding: 14px 16px; border-radius: 16px; border: 2px solid #e0e0e0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03); cursor: pointer; transition: all 0.2s ease;
         }
-        .theory-card h4 { color: #5d4037; font-size: 1rem; font-weight: 900; margin-bottom: 4px; }
-        .theory-card p { color: #795548; font-size: 0.85rem; font-weight: 600; line-height: 1.4; }
+        .theory-card:hover {
+            border-color: var(--palette-orange);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(253, 167, 105, 0.2);
+        }
+        .theory-card h4 { color: var(--palette-brown); font-size: 1rem; font-weight: 900; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+        .theory-card h4::after { content: '➔'; font-size: 0.9rem; color: var(--palette-orange); }
+        .theory-card p { color: #6d5b4c; font-size: 0.85rem; font-weight: 600; line-height: 1.4; }
+
+        /* สไตล์หน้าต่างรายละเอียดเจาะลึก (รองรับการเลื่อนอ่านข้อความยาว ๆ) */
+        .detail-content {
+            background: #fff; padding: 15px; border-radius: 16px; border: 2px solid var(--palette-orange);
+            color: #6d5b4c; font-size: 0.9rem; line-height: 1.6; font-weight: 600;
+            max-height: 48vh;   /* จำกัดความสูงให้อ่านง่าย */
+            overflow-y: auto;    /* เปิดใช้งานระบบเลื่อน Scrollbar เมื่อข้อความยาว */
+            padding-right: 8px;
+        }
+        .detail-content::-webkit-scrollbar { width: 6px; }
+        .detail-content::-webkit-scrollbar-thumb { background: var(--palette-green); border-radius: 10px; }
+
+        .detail-content h3 { color: var(--palette-brown); font-size: 1.1rem; margin-bottom: 8px; font-weight: 900; }
+        
+        .btn-back {
+            background: var(--palette-green); color: var(--palette-brown); border: none; padding: 10px 20px;
+            border-radius: 12px; font-weight: 900; cursor: pointer; align-self: flex-start; margin-top: 5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); flex-shrink: 0;
+        }
+        .btn-back:active { transform: scale(0.95); }
     </style>
 </head>
 <body>
@@ -175,45 +229,45 @@
 
                 <!-- ด่าน 5: Inversion[cite: 2] -->
                 <div class="level-node" style="top: 10%; left: 50%;" onclick="window.location.href='level-inversion.html'">
-                    <div class="star-badge" style="color: #ffb74d;">⭐</div>
+                    <div class="star-badge">⭐</div>
                     <div class="node-circle-outer">
-                        <div class="node-circle-inner bg-yellow"><img src="shop-inversion.png" alt="Inversion" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍱</div>'"></div>
+                        <div class="node-circle-inner"><img src="shop-inversion.png" alt="Inversion" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍱</div>'"></div>
                     </div>
                     <div class="node-title">Inversion</div>
                 </div>
 
                 <!-- ด่าน 4: 7th Chord[cite: 2] -->
                 <div class="level-node" style="top: 28%; left: 27.5%;" onclick="window.location.href='level-chord7.html'">
-                    <div class="star-badge" style="color: #ffb74d;">⭐</div>
+                    <div class="star-badge">⭐</div>
                     <div class="node-circle-outer">
-                        <div class="node-circle-inner bg-green"><img src="shop-chord7.png" alt="7th Chord" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍣</div>'"></div>
+                        <div class="node-circle-inner"><img src="shop-chord7.png" alt="7th Chord" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍣</div>'"></div>
                     </div>
                     <div class="node-title">7th Chord</div>
                 </div>
 
                 <!-- ด่าน 3: Triad[cite: 2] -->
                 <div class="level-node" style="top: 48%; left: 72.5%;" onclick="window.location.href='level-triad.html'">
-                    <div class="star-badge" style="color: #ffb74d;">⭐</div>
+                    <div class="star-badge">⭐</div>
                     <div class="node-circle-outer">
-                        <div class="node-circle-inner bg-purple"><img src="shop-triad.png" alt="Triad" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🥪</div>'"></div>
+                        <div class="node-circle-inner"><img src="shop-triad.png" alt="Triad" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🥪</div>'"></div>
                     </div>
                     <div class="node-title">Triad</div>
                 </div>
 
                 <!-- ด่าน 2: Interval[cite: 2] -->
-                <div class="level-node" style="top: 68%; left: 27.5%;" onclick="window.location.href='level-interval.html'">
-                    <div class="star-badge" style="color: #ffb74d;">⭐</div>
+                <div class="level-node" style="top: 66%; left: 27.5%;" onclick="window.location.href='level-interval.html'">
+                    <div class="star-badge">⭐</div>
                     <div class="node-circle-outer">
-                        <div class="node-circle-inner bg-blue"><img src="shop-interval.png" alt="Interval" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍕</div>'"></div>
+                        <div class="node-circle-inner"><img src="shop-interval.png" alt="Interval" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍕</div>'"></div>
                     </div>
                     <div class="node-title">Interval</div>
                 </div>
 
-                <!-- ด่าน 1: Scale[cite: 2] -->
-                <div class="level-node" style="top: 86%; left: 50%;" onclick="window.location.href='level-scale.html'">
-                    <div class="star-badge" style="color: #ffb74d;">⭐</div>
+                <!-- ด่าน 1: Scale -->
+                <div class="level-node" style="top: 78%; left: 50%;" onclick="window.location.href='level-scale.html'">
+                    <div class="star-badge">⭐</div>
                     <div class="node-circle-outer">
-                        <div class="node-circle-inner bg-orange"><img src="shop-scale.png" alt="Scale" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>☕</div>'"></div>
+                        <div class="node-circle-inner"><img src="shop-scale.png" alt="Scale" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>☕</div>'"></div>
                     </div>
                     <div class="node-title">Scale</div>
                 </div>
@@ -221,62 +275,89 @@
             </div>
         </div>
 
-        <!-- ================= แถบเมนูด้านล่าง ================= -->
+        <!-- ================= แถบเมนูด้านล่าง (ปุ่มวงกลมลอยตัว) ================= -->
         <div class="bottom-nav">
-            <div class="nav-item active" onclick="switchTab(0)"><div class="nav-icon">🎓</div><div class="nav-dot"></div></div>
-            <div class="nav-item" onclick="switchTab(1)"><div class="nav-icon">📖</div><div class="nav-dot"></div></div>
-            <div class="nav-item" onclick="switchTab(2)"><div class="nav-icon">🎮</div><div class="nav-dot"></div></div>
-            <div class="nav-item" onclick="switchTab(3)"><div class="nav-icon">🔤</div><div class="nav-dot"></div></div>
+            <div class="nav-item active" onclick="switchTab(0)"><div class="nav-icon">🎓</div></div>
+            <div class="nav-item" onclick="switchTab(1)"><div class="nav-icon">📖</div></div>
+            <div class="nav-item" onclick="switchTab(2)"><div class="nav-icon">🎮</div></div>
+            <div class="nav-item" onclick="switchTab(3)"><div class="nav-icon">🔤</div></div>
         </div>
 
     </div>
 
-    <!-- ================= MODALS[cite: 2] ================= -->
+    <!-- ================= MODALS (คลังความรู้ดนตรี) ================= -->
     <div id="theoryModal" class="modal-overlay">
         <div class="modal-box">
             <div class="modal-header">
                 <div class="modal-title">📖 คลังความรู้ดนตรี</div>
                 <button class="btn-close" onclick="closeModal('theoryModal')">✕</button>
             </div>
-            <div class="modal-body">
-                <div class="theory-card">
+            <div class="modal-body" id="theoryListBody">
+                
+                <!-- 1. Scale (บันไดเสียง) -->
+                <div class="theory-card" onclick="openDetail('Scale (บันไดเสียง)', 'บันไดเสียงเมเจอร์และไมเนอร์', '<b>บันไดเสียงเมเจอร์ (Major scale)</b><br>• โครงสร้าง: ตัวที่ 3,4 และ 7,8 ห่างกันครึ่งเสียง<br>• ทางชาร์ปสร้างจากตัวที่ 5, ทางแฟลตสร้างจากตัวที่ 4<br><br><b>บันไดเสียงไมเนอร์ (Minor)</b><br>• <strong>เนเชอรัล (Natural minor):</strong> สร้างจากตัวที่ 6 ของบันไดเสียงเมเจอร์<br>• <strong>ฮาโมนิค (Harmonic minor):</strong> โครงสร้างแบบเนเชอรัล แต่ตัวที่ 7 สูงขึ้นครึ่งเสียง<br>• <strong>เมโลดิก (Melodic minor):</strong> ขาขึ้นตัวที่ 6 และ 7 สูงขึ้นครึ่งเสียง ขาลงกลับไปเป็นเนเชอรัล')">
                     <h4>☕ 1. Scale (บันไดเสียง)</h4>
-                    <p>กลุ่มโน้ตที่เรียงลำดับตามความถี่เสียง เช่น Major Scale มีสูตร T-T-S-T-T-T-S</p>
+                    <p>บันไดเสียงเมเจอร์, เนเชอรัล, ฮาโมนิค และเมโลดิกไมเนอร์</p>
                 </div>
-                <div class="theory-card">
+
+                <!-- 2. Interval (ขั้นคู่เสียง) -->
+                <div class="theory-card" onclick="openDetail('Interval (ขั้นคู่เสียง)', 'ประเภทและโครงสร้างของขั้นคู่เสียงต่างๆ', '• <strong>เพอร์เฟค (Perfect):</strong> คือ คู่ 1, 4, 5 และ 8<br>• <strong>เมเจอร์ (Major):</strong> คือ คู่ที่ 2, 3, 6 และ 7<br>• <strong>ไมเนอร์ (Minor):</strong> คือ ขั้นคู่เมเจอร์ที่ลดลงมาครึ่งเสียง<br>• <strong>ดิมินิชท์ (Diminished):</strong> คือ ขั้นคู่เพอร์เฟคลดลงมาครึ่งเสียง และขั้นคู่เมเจอร์ลดลงมาเต็มเสียง<br>• <strong>อ็อกเมนเดท (Augmented):</strong> คือ ขั้นคู่เพอร์เฟคและขั้นคู่เมเจอร์เพิ่มขึ้นครึ่งเสียง')">
                     <h4>🍕 2. Interval (ขั้นคู่เสียง)</h4>
-                    <p>ระยะห่างระหว่างโน้ต 2 ตัว แบ่งเป็น Perfect, Major, minor, Augmented และ diminished</p>
+                    <p>เพอร์เฟค, เมเจอร์, ไมเนอร์, ดิมินิชท์ และอ็อกเมนเดท</p>
                 </div>
-                <div class="theory-card">
+
+                <!-- 3. Triad (คอร์ดสามเสียง) -->
+                <div class="theory-card" onclick="openDetail('Triad (ทรัยแอด)', 'โน้ต 3 ตัวที่เรียงต่อกัน', 'เป็นโน้ต 3 ตัวที่เรียงต่อกัน แบ่งได้ดังนี้<br>• <strong>เมเจอร์ (Major):</strong> คือ ตัวที่ 1, 3, 5 ของสเกลเมเจอร์<br>• <strong>ไมเนอร์ (Minor):</strong> คือ ตัวที่ 3 จากทรัยแอดเมเจอร์ลดลงครึ่งเสียง<br>• <strong>ดิมินิชท์ (Diminished):</strong> คือ ตัวที่ 3 และ 5 จากทรัยแอดเมเจอร์ลดลงครึ่งเสียง<br>• <strong>อ็อกเมนเทด (Augmented):</strong> คือ ตัวที่ 5 จากทรัยแอดเมเจอร์เพิ่มขึ้นครึ่งเสียง')">
                     <h4>🥪 3. Triad (คอร์ดสามเสียง)</h4>
-                    <p>ประกอบด้วย Root, 3rd และ 5th มี 4 ชนิดหลักคือ Major, minor, Augmented, diminished</p>
+                    <p>โน้ต 3 ตัวที่เรียงต่อกัน (Major, Minor, Diminished, Augmented)</p>
                 </div>
-                <div class="theory-card">
+
+                <!-- 4. 7th Chord (คอร์ดเจ็ด) - อัปเดตข้อมูลคอร์ดทบเจ็ดตามที่ขอ -->
+                <div class="theory-card" onclick="openDetail('7th Chord (คอร์ดทบเจ็ด)', 'คอร์ดพื้นฐานที่ทบด้วยโน้ตตัวที่ 7 เข้ามา', 'คอร์ดทบเจ็ด (Seventh chord) คือ คอร์ดพื้นฐานที่ทบด้วยโน้ตตัวที่ 7 เข้ามา ที่พบในการประสานเสียงพื้นฐานมีอยู่ 6 ชนิด ดังนี้<br><br>1) <strong>คอร์ดทบเจ็ดเมเจอร์ (Major seventh chord):</strong><br>• เกิดจากคอร์ดทรัยแอดเมเจอร์ (Major Triad) ซ้อนทับด้วยโน้ตตัวที่ 7 เมเจอร์ (Major 7th)<br><br>2) <strong>คอร์ดทบเจ็ดเมเจอร์-ไมเนอร์ (Major-minor seventh chord) หรือ คอร์ดโดมินันท์ (Dominant seventh chord):</strong><br>• เกิดจากคอร์ดทรัยแอดเมเจอร์ (Major Triad) ซ้อนทับด้วยโน้ตตัวที่ 7 ไมเนอร์ (Minor 7th)<br><br>3) <strong>คอร์ดทบเจ็ดไมเนอร์ (Minor seventh chord):</strong><br>• เกิดจากคอร์ดทรัยแอดไมเนอร์ (Minor Triad) ซ้อนทับด้วยโน้ตตัวที่ 7 ไมเนอร์ (Minor 7th)<br><br>4) <strong>คอร์ดทบเจ็ดไมเนอร์-เมเจอร์ (Minor-Major Seventh Chord):</strong><br>• เกิดจากคอร์ดทรัยแอดไมเนอร์ (Minor Triad) ซ้อนทับด้วยโน้ตตัวที่ 7 เมเจอร์ (Major 7th)<br><br>5) <strong>คอร์ดฮาล์ฟดิมินิชเซเวนธ์ (Half-Diminished Seventh Chord):</strong><br>• เกิดจากคอร์ดทรัยแอดดิมินิช (Diminished Triad) ซ้อนทับด้วยโน้ตตัวที่ 7 ไมเนอร์ (Minor 7th)<br><br>6) <strong>คอร์ดฟลูดิมินิชท์ (Fully-Diminished seventh chord):</strong><br>• เกิดจากคอร์ดทรัยแอดดิมินิช (Diminished Triad) ซ้อนทับด้วยโน้ตตัวที่ 7 ดิมินิช (Diminished 7th) ซึ่งมีระยะเสียงเท่ากับคู่ 6 เมเจอร์')">
                     <h4>🍣 4. 7th Chord (คอร์ดเจ็ด)</h4>
-                    <p>เพิ่มโน้ตตัวที่ 7 เข้าไปในคอร์ดสามเสียง เช่น Maj7, min7, Dominant 7</p>
+                    <p>คอร์ดพื้นฐานทบโน้ตตัวที่ 7 (6 ชนิดในการประสานเสียง)</p>
                 </div>
-                <div class="theory-card">
+
+                <!-- 5. Inversion (การพลิกกลับคอร์ด) -->
+                <div class="theory-card" onclick="openDetail('Inversion (การพลิกกลับคอร์ด)', 'การสลับโน้ตตัวล่างสุดมาเป็นเสียงเบส', '• <strong>รูปพื้นต้น (Root Position):</strong> มีโน้ตตัวราก (Root) อยู่ล่างสุดเป็นเสียงเบส<br>• <strong>การพลิกกลับครั้งที่ 1 (First Inversion):</strong> นำโน้ตตัวที่สาม (Third) มาเป็นเสียงเบสอยู่ล่างสุด<br>• <strong>การพลิกกลับครั้งที่ 2 (Second Inversion):</strong> นำโน้ตตัวที่ห้า (Fifth) มาเป็นเสียงเบสอยู่ล่างสุด<br>• <strong>การพลิกกลับครั้งที่ 3 (Third Inversion):</strong> (เฉพาะในคอร์ดทบเจ็ด) นำโน้ตตัวที่เจ็ด (Seventh) มาเป็นเสียงเบสอยู่ล่างสุด')">
                     <h4>🍱 5. Inversion (การพลิกกลับคอร์ด)</h4>
-                    <p>การสลับโน้ตตัวล่างสุดไปไว้ข้างบน แบ่งเป็น Root, 1st, 2nd และ 3rd Inversion</p>
+                    <p>รูปพื้นต้น และการพลิกกลับครั้งที่ 1, 2, 3</p>
                 </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal ย่อยสำหรับแสดงรายละเอียดเจาะลึก (พร้อม Scrollbar เลื่อนดูข้อความยาวๆ) -->
+    <div id="detailModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <div class="modal-title" id="detailTitle">รายละเอียดหัวข้อ</div>
+                <button class="btn-close" onclick="closeDetail()">✕</button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 12px;">
+                <div class="detail-content" id="detailText">
+                    <!-- เนื้อหาเชิงลึกจะถูกแสดงตรงนี้และเลื่อนอ่านได้เมื่อยาวเกินไป -->
+                </div>
+                <button class="btn-back" onclick="closeDetail()">⬅ กลับหน้าคลังความรู้</button>
             </div>
         </div>
     </div>
 
     <div id="statsModal" class="modal-overlay">
-        <div class="modal-box" style="border-color: #6dd5fa; align-items: center;">
+        <div class="modal-box" style="border-color: var(--palette-orange); align-items: center;">
             <div class="modal-header" style="width: 100%;">
                 <div class="modal-title">🎮 สถิติของคุณเชฟ</div>
                 <button class="btn-close" onclick="closeModal('statsModal')">✕</button>
             </div>
             <div class="modal-body" style="align-items: center; justify-content: center; width: 100%;">
-                <img src="IMG_BAM.jpg" alt="Player Stats" style="width: 100%; max-height: 50vh; object-fit: contain; border-radius: 20px; border: 2px dashed #6dd5fa;">
+                <img src="IMG_BAM.jpg" alt="Player Stats" style="width: 100%; max-height: 50vh; object-fit: contain; border-radius: 20px; border: 2px dashed var(--palette-orange);">
             </div>
         </div>
     </div>
 
     <div id="vocabModal" class="modal-overlay">
-        <div class="modal-box" style="border-color: #ffb347;">
+        <div class="modal-box" style="border-color: var(--palette-yellow);">
             <div class="modal-header">
                 <div class="modal-title">🔤 คำศัพท์ดนตรีสากล</div>
                 <button class="btn-close" onclick="closeModal('vocabModal')">✕</button>
@@ -341,6 +422,16 @@
             document.querySelectorAll('.modal-overlay').forEach(modal => {
                 modal.style.display = 'none';
             });
+        }
+
+        function openDetail(title, shortDesc, fullDetail) {
+            document.getElementById('detailTitle').innerText = title;
+            document.getElementById('detailText').innerHTML = `<h3>💡 บทเรียนเชิงลึก</h3><p style="margin-bottom:10px;"><strong>คำอธิบาย:</strong> ${shortDesc}</p><hr style="border:0; border-top:1px solid #eee; margin:10px 0;"><p><strong>รายละเอียดเพิ่มเติม:</strong><br>${fullDetail}</p>`;
+            document.getElementById('detailModal').style.display = 'flex';
+        }
+
+        function closeDetail() {
+            document.getElementById('detailModal').style.display = 'none';
         }
     </script>
 
