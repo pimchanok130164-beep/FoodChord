@@ -295,29 +295,29 @@
                 </p>
             </div>
             <button class="btn-action" onclick="startGame()">เริ่มดริปกาแฟ ▶</button>
-            <button class="btn-action btn-secondary" onclick="openReview()">ทบทวน 4 สเกล 🎼</button>
+            <button class="btn-action btn-secondary" onclick="openReview()">ทบทวนสเกล 🎼</button>
         </div>
 
         <!-- 📖 หน้าต่างทบทวนเมนู -->
         <div id="reviewScreen" class="overlay-screen">
-            <h1 class="overlay-title" style="font-size: 2rem;">📖 4 สเกลหลัก</h1>
+            <h1 class="overlay-title" style="font-size: 2rem;">📖 ฐานข้อมูลสเกล</h1>
             
             <div class="review-box">
                 <div class="chord-info">
                     <span class="chord-title">☀️ Major Scale (เมเจอร์)</span>
-                    <span class="chord-desc">อารมณ์สว่าง สดใส<br>ตัวอย่าง: C Major (C - D - E - F - G - A - B)</span>
+                    <span class="chord-desc">อารมณ์สว่าง สดใส (C, G, D, A, E, F Major ฯลฯ)</span>
                 </div>
                 <div class="chord-info">
                     <span class="chord-title">🌧️ Natural Minor (เนเจอรัลไมเนอร์)</span>
-                    <span class="chord-desc">อารมณ์หม่น เศร้า (ติดแฟลต ♭3, ♭6, ♭7)<br>ตัวอย่าง: A Minor (A - B - C - D - E - F - G)</span>
+                    <span class="chord-desc">อารมณ์หม่น เศร้า (A, E, D, B, G Natural Minor)</span>
                 </div>
                 <div class="chord-info">
                     <span class="chord-title">🕌 Harmonic Minor (ฮาร์โมนิกไมเนอร์)</span>
-                    <span class="chord-desc">เหมือน Natural Minor แต่ <b>ยกโน้ตตัวที่ 7 ขึ้นครึ่งเสียง (♯7)</b><br>ตัวอย่าง: A Harmonic (A - B - C - D - E - F - <b>G#</b>)</span>
+                    <span class="chord-desc">ยกระดับตัวที่ 7 ขึ้นครึ่งเสียง (A, E, D Harmonic Minor)</span>
                 </div>
                 <div class="chord-info">
                     <span class="chord-title">🌊 Melodic Minor (เมโลดิกไมเนอร์)</span>
-                    <span class="chord-desc">เหมือน Natural Minor แต่ <b>ยกโน้ตตัวที่ 6 และ 7 ขึ้นครึ่งเสียง (♯6, ♯7)</b><br>ตัวอย่าง: A Melodic (A - B - C - D - E - <b>F#</b> - <b>G#</b>)</span>
+                    <span class="chord-desc">ยกระดับตัวที่ 6 และ 7 ขาขึ้น (A, E, D Melodic Minor)</span>
                 </div>
             </div>
             
@@ -372,20 +372,33 @@
             audio.play().catch(e => {}); 
         }
 
-        // ---------------- 📚 ฐานข้อมูลเฉพาะ 4 สเกลหลัก ----------------
+        // ---------------- 📚 ฐานข้อมูลสเกลที่เพิ่มความหลากหลายมากขึ้น ----------------
         const scalesData = [
+            // Major Scales
             { name: "C Major", notes: ["C", "D", "E", "F", "G", "A", "B"] },
             { name: "G Major", notes: ["G", "A", "B", "C", "D", "E", "F#"] },
+            { name: "D Major", notes: ["D", "E", "F#", "G", "A", "B", "C#"] },
+            { name: "A Major", notes: ["A", "B", "C#", "D", "E", "F#", "G#"] },
             { name: "F Major", notes: ["F", "G", "A", "Bb", "C", "D", "E"] },
+            { name: "Bb Major", notes: ["Bb", "C", "D", "Eb", "F", "G", "A"] },
+            
+            // Natural Minor Scales
             { name: "A Natural Minor", notes: ["A", "B", "C", "D", "E", "F", "G"] },
             { name: "E Natural Minor", notes: ["E", "F#", "G", "A", "B", "C", "D"] },
             { name: "D Natural Minor", notes: ["D", "E", "F", "G", "A", "Bb", "C"] },
+            { name: "B Natural Minor", notes: ["B", "C#", "D", "E", "F#", "G", "A"] },
+            
+            // Harmonic Minor Scales
             { name: "A Harmonic Minor", notes: ["A", "B", "C", "D", "E", "F", "G#"] },
             { name: "E Harmonic Minor", notes: ["E", "F#", "G", "A", "B", "C", "D#"] },
             { name: "D Harmonic Minor", notes: ["D", "E", "F", "G", "A", "Bb", "C#"] },
+            { name: "B Harmonic Minor", notes: ["B", "C#", "D", "E", "F#", "G", "A#"] },
+            
+            // Melodic Minor Scales
             { name: "A Melodic Minor", notes: ["A", "B", "C", "D", "E", "F#", "G#"] },
             { name: "E Melodic Minor", notes: ["E", "F#", "G", "A", "B", "C#", "D#"] },
-            { name: "D Melodic Minor", notes: ["D", "E", "F", "G", "A", "B", "C#"] }
+            { name: "D Melodic Minor", notes: ["D", "E", "F", "G", "A", "B", "C#"] },
+            { name: "C Melodic Minor", notes: ["C", "D", "Eb", "F", "G", "A", "B"] }
         ];
 
         const allNotes = ["C", "C#", "D", "D#", "Eb", "E", "F", "F#", "G", "G#", "Ab", "A", "Bb", "B"];
@@ -519,13 +532,11 @@
             if(currentProgress < 2) { 
                 localStorage.setItem('chordkupp_progress', 2); 
             }
-            // ปรับแก้จุดที่ 1: เปลี่ยน index.html เป็น home.html
             window.location.href = 'home.html'; 
         }
 
         function loseGameBackToMap() {
             playSound(popSound);
-            // ปรับแก้จุดที่ 2: เปลี่ยน index.html เป็น home.html
             window.location.href = 'home.html'; 
         }
 
