@@ -156,7 +156,6 @@
             cursor: not-allowed;
         }
 
-        /* 🌟 ออนิเมชั่น ด่านปัจจุบันที่กำลังเล่น */
         .level-node.current .node-circle-outer {
             animation: pulseCurrentNode 1.5s ease-in-out infinite alternate;
             border-color: #fff;
@@ -164,14 +163,8 @@
         }
 
         @keyframes pulseCurrentNode {
-            0% {
-                transform: scale(1);
-                box-shadow: 0 10px 20px var(--node-shadow-outer), 0 0 0 0 rgba(253, 167, 105, 0.7);
-            }
-            100% {
-                transform: scale(1.1);
-                box-shadow: 0 15px 30px var(--node-shadow-outer), 0 0 0 12px rgba(253, 167, 105, 0);
-            }
+            0% { transform: scale(1); box-shadow: 0 10px 20px var(--node-shadow-outer), 0 0 0 0 rgba(253, 167, 105, 0.7); }
+            100% { transform: scale(1.1); box-shadow: 0 15px 30px var(--node-shadow-outer), 0 0 0 12px rgba(253, 167, 105, 0); }
         }
 
         /* ================= BOTTOM NAVIGATION ================= */
@@ -223,23 +216,30 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .modal-box {
-            background: #fffcf4; width: 100%; max-width: 350px; max-height: 80vh;
+            background: #fffcf4; 
+            width: 100%; max-width: 350px; max-height: 80vh;
             border-radius: 24px; padding: 25px 20px; display: flex; flex-direction: column;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 3px dashed var(--palette-green); position: relative;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4); 
+            border: 3px dashed var(--palette-green); 
+            position: relative;
         }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-shrink: 0; }
-        .modal-title { font-size: 1.2rem; font-weight: 700; color: var(--palette-brown); }
+        .modal-title { font-size: 1.15rem; font-weight: 700; color: var(--palette-brown); }
+        
         .btn-close {
             width: 32px; height: 32px; background: var(--palette-orange); color: #fff; border: 2px solid #fff;
             border-radius: 50%; font-size: 1rem; font-weight: 700; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
         }
+        .btn-close:active { transform: scale(0.9); }
+
         .modal-body { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding-right: 4px; }
         .modal-body::-webkit-scrollbar { width: 6px; }
         .modal-body::-webkit-scrollbar-thumb { background: var(--palette-green); border-radius: 10px; }
 
         .theory-card {
-            background: #fff; padding: 14px 16px; border-radius: 16px; border: 2px solid #eee;
+            background: #fff; padding: 14px 16px; border-radius: 16px; border: 2px solid #f0ead6;
             box-shadow: 0 4px 10px rgba(0,0,0,0.03); cursor: pointer; transition: all 0.2s ease;
         }
         .theory-card:hover {
@@ -262,10 +262,49 @@
         
         .btn-back {
             background: var(--palette-green); color: var(--palette-brown); border: none; padding: 8px 16px;
-            border-radius: 10px; font-weight: 700; cursor: pointer; align-self: flex-start; margin-top: 5px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); flex-shrink: 0;
+            border-radius: 12px; font-weight: 700; cursor: pointer; align-self: flex-start; margin-top: 5px;
+            box-shadow: 0 4px 10px rgba(171, 194, 112, 0.3); flex-shrink: 0;
+            transition: transform 0.2s;
         }
         .btn-back:active { transform: scale(0.95); }
+
+        .reward-card {
+            background: #fff; 
+            border: 2px solid var(--palette-yellow);
+            border-radius: 16px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+        }
+        .reward-card:hover {
+            border-color: var(--palette-orange);
+            transform: translateY(-2px);
+        }
+        .reward-info h4 { color: var(--palette-brown); font-size: 0.95rem; font-weight: 700; margin-bottom: 3px; }
+        .reward-info p { color: #6d5b4c; font-size: 0.75rem; font-weight: 500; }
+        
+        .btn-claim {
+            background: var(--palette-orange);
+            color: #fff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(253, 167, 105, 0.3);
+            transition: transform 0.2s;
+        }
+        .btn-claim:active { transform: scale(0.92); }
+        .btn-claim.claimed {
+            background: #e0d8cc;
+            color: #8d6e63;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
     </style>
 </head>
 <body>
@@ -332,7 +371,7 @@
         <div class="bottom-nav">
             <div class="nav-item active" onclick="playClickSfx(); switchTab(0)"><div class="nav-icon">🎓</div></div>
             <div class="nav-item" onclick="playPageSfx(); switchTab(1)"><div class="nav-icon">📖</div></div>
-            <div class="nav-item" onclick="playClickSfx(); switchTab(2)"><div class="nav-icon">🎮</div></div>
+            <div class="nav-item" onclick="playClickSfx(); switchTab(2)"><div class="nav-icon">🎁</div></div>
             <div class="nav-item" onclick="playClickSfx(); switchTab(3)"><div class="nav-icon">🔤</div></div>
         </div>
 
@@ -367,20 +406,52 @@
         </div>
     </div>
 
-    <div id="statsModal" class="modal-overlay">
-        <div class="modal-box" style="border-color: var(--palette-orange); align-items: center;">
-            <div class="modal-header" style="width: 100%;">
-                <div class="modal-title">🎮 สถิติของคุณเชฟ</div>
-                <button class="btn-close" onclick="playClickSfx(); closeModal('statsModal')">✕</button>
+    <div id="rewardsModal" class="modal-overlay">
+        <div class="modal-box" style="border-color: var(--palette-orange);">
+            <div class="modal-header">
+                <div class="modal-title">🎁 ห้องรางวัล & คะแนนสะสม</div>
+                <button class="btn-close" onclick="playClickSfx(); closeModal('rewardsModal')">✕</button>
             </div>
-            <div class="modal-body" style="align-items: center; width: 100%; gap: 15px; overflow-y: auto;">
-                <img src="IMG_BAM.jpg" alt="Player Stats 1" style="width: 100%; object-fit: contain; border-radius: 16px; border: 2px dashed var(--palette-orange); flex-shrink: 0;">
-                <img src="IMG_BAM2.jpg" alt="Player Stats 2" style="width: 100%; object-fit: contain; border-radius: 16px; border: 2px dashed var(--palette-orange); flex-shrink: 0;" onerror="this.style.display='none'">
+            <div class="modal-body" style="gap: 12px;">
+                
+                <div style="background: linear-gradient(135deg, var(--palette-orange), var(--palette-yellow)); padding: 16px; border-radius: 16px; color: #fff; text-align: center; box-shadow: 0 4px 12px rgba(253, 167, 105, 0.3);">
+                    <div style="font-size: 0.8rem; font-weight: 600; opacity: 0.95;">คะแนนสะสมเชฟทั้งหมด</div>
+                    <div id="totalScoreDisplay" style="font-size: 1.8rem; font-weight: 700; margin-top: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">0 คะแนน</div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--palette-brown);">📦 กล่องของขวัญโบนัสพิเศษ</div>
+                    <div id="resetTimerDisplay" style="font-size: 0.7rem; font-weight: 600; color: #8d6e63;">🔄 สุ่มใหม่ใน: --:--:--</div>
+                </div>
+
+                <div class="reward-card">
+                    <div class="reward-info">
+                        <h4>✨ กล่องต้อนรับเชฟหน้าใหม่</h4>
+                        <p>รับทันที +100 คะแนนโบนัสแรกเข้า</p>
+                    </div>
+                    <button class="btn-claim" id="btnReward1" onclick="claimReward(1, 100)">รับรางวัล</button>
+                </div>
+
+                <div class="reward-card">
+                    <div class="reward-info">
+                        <h4 id="dailyBoxTitle">🎁 กล่องโบนัสสุ่มประจำวัน</h4>
+                        <p id="dailyBoxDesc">สุ่มรับคะแนนโบนัสเปลี่ยนใหม่ทุก 24 ชม.</p>
+                    </div>
+                    <button class="btn-claim" id="btnReward2" onclick="claimDailyRandomReward()">เปิดกล่อง</button>
+                </div>
+
+                <div class="reward-card">
+                    <div class="reward-info">
+                        <h4>⭐ โบนัสดาวสะสมครบ 5 ดวง</h4>
+                        <p>สำหรับเชฟที่ผ่านด่านความรู้ครบ (+500 คะแนน)</p>
+                    </div>
+                    <button class="btn-claim" id="btnReward3" onclick="claimReward(3, 500)">รับรางวัล</button>
+                </div>
+
             </div>
         </div>
     </div>
 
-    <!-- ================= 🔤 คำศัพท์ดนตรีสากล (ที่อัปเดตข้อมูลเพิ่ม) ================= -->
     <div id="vocabModal" class="modal-overlay">
         <div class="modal-box" style="border-color: var(--palette-yellow);">
             <div class="modal-header">
@@ -395,30 +466,6 @@
                 <div class="theory-card">
                     <h4>Bass Clef (กุญแจฟา)</h4>
                     <p>สัญลักษณ์บันทึกเสียงต่ำ เริ่มต้นคาบเส้นที่ 4 ที่ตัว F3</p>
-                </div>
-                <div class="theory-card">
-                    <h4>Sharp (♯ / ชาร์ป)</h4>
-                    <p>เครื่องหมายแปลงเสียงที่ทำให้โน้ตสูงขึ้นครึ่งเสียง</p>
-                </div>
-                <div class="theory-card">
-                    <h4>Flat (♭ / แฟลต)</h4>
-                    <p>เครื่องหมายแปลงเสียงที่ทำให้โน้ตต่ำลงครึ่งเสียง</p>
-                </div>
-                <div class="theory-card">
-                    <h4>Natural (♮ / เนเชอรัล)</h4>
-                    <p>เครื่องหมายลบล้างชาร์ปหรือแฟลต ให้กลับเป็นเสียงปกติ</p>
-                </div>
-                <div class="theory-card">
-                    <h4>Root Note (โน้ตราก)</h4>
-                    <p>โน้ตตัวแรกที่เป็นฐานและเป็นชื่อเรียกของคอร์ดนั้น ๆ</p>
-                </div>
-                <div class="theory-card">
-                    <h4>Tempo (เทมโป / ความเร็ว)</h4>
-                    <p>อัตราความเร็วช้าในการบรรเลงบทเพลง (เช่น Allegro, Andante)</p>
-                </div>
-                <div class="theory-card">
-                    <h4>Chord (คอร์ด)</h4>
-                    <p>กลุ่มเสียงตั้งแต่ 3 โน้ตขึ้นไปที่ถูกบรรเลงพร้อมกันอย่างมีความหมาย</p>
                 </div>
             </div>
         </div>
@@ -448,9 +495,47 @@
             }
 
             document.getElementById('chefDisplayName').textContent = `CHEF: ${savedChefName.toUpperCase()}`;
+            checkDailyReset(); // ตรวจสอบเวลาสุ่มรีเซ็ตประจำวัน
             loadGameProgress();
+            loadRewardsData();
             createParticles();
+            setInterval(updateResetCountdown, 1000);
         });
+
+        // 🔄 ระบบตรวจสอบและรีเซ็ตกล่องสุ่มทุก 24 ชั่วโมง
+        function checkDailyReset() {
+            const now = new Date().getTime();
+            let lastResetTime = parseInt(localStorage.getItem('chef_last_reset_time')) || 0;
+            const twentyFourHours = 24 * 60 * 60 * 1000;
+
+            if (now - lastResetTime >= twentyFourHours || lastResetTime === 0) {
+                // ครบ 24 ชั่วโมง รีเซ็ตสถานะกล่องสุ่มประจำวัน (กล่องที่ 2)
+                localStorage.setItem('reward_claimed_2', 'false');
+                // สุ่มแต้มรางวัลใหม่สำหรับวันรุ่งขึ้น (ระหว่าง 150 ถึง 400 คะแนน)
+                let randomPoints = Math.floor(Math.random() * 6) * 50 + 150; 
+                localStorage.setItem('chef_daily_random_points', randomPoints);
+                localStorage.setItem('chef_last_reset_time', now);
+            }
+        }
+
+        function updateResetCountdown() {
+            const now = new Date().getTime();
+            let lastResetTime = parseInt(localStorage.getItem('chef_last_reset_time')) || now;
+            const twentyFourHours = 24 * 60 * 60 * 1000;
+            let timeLeft = twentyFourHours - (now - lastResetTime);
+
+            if (timeLeft <= 0) {
+                checkDailyReset();
+                loadRewardsData();
+                timeLeft = twentyFourHours;
+            }
+
+            let hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            document.getElementById('resetTimerDisplay').textContent = `🔄 สุ่มใหม่ใน: ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
 
         function createParticles() {
             const container = document.getElementById('fairyParticles');
@@ -499,6 +584,63 @@
             }
         }
 
+        function loadRewardsData() {
+            let totalScore = parseInt(localStorage.getItem('chef_total_score')) || 0;
+            document.getElementById('totalScoreDisplay').textContent = `${totalScore.toLocaleString()} คะแนน`;
+
+            // โหลดแต้มสุ่มประจำวันมาแสดงที่กล่องที่ 2
+            let dailyPts = parseInt(localStorage.getItem('chef_daily_random_points')) || 250;
+            document.getElementById('dailyBoxTitle').textContent = `🎁 กล่องสุ่มนำโชคประจำวัน (+${dailyPts} แต้ม)`;
+
+            for (let id = 1; id <= 3; id++) {
+                let isClaimed = localStorage.getItem(`reward_claimed_${id}`) === 'true';
+                const btn = document.getElementById(`btnReward${id}`);
+                if (btn) {
+                    if (isClaimed) {
+                        btn.textContent = 'รับแล้ว ✅';
+                        btn.classList.add('claimed');
+                    } else {
+                        btn.textContent = id === 2 ? 'เปิดกล่อง' : 'รับรางวัล';
+                        btn.classList.remove('claimed');
+                    }
+                }
+            }
+        }
+
+        function claimReward(rewardId, points) {
+            playClickSfx();
+            let isClaimed = localStorage.getItem(`reward_claimed_${rewardId}`) === 'true';
+            if (isClaimed) {
+                alert("คุณเชฟได้ทำการรับรางวัลนี้ไปแล้วครับ!");
+                return;
+            }
+
+            if (rewardId === 3) {
+                let unlockedLevel = parseInt(localStorage.getItem('chordkupp_progress')) || 1;
+                let starsEarned = unlockedLevel > 1 ? unlockedLevel - 1 : 0;
+                if (unlockedLevel === 5 && localStorage.getItem('chordkupp_progress') >= 5) starsEarned = 5;
+
+                if (starsEarned < 5) {
+                    alert("🔒 เงื่อนไขยังไม่สำเร็จ! คุณเชฟต้องสะสมดาวให้ครบ 5 ดวงก่อนจึงจะเปิดกล่องนี้ได้ครับ");
+                    return;
+                }
+            }
+
+            localStorage.setItem(`reward_claimed_${rewardId}`, 'true');
+            let currentScore = parseInt(localStorage.getItem('chef_total_score')) || 0;
+            currentScore += points;
+            localStorage.setItem('chef_total_score', currentScore);
+
+            loadRewardsData();
+            alert(`🎉 ยินดีด้วยครับ! คุณเชฟได้รับโบนัส +${points} คะแนนเรียบร้อยแล้ว!`);
+        }
+
+        // ฟังก์ชันกดรับรางวัลกล่องสุ่มประจำวัน
+        function claimDailyRandomReward() {
+            let dailyPts = parseInt(localStorage.getItem('chef_daily_random_points')) || 250;
+            claimReward(2, dailyPts);
+        }
+
         function checkAndPlay(levelTarget, url) {
             playClickSfx();
             let unlockedLevel = parseInt(localStorage.getItem('chordkupp_progress')) || 1;
@@ -513,6 +655,12 @@
             if (confirm("ต้องการออกจากระบบและล้างข้อมูลการเดินทางใช่ไหมครับ?")) {
                 localStorage.removeItem('chef_name');
                 localStorage.removeItem('chordkupp_progress');
+                localStorage.removeItem('chef_total_score');
+                localStorage.removeItem('reward_claimed_1');
+                localStorage.removeItem('reward_claimed_2');
+                localStorage.removeItem('reward_claimed_3');
+                localStorage.removeItem('chef_last_reset_time');
+                localStorage.removeItem('chef_daily_random_points');
                 window.location.href = 'login.html';
             }
         }
@@ -526,7 +674,11 @@
 
             if (index === 0) closeAllModals();
             else if (index === 1) openModal('theoryModal');
-            else if (index === 2) openModal('statsModal');
+            else if (index === 2) {
+                checkDailyReset();
+                loadRewardsData();
+                openModal('rewardsModal');
+            }
             else if (index === 3) openModal('vocabModal');
         }
 
