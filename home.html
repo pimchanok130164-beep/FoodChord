@@ -42,9 +42,9 @@
             height: 44px; 
             padding: 0 14px;
             display: flex; justify-content: space-between; align-items: center;
-            color: #fff; font-weight: 700; font-size: 0.85rem;
-            letter-spacing: 1px; z-index: 100; flex-shrink: 0;
-            background: rgba(71, 60, 51, 0.6);
+            color: #fff; font-weight: 700; font-size: 0.8rem;
+            letter-spacing: 0.5px; z-index: 100; flex-shrink: 0;
+            background: rgba(71, 60, 51, 0.65);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-radius: 22px;
@@ -53,6 +53,18 @@
         }
         .icon-btn { font-size: 1.1rem; cursor: pointer; opacity: 0.9; color: var(--palette-yellow); transition: opacity 0.2s; }
         .icon-btn:active { opacity: 0.5; }
+
+        .progress-badge {
+            background: rgba(254, 200, 104, 0.25);
+            border: 1px solid var(--palette-yellow);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            color: #fff8e1;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
 
         /* ================= MAP AREA ================= */
         .map-area {
@@ -76,6 +88,28 @@
             padding-top: 60px; 
         }
 
+        /* ================= 🧚‍♂️ ละอองเวทมนตร์ / หิ่งห้อย ================= */
+        .fairy-particles {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 3;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            background: #fff6bd;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #fec868;
+            animation: floatUpward linear infinite;
+        }
+        @keyframes floatUpward {
+            0% { transform: translateY(100vh) scale(0.3); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(-50px) scale(1.2); opacity: 0; }
+        }
+
         /* ================= LEVEL NODES ================= */
         .level-node {
             position: absolute; display: flex; flex-direction: column; align-items: center;
@@ -90,6 +124,7 @@
             box-shadow: 0 10px 20px var(--node-shadow-outer), inset 0 -4px 8px rgba(0,0,0,0.1), inset 0 4px 8px rgba(255,255,255,0.4);
             position: relative;
             border: 3px solid var(--palette-yellow);
+            transition: all 0.3s ease;
         }
 
         .node-circle-inner {
@@ -115,11 +150,28 @@
 
         .star-badge { position: absolute; top: -6px; right: -2px; font-size: 1.2rem; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); z-index: 5; color: var(--palette-yellow); }
 
-        /* สถานะล็อคด่าน */
         .level-node.locked {
             opacity: 0.5;
             filter: grayscale(0.8);
             cursor: not-allowed;
+        }
+
+        /* 🌟 ออนิเมชั่น ด่านปัจจุบันที่กำลังเล่น (Active / Current Level Gimmick) */
+        .level-node.current .node-circle-outer {
+            animation: pulseCurrentNode 1.5s ease-in-out infinite alternate;
+            border-color: #fff;
+            background: var(--palette-orange);
+        }
+
+        @keyframes pulseCurrentNode {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 10px 20px var(--node-shadow-outer), 0 0 0 0 rgba(253, 167, 105, 0.7);
+            }
+            100% {
+                transform: scale(1.1);
+                box-shadow: 0 15px 30px var(--node-shadow-outer), 0 0 0 12px rgba(253, 167, 105, 0);
+            }
         }
 
         /* ================= BOTTOM NAVIGATION ================= */
@@ -202,13 +254,10 @@
         .detail-content {
             background: #fff; padding: 15px; border-radius: 16px; border: 2px solid var(--palette-orange);
             color: #6d5b4c; font-size: 0.85rem; line-height: 1.6; font-weight: 500;
-            max-height: 48vh;   
-            overflow-y: auto;    
-            padding-right: 8px;
+            max-height: 48vh; overflow-y: auto; padding-right: 8px;
         }
         .detail-content::-webkit-scrollbar { width: 6px; }
         .detail-content::-webkit-scrollbar-thumb { background: var(--palette-green); border-radius: 10px; }
-
         .detail-content h3 { color: var(--palette-brown); font-size: 1rem; margin-bottom: 8px; font-weight: 700; }
         
         .btn-back {
@@ -224,14 +273,18 @@
     <div id="app-container">
         
         <div class="top-bar">
-            <div class="icon-btn" onclick="logout()">🚪</div>
-            <div id="chefDisplayName">FOOD CHORD</div>
-            <div class="icon-btn">⚙️</div>
+            <div class="icon-btn" onclick="playClickSfx(); logout();" title="ออกจากระบบ">🚪</div>
+            <div id="chefDisplayName" style="font-size: 0.75rem;">FOOD CHORD</div>
+            <!-- ป้ายแสดงสะสมดาวเต็ม 5 ดวง -->
+            <div class="progress-badge" id="progressBadge">⭐ 0/5 ดาว</div>
         </div>
 
         <div class="map-area">
             
             <img src="S__1892359.jpg" alt="Forest Map Background" class="map-bg-image">
+
+            <!-- ละอองเวทมนตร์ลอยไปมา -->
+            <div class="fairy-particles" id="fairyParticles"></div>
 
             <div class="map-content-fixed">
 
@@ -271,7 +324,7 @@
                     <div class="node-title">Interval</div>
                 </div>
 
-                <!-- ด่าน 1: Scale (เปิดเสมอ) -->
+                <!-- ด่าน 1: Scale -->
                 <div class="level-node" id="node-1" style="top: 82%; left: 50%;" onclick="checkAndPlay(1, 'level-scale.html')">
                     <div class="star-badge" id="star-1">⭐</div>
                     <div class="node-circle-outer">
@@ -285,10 +338,10 @@
 
         <!-- ================= แถบเมนูด้านล่าง ================= -->
         <div class="bottom-nav">
-            <div class="nav-item active" onclick="switchTab(0)"><div class="nav-icon">🎓</div></div>
-            <div class="nav-item" onclick="switchTab(1)"><div class="nav-icon">📖</div></div>
-            <div class="nav-item" onclick="switchTab(2)"><div class="nav-icon">🎮</div></div>
-            <div class="nav-item" onclick="switchTab(3)"><div class="nav-icon">🔤</div></div>
+            <div class="nav-item active" onclick="playClickSfx(); switchTab(0)"><div class="nav-icon">🎓</div></div>
+            <div class="nav-item" onclick="playPageSfx(); switchTab(1)"><div class="nav-icon">📖</div></div>
+            <div class="nav-item" onclick="playClickSfx(); switchTab(2)"><div class="nav-icon">🎮</div></div>
+            <div class="nav-item" onclick="playClickSfx(); switchTab(3)"><div class="nav-icon">🔤</div></div>
         </div>
 
     </div>
@@ -298,31 +351,31 @@
         <div class="modal-box">
             <div class="modal-header">
                 <div class="modal-title">📖 คลังความรู้ดนตรี</div>
-                <button class="btn-close" onclick="closeModal('theoryModal')">✕</button>
+                <button class="btn-close" onclick="playClickSfx(); closeModal('theoryModal')">✕</button>
             </div>
             <div class="modal-body" id="theoryListBody">
                 
-                <div class="theory-card" onclick="openDetail('Scale (บันไดเสียง)', 'บันไดเสียงเมเจอร์และไมเนอร์', '<b>บันไดเสียงเมเจอร์ (Major scale)</b><br>• โครงสร้าง: ตัวที่ 3,4 และ 7,8 ห่างกันครึ่งเสียง<br>• ทางชาร์ปสร้างจากตัวที่ 5, ทางแฟลตสร้างจากตัวที่ 4<br><br><b>บันไดเสียงไมเนอร์ (Minor)</b><br>• <strong>เนเชอรัล (Natural minor):</strong> สร้างจากตัวที่ 6 ของบันไดเสียงเมเจอร์<br>• <strong>ฮาโมนิค (Harmonic minor):</strong> โครงสร้างแบบเนเชอรัล แต่ตัวที่ 7 สูงขึ้นครึ่งเสียง<br>• <strong>เมโลดิก (Melodic minor):</strong> ขาขึ้นตัวที่ 6 และ 7 สูงขึ้นครึ่งเสียง ขาลงกลับไปเป็นเนเชอรัล')">
+                <div class="theory-card" onclick="playClickSfx(); openDetail('Scale (บันไดเสียง)', 'บันไดเสียงเมเจอร์และไมเนอร์', '<b>บันไดเสียงเมเจอร์ (Major scale)</b><br>• โครงสร้าง: ตัวที่ 3,4 และ 7,8 ห่างกันครึ่งเสียง<br><br><b>บันไดเสียงไมเนอร์ (Minor)</b><br>• <strong>เนเชอรัล:</strong> สร้างจากตัวที่ 6 ของบันไดเสียงเมเจอร์<br>• <strong>ฮาโมนิค:</strong> ตัวที่ 7 สูงขึ้นครึ่งเสียง')">
                     <h4>☕ 1. Scale (บันไดเสียง)</h4>
                     <p>บันไดเสียงเมเจอร์, เนเชอรัล, ฮาโมนิค และเมโลดิกไมเนอร์</p>
                 </div>
 
-                <div class="theory-card" onclick="openDetail('Interval (ขั้นคู่เสียง)', 'ประเภทและโครงสร้างของขั้นคู่เสียงต่างๆ', '• <strong>เพอร์เฟค (Perfect):</strong> คือ คู่ 1, 4, 5 และ 8<br>• <strong>เมเจอร์ (Major):</strong> คือ คู่ที่ 2, 3, 6 และ 7<br>• <strong>ไมเนอร์ (Minor):</strong> คือ ขั้นคู่เมเจอร์ที่ลดลงมาครึ่งเสียง<br>• <strong>ดิมินิชท์ (Diminished):</strong> คือ ขั้นคู่เพอร์เฟคลดลงมาครึ่งเสียง และขั้นคู่เมเจอร์ลดลงมาเต็มเสียง<br>• <strong>อ็อกเมนเดท (Augmented):</strong> คือ ขั้นคู่เพอร์เฟคและขั้นคู่เมเจอร์เพิ่มขึ้นครึ่งเสียง')">
+                <div class="theory-card" onclick="playClickSfx(); openDetail('Interval (ขั้นคู่เสียง)', 'ประเภทและโครงสร้างของขั้นคู่เสียงต่างๆ', '• <strong>เพอร์เฟค (Perfect):</strong> คู่ 1, 4, 5 และ 8<br>• <strong>เมเจอร์ (Major):</strong> คู่ 2, 3, 6 และ 7')">
                     <h4>🍕 2. Interval (ขั้นคู่เสียง)</h4>
                     <p>เพอร์เฟค, เมเจอร์, ไมเนอร์, ดิมินิชท์ และอ็อกเมนเดท</p>
                 </div>
 
-                <div class="theory-card" onclick="openDetail('Triad (ทรัยแอด)', 'โน้ต 3 ตัวที่เรียงต่อกัน', 'เป็นโน้ต 3 ตัวที่เรียงต่อกัน แบ่งได้ดังนี้<br>• <strong>เมเจอร์ (Major):</strong> คือ ตัวที่ 1, 3, 5 ของสเกลเมเจอร์<br>• <strong>ไมเนอร์ (Minor):</strong> คือ ตัวที่ 3 จากทรัยแอดเมเจอร์ลดลงครึ่งเสียง<br>• <strong>ดิมินิชท์ (Diminished):</strong> คือ ตัวที่ 3 และ 5 จากทรัยแอดเมเจอร์ลดลงครึ่งเสียง<br>• <strong>อ็อกเมนเทด (Augmented):</strong> คือ ตัวที่ 5 จากทรัยแอดเมเจอร์เพิ่มขึ้นครึ่งเสียง')">
+                <div class="theory-card" onclick="playClickSfx(); openDetail('Triad (ทรัยแอด)', 'โน้ต 3 ตัวที่เรียงต่อกัน', '• <strong>Major:</strong> ตัวที่ 1, 3, 5 ของสเกลเมเจอร์<br>• <strong>Minor:</strong> ตัวที่ 3 ลดลงครึ่งเสียง')">
                     <h4>🥪 3. Triad (คอร์ดสามเสียง)</h4>
                     <p>โน้ต 3 ตัวที่เรียงต่อกัน (Major, Minor, Diminished, Augmented)</p>
                 </div>
 
-                <div class="theory-card" onclick="openDetail('7th Chord (คอร์ดทบเจ็ด)', 'คอร์ดพื้นฐานที่ทบด้วยโน้ตตัวที่ 7 เข้ามา', 'คอร์ดทบเจ็ด (Seventh chord) คือ คอร์ดพื้นฐานที่ทบด้วยโน้ตตัวที่ 7 เข้ามา ที่พบในการประสานเสียงพื้นฐานมีอยู่ 6 ชนิด ดังนี้<br><br>1) <strong>คอร์ดทบเจ็ดเมเจอร์ (Major seventh chord):</strong><br>• เกิดจากคอร์ดทรัยแอดเมเจอร์ (Major Triad) ซ้อนทับด้วยโน้ตตัวที่ 7 เมเจอร์ (Major 7th)<br><br>2) <strong>คอร์ดทบเจ็ดเมเจอร์-ไมเนอร์ (Major-minor seventh chord) หรือ คอร์ดโดมินันท์ (Dominant seventh chord):</strong><br>• เกิดจากคอร์ดทรัยแอดเมเจอร์ (Major Triad) ซ้อนทับด้วยโน้ตตัวที่ 7 ไมเนอร์ (Minor 7th)<br><br>3) <strong>คอร์ดทบเจ็ดไมเนอร์ (Minor seventh chord):</strong><br>• เกิดจากคอร์ดทรัยแอดไมเนอร์ (Minor Triad) ซ้อนทับด้วยโน้ตตัวที่ 7 ไมเนอร์ (Minor 7th)<br><br>4) <strong>คอร์ดทบเจ็ดไมเนอร์-เมเจอร์ (Minor-Major Seventh Chord):</strong><br>• เกิดจากคอร์ดทรัยแอดไมเนอร์ (Minor Triad) ซ้อนทับด้วยโน้ตตัวที่ 7 เมเจอร์ (Major 7th)<br><br>5) <strong>คอร์ดฮาล์ฟดิมินิชเซเวนธ์ (Half-Diminished Seventh Chord):</strong><br>• เกิดจากคอร์ดทรัยแอดดิมินิช (Diminished Triad) ซ้อนทับด้วยโน้ตตัวที่ 7 ไมเนอร์ (Minor 7th)<br><br>6) <strong>คอร์ดฟลูดิมินิชท์ (Fully-Diminished seventh chord):</strong><br>• เกิดจากคอร์ดทรัยแอดดิมินิช (Diminished Triad) ซ้อนทับด้วยโน้ตตัวที่ 7 ดิมินิช (Diminished 7th) ซึ่งมีระยะเสียงเท่ากับคู่ 6 เมเจอร์')">
+                <div class="theory-card" onclick="playClickSfx(); openDetail('7th Chord (คอร์ดทบเจ็ด)', 'คอร์ดพื้นฐานที่ทบด้วยโน้ตตัวที่ 7 เข้ามา', 'ประกอบด้วย Major 7th, Dominant 7th, Minor 7th ฯลฯ')">
                     <h4>🍣 4. 7th Chord (คอร์ดเจ็ด)</h4>
                     <p>คอร์ดพื้นฐานทบโน้ตตัวที่ 7 (6 ชนิดในการประสานเสียง)</p>
                 </div>
 
-                <div class="theory-card" onclick="openDetail('Inversion (การพลิกกลับคอร์ด)', 'การสลับโน้ตตัวล่างสุดมาเป็นเสียงเบส', '• <strong>รูปพื้นต้น (Root Position):</strong> มีโน้ตตัวราก (Root) อยู่ล่างสุดเป็นเสียงเบส<br>• <strong>การพลิกกลับครั้งที่ 1 (First Inversion):</strong> นำโน้ตตัวที่สาม (Third) มาเป็นเสียงเบสอยู่ล่างสุด<br>• <strong>การพลิกกลับครั้งที่ 2 (Second Inversion):</strong> นำโน้ตตัวที่ห้า (Fifth) มาเป็นเสียงเบสอยู่ล่างสุด<br>• <strong>การพลิกกลับครั้งที่ 3 (Third Inversion):</strong> (เฉพาะในคอร์ดทบเจ็ด) นำโน้ตตัวที่เจ็ด (Seventh) มาเป็นเสียงเบสอยู่ล่างสุด')">
+                <div class="theory-card" onclick="playClickSfx(); openDetail('Inversion (การพลิกกลับคอร์ด)', 'การสลับโน้ตตัวล่างสุดมาเป็นเสียงเบส', '• <strong>Root Position</strong><br>• <strong>First Inversion</strong><br>• <strong>Second Inversion</strong>')">
                     <h4>🍱 5. Inversion (การพลิกกลับคอร์ด)</h4>
                     <p>รูปพื้นต้น และการพลิกกลับครั้งที่ 1, 2, 3</p>
                 </div>
@@ -335,11 +388,11 @@
         <div class="modal-box">
             <div class="modal-header">
                 <div class="modal-title" id="detailTitle">รายละเอียดหัวข้อ</div>
-                <button class="btn-close" onclick="closeDetail()">✕</button>
+                <button class="btn-close" onclick="playClickSfx(); closeDetail()">✕</button>
             </div>
             <div class="modal-body" style="display: flex; flex-direction: column; gap: 12px;">
                 <div class="detail-content" id="detailText"></div>
-                <button class="btn-back" onclick="closeDetail()">⬅ กลับหน้าคลังความรู้</button>
+                <button class="btn-back" onclick="playClickSfx(); closeDetail()">⬅ กลับหน้าคลังความรู้</button>
             </div>
         </div>
     </div>
@@ -348,7 +401,7 @@
         <div class="modal-box" style="border-color: var(--palette-orange); align-items: center;">
             <div class="modal-header" style="width: 100%;">
                 <div class="modal-title">🎮 สถิติของคุณเชฟ</div>
-                <button class="btn-close" onclick="closeModal('statsModal')">✕</button>
+                <button class="btn-close" onclick="playClickSfx(); closeModal('statsModal')">✕</button>
             </div>
             <div class="modal-body" style="align-items: center; width: 100%; gap: 15px; overflow-y: auto;">
                 <img src="IMG_BAM.jpg" alt="Player Stats 1" style="width: 100%; object-fit: contain; border-radius: 16px; border: 2px dashed var(--palette-orange); flex-shrink: 0;">
@@ -361,7 +414,7 @@
         <div class="modal-box" style="border-color: var(--palette-yellow);">
             <div class="modal-header">
                 <div class="modal-title">🔤 คำศัพท์ดนตรีสากล</div>
-                <button class="btn-close" onclick="closeModal('vocabModal')">✕</button>
+                <button class="btn-close" onclick="playClickSfx(); closeModal('vocabModal')">✕</button>
             </div>
             <div class="modal-body">
                 <div class="theory-card">
@@ -372,63 +425,90 @@
                     <h4>Sharp (♯ / ชาร์ป)</h4>
                     <p>เครื่องหมายแปลงเสียงที่ทำให้โน้ตสูงขึ้นครึ่งเสียง</p>
                 </div>
-                <div class="theory-card">
-                    <h4>Flat (♭ / แฟลต)</h4>
-                    <p>เครื่องหมายแปลงเสียงที่ทำให้โน้ตต่ำลงครึ่งเสียง</p>
-                </div>
-                <div class="theory-card">
-                    <h4>Root Note (โน้ตราก)</h4>
-                    <p>โน้ตตัวแรกที่เป็นฐานชื่อเรียกของคอร์ดนั้นๆ</p>
-                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // 🌟 ตรวจสอบระบบบันทึกข้อมูลและล็อกอินเมื่อเปิดหน้าเว็บ
+        const clickSfx = new Audio('https://assets.mixkit.co/active_storage/sfx/1114/1114-preview.mp3');
+        const pageSfx = new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3');
+
+        function playClickSfx() {
+            clickSfx.currentTime = 0;
+            clickSfx.volume = 0.4;
+            clickSfx.play().catch(e => {});
+        }
+
+        function playPageSfx() {
+            pageSfx.currentTime = 0;
+            pageSfx.volume = 0.4;
+            pageSfx.play().catch(e => {});
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             const savedChefName = localStorage.getItem('chef_name');
-            
-            // ถ้ายังไม่มีชื่อเชฟในระบบ ให้เด้งกลับไปหน้า login.html ทันที
             if (!savedChefName) {
                 window.location.href = 'login.html';
                 return;
             }
 
-            // แสดงชื่อเชฟที่ Top Bar
             document.getElementById('chefDisplayName').textContent = `CHEF: ${savedChefName.toUpperCase()}`;
-
-            // โหลดระบบปลดล็อคด่านจาก LocalStorage
             loadGameProgress();
+            createParticles();
         });
 
-        // ฟังก์ชันจัดการปลดล็อคด่านตามความคืบหน้าที่บันทึกไว้
+        function createParticles() {
+            const container = document.getElementById('fairyParticles');
+            const particleCount = 15;
+            for (let i = 0; i < particleCount; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                const size = Math.random() * 6 + 4;
+                p.style.width = `${size}px`;
+                p.style.height = `${size}px`;
+                p.style.left = `${Math.random() * 100}%`;
+                p.style.animationDuration = `${Math.random() * 4 + 3}s`;
+                p.style.animationDelay = `${Math.random() * 3}s`;
+                container.appendChild(p);
+            }
+        }
+
         function loadGameProgress() {
-            // ดึงค่าด่านสูงสุดที่เล่นผ่าน (ค่าเริ่มต้นเป็น 1)
             let unlockedLevel = parseInt(localStorage.getItem('chordkupp_progress')) || 1;
+            if (unlockedLevel > 5) unlockedLevel = 5;
+
+            // คำนวณดาวสะสม 5 ด่านเต็ม (ผ่านแต่ละด่านจะได้เพิ่ม 1 ดาว)
+            let starsEarned = unlockedLevel > 1 ? unlockedLevel - 1 : 0;
+            if (unlockedLevel === 5 && localStorage.getItem('chordkupp_progress') >= 5) {
+                // เช็กเผื่อกรณีผ่านด่านสุดท้ายครบ จะได้ 5 ดาวเต็ม
+                starsEarned = 5;
+            } else if (unlockedLevel > 5) {
+                starsEarned = 5;
+            }
+            
+            // อัปเดตป้ายแสดงดาวเป็น 5 ดวง
+            document.getElementById('progressBadge').textContent = `⭐ ${starsEarned}/5 ดาว`;
 
             for (let i = 1; i <= 5; i++) {
                 const node = document.getElementById(`node-${i}`);
                 const star = document.getElementById(`star-${i}`);
 
-                if (i <= unlockedLevel) {
-                    // ด่านที่ปลดล็อคแล้ว
-                    node.classList.remove('locked');
-                    if (i < unlockedLevel) {
-                        star.style.display = 'block'; // แสดงดาวถ้าผ่านแล้ว
-                    } else {
-                        star.style.display = 'block'; // หรือโชว์ดาวด่านปัจจุบัน
-                    }
+                node.classList.remove('locked', 'current');
+
+                if (i < unlockedLevel) {
+                    star.style.display = 'block';
+                } else if (i === unlockedLevel) {
+                    node.classList.add('current');
+                    star.style.display = 'block';
                 } else {
-                    // ด่านที่ยังไม่ปลดล็อค (เป็นสีเทาและกดไม่ได้)
                     node.classList.add('locked');
                     star.style.display = 'none';
                 }
             }
         }
 
-        // เช็คว่าด่านถูกปลดล็อคหรือยังก่อนให้เข้าเล่น
         function checkAndPlay(levelTarget, url) {
+            playClickSfx();
             let unlockedLevel = parseInt(localStorage.getItem('chordkupp_progress')) || 1;
             if (levelTarget <= unlockedLevel) {
                 window.location.href = url;
@@ -437,7 +517,6 @@
             }
         }
 
-        // ปุ่มออกจากระบบ (ล้างชื่อและข้อมูล)
         function logout() {
             if (confirm("ต้องการออกจากระบบและล้างข้อมูลการเดินทางใช่ไหมครับ?")) {
                 localStorage.removeItem('chef_name');
@@ -449,22 +528,14 @@
         function switchTab(index) {
             const items = document.querySelectorAll('.bottom-nav .nav-item');
             items.forEach((item, i) => {
-                if (i === index) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
+                if (i === index) item.classList.add('active');
+                else item.classList.remove('active');
             });
 
-            if (index === 0) {
-                closeAllModals();
-            } else if (index === 1) {
-                openModal('theoryModal');
-            } else if (index === 2) {
-                openModal('statsModal');
-            } else if (index === 3) {
-                openModal('vocabModal');
-            }
+            if (index === 0) closeAllModals();
+            else if (index === 1) openModal('theoryModal');
+            else if (index === 2) openModal('statsModal');
+            else if (index === 3) openModal('vocabModal');
         }
 
         function openModal(modalId) {
@@ -481,9 +552,7 @@
         }
 
         function closeAllModals() {
-            document.querySelectorAll('.modal-overlay').forEach(modal => {
-                modal.style.display = 'none';
-            });
+            document.querySelectorAll('.modal-overlay').forEach(modal => modal.style.display = 'none');
         }
 
         function openDetail(title, shortDesc, fullDetail) {
