@@ -40,11 +40,11 @@
             left: 20px;
             right: 20px;
             height: 44px; 
-            padding: 0 16px;
+            padding: 0 14px;
             display: flex; justify-content: space-between; align-items: center;
-            color: #fff; font-weight: 700; font-size: 0.9rem;
-            letter-spacing: 1.5px; z-index: 100; flex-shrink: 0;
-            background: rgba(71, 60, 51, 0.5);
+            color: #fff; font-weight: 700; font-size: 0.85rem;
+            letter-spacing: 1px; z-index: 100; flex-shrink: 0;
+            background: rgba(71, 60, 51, 0.6);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-radius: 22px;
@@ -114,6 +114,13 @@
         }
 
         .star-badge { position: absolute; top: -6px; right: -2px; font-size: 1.2rem; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); z-index: 5; color: var(--palette-yellow); }
+
+        /* สถานะล็อคด่าน */
+        .level-node.locked {
+            opacity: 0.5;
+            filter: grayscale(0.8);
+            cursor: not-allowed;
+        }
 
         /* ================= BOTTOM NAVIGATION ================= */
         .bottom-nav { 
@@ -217,9 +224,9 @@
     <div id="app-container">
         
         <div class="top-bar">
-            <div class="icon-btn">≡</div>
-            <div>FOOD CHORD</div>
-            <div class="icon-btn">⌵</div>
+            <div class="icon-btn" onclick="logout()">🚪</div>
+            <div id="chefDisplayName">FOOD CHORD</div>
+            <div class="icon-btn">⚙️</div>
         </div>
 
         <div class="map-area">
@@ -228,45 +235,45 @@
 
             <div class="map-content-fixed">
 
-                <!-- ด่าน 5: Inversion[cite: 2] -->
-                <div class="level-node" style="top: 18%; left: 50%;" onclick="window.location.href='level-inversion.html'">
-                    <div class="star-badge">⭐</div>
+                <!-- ด่าน 5: Inversion -->
+                <div class="level-node" id="node-5" style="top: 18%; left: 50%;" onclick="checkAndPlay(5, 'level-inversion.html')">
+                    <div class="star-badge" id="star-5">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner"><img src="shop-inversion.png" alt="Inversion" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍱</div>'"></div>
                     </div>
                     <div class="node-title">Inversion</div>
                 </div>
 
-                <!-- ด่าน 4: 7th Chord[cite: 2] -->
-                <div class="level-node" style="top: 35%; left: 27.5%;" onclick="window.location.href='level-chord7.html'">
-                    <div class="star-badge">⭐</div>
+                <!-- ด่าน 4: 7th Chord -->
+                <div class="level-node" id="node-4" style="top: 35%; left: 27.5%;" onclick="checkAndPlay(4, 'level-chord7.html')">
+                    <div class="star-badge" id="star-4">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner"><img src="shop-chord7.png" alt="7th Chord" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍣</div>'"></div>
                     </div>
                     <div class="node-title">7th Chord</div>
                 </div>
 
-                <!-- ด่าน 3: Triad[cite: 2] -->
-                <div class="level-node" style="top: 52%; left: 72.5%;" onclick="window.location.href='level-triad.html'">
-                    <div class="star-badge">⭐</div>
+                <!-- ด่าน 3: Triad -->
+                <div class="level-node" id="node-3" style="top: 52%; left: 72.5%;" onclick="checkAndPlay(3, 'level-triad.html')">
+                    <div class="star-badge" id="star-3">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner"><img src="shop-triad.png" alt="Triad" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🥪</div>'"></div>
                     </div>
                     <div class="node-title">Triad</div>
                 </div>
 
-                <!-- ด่าน 2: Interval[cite: 2] -->
-                <div class="level-node" style="top: 68%; left: 27.5%;" onclick="window.location.href='level-interval.html'">
-                    <div class="star-badge">⭐</div>
+                <!-- ด่าน 2: Interval -->
+                <div class="level-node" id="node-2" style="top: 68%; left: 27.5%;" onclick="checkAndPlay(2, 'level-interval.html')">
+                    <div class="star-badge" id="star-2">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner"><img src="shop-interval.png" alt="Interval" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>🍕</div>'"></div>
                     </div>
                     <div class="node-title">Interval</div>
                 </div>
 
-                <!-- ด่าน 1: Scale -->
-                <div class="level-node" style="top: 82%; left: 50%;" onclick="window.location.href='level-scale.html'">
-                    <div class="star-badge">⭐</div>
+                <!-- ด่าน 1: Scale (เปิดเสมอ) -->
+                <div class="level-node" id="node-1" style="top: 82%; left: 50%;" onclick="checkAndPlay(1, 'level-scale.html')">
+                    <div class="star-badge" id="star-1">⭐</div>
                     <div class="node-circle-outer">
                         <div class="node-circle-inner"><img src="shop-scale.png" alt="Scale" class="node-image" onerror="this.outerHTML='<div class=\'node-icon\'>☕</div>'"></div>
                     </div>
@@ -324,7 +331,6 @@
         </div>
     </div>
 
-    <!-- 💡 เพิ่มหน้าต่าง DetailModal ที่ขาดหายไปตรงนี้ -->
     <div id="detailModal" class="modal-overlay">
         <div class="modal-box">
             <div class="modal-header">
@@ -338,7 +344,6 @@
         </div>
     </div>
 
-    <!-- Modal ย่อยสำหรับหน้าสถิติ -->
     <div id="statsModal" class="modal-overlay">
         <div class="modal-box" style="border-color: var(--palette-orange); align-items: center;">
             <div class="modal-header" style="width: 100%;">
@@ -380,6 +385,67 @@
     </div>
 
     <script>
+        // 🌟 ตรวจสอบระบบบันทึกข้อมูลและล็อกอินเมื่อเปิดหน้าเว็บ
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedChefName = localStorage.getItem('chef_name');
+            
+            // ถ้ายังไม่มีชื่อเชฟในระบบ ให้เด้งกลับไปหน้า login.html ทันที
+            if (!savedChefName) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // แสดงชื่อเชฟที่ Top Bar
+            document.getElementById('chefDisplayName').textContent = `CHEF: ${savedChefName.toUpperCase()}`;
+
+            // โหลดระบบปลดล็อคด่านจาก LocalStorage
+            loadGameProgress();
+        });
+
+        // ฟังก์ชันจัดการปลดล็อคด่านตามความคืบหน้าที่บันทึกไว้
+        function loadGameProgress() {
+            // ดึงค่าด่านสูงสุดที่เล่นผ่าน (ค่าเริ่มต้นเป็น 1)
+            let unlockedLevel = parseInt(localStorage.getItem('chordkupp_progress')) || 1;
+
+            for (let i = 1; i <= 5; i++) {
+                const node = document.getElementById(`node-${i}`);
+                const star = document.getElementById(`star-${i}`);
+
+                if (i <= unlockedLevel) {
+                    // ด่านที่ปลดล็อคแล้ว
+                    node.classList.remove('locked');
+                    if (i < unlockedLevel) {
+                        star.style.display = 'block'; // แสดงดาวถ้าผ่านแล้ว
+                    } else {
+                        star.style.display = 'block'; // หรือโชว์ดาวด่านปัจจุบัน
+                    }
+                } else {
+                    // ด่านที่ยังไม่ปลดล็อค (เป็นสีเทาและกดไม่ได้)
+                    node.classList.add('locked');
+                    star.style.display = 'none';
+                }
+            }
+        }
+
+        // เช็คว่าด่านถูกปลดล็อคหรือยังก่อนให้เข้าเล่น
+        function checkAndPlay(levelTarget, url) {
+            let unlockedLevel = parseInt(localStorage.getItem('chordkupp_progress')) || 1;
+            if (levelTarget <= unlockedLevel) {
+                window.location.href = url;
+            } else {
+                alert("🔒 คุณเชฟต้องผ่านด่านก่อนหน้าเพื่อปลดล็อคเมนูนี้ก่อนครับ!");
+            }
+        }
+
+        // ปุ่มออกจากระบบ (ล้างชื่อและข้อมูล)
+        function logout() {
+            if (confirm("ต้องการออกจากระบบและล้างข้อมูลการเดินทางใช่ไหมครับ?")) {
+                localStorage.removeItem('chef_name');
+                localStorage.removeItem('chordkupp_progress');
+                window.location.href = 'login.html';
+            }
+        }
+
         function switchTab(index) {
             const items = document.querySelectorAll('.bottom-nav .nav-item');
             items.forEach((item, i) => {

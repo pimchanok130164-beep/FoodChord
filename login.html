@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Login - Food Chord Fairy Tale</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --palette-green: #ABC270;
+            --palette-yellow: #FEC868;
+            --palette-orange: #FDA769;
+            --palette-brown: #473C33;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; font-family: 'Quicksand', 'Mali', sans-serif; }
+        
+        body { 
+            background-color: #2a1a10; 
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; height: 100dvh; overflow: hidden;
+        }
+
+        /* 📱 ล็อคสัดส่วนหน้าจอไว้ที่ 9:16 เป๊ะ ๆ ทุกอุปกรณ์ */
+        #app-container {
+            width: 100%; max-width: 400px; 
+            height: 100%; height: 100dvh; 
+            max-height: calc(100vh * (16 / 9));
+            aspect-ratio: 9 / 16; 
+            display: flex; flex-direction: column;
+            background: var(--palette-brown);
+            position: relative; overflow: hidden;
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            border-left: 6px solid rgba(254, 200, 104, 0.3);
+            border-right: 6px solid rgba(254, 200, 104, 0.3);
+        }
+
+        /* ================= BACKGROUND ================= */
+        .map-bg-image {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            filter: brightness(0.9);
+        }
+
+        /* เลเยอร์แสงเวทมนตร์แฟรี่เทลละมุนๆ */
+        .fairy-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 40%, rgba(255, 252, 244, 0.25) 0%, rgba(71, 60, 51, 0.75) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* ================= LOGIN CONTENT ================= */
+        .login-content {
+            position: relative;
+            z-index: 10;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 25px;
+            text-align: center;
+        }
+
+        /* ป้ายชื่อเกมแฟรี่เทล */
+        .game-title-box {
+            background: rgba(255, 252, 244, 0.9);
+            padding: 15px 25px;
+            border-radius: 25px;
+            border: 3px solid var(--palette-yellow);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            animation: floatTitle 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatTitle {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-6px); }
+        }
+
+        .game-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--palette-brown);
+            letter-spacing: 2px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .game-subtitle {
+            font-size: 0.85rem;
+            color: #8c7355;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        /* กล่องฟอร์มล็อกอินทรงเวทมนตร์ */
+        .login-card {
+            background: rgba(255, 252, 244, 0.92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            width: 100%;
+            padding: 25px 20px;
+            border-radius: 30px;
+            border: 3px dashed var(--palette-green);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .input-group {
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-label {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--palette-brown);
+            padding-left: 5px;
+        }
+
+        .fairy-input {
+            width: 100%;
+            height: 48px;
+            padding: 0 16px;
+            background: #fff;
+            border: 2px solid #e0d4c3;
+            border-radius: 16px;
+            font-size: 1rem;
+            color: var(--palette-brown);
+            font-weight: 600;
+            outline: none;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .fairy-input:focus {
+            border-color: var(--palette-orange);
+            box-shadow: 0 0 10px rgba(253, 167, 105, 0.4), inset 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        /* ปุ่มเข้าสู่เกมแฟรี่เทล */
+        .btn-login {
+            margin-top: 10px;
+            width: 100%;
+            height: 50px;
+            background: var(--palette-green);
+            color: var(--palette-brown);
+            border: 2px solid var(--palette-yellow);
+            border-radius: 20px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(171, 194, 112, 0.4), inset 0 -2px 4px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.6);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-login:active {
+            transform: scale(0.96);
+            box-shadow: 0 3px 8px rgba(171, 194, 112, 0.4);
+        }
+
+        .fairy-footer-text {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #fceea7;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        
+        <!-- ใช้ภาพพื้นหลังอันเดียวกับหน้า home.html -->
+        <img src="S__1892359.jpg" alt="Forest Background" class="map-bg-image">
+        <div class="fairy-overlay"></div>
+
+        <div class="login-content">
+            
+            <div class="game-title-box">
+                <div class="game-title">✨ FOOD CHORD ✨</div>
+                <div class="game-subtitle">ดินแดนแห่งเสียงดนตรีและเวทมนตร์อาหาร</div>
+            </div>
+
+            <div class="login-card">
+                <div class="input-group">
+                    <label class="input-label" for="chefName">🪄 นามปากกา / ชื่อของคุณเชฟ</label>
+                    <input type="text" id="chefName" class="fairy-input" placeholder="เช่น เชฟน้อยหน่า..." maxlength="20" autocomplete="off">
+                </div>
+
+                <button class="btn-login" onclick="handleLogin()">
+                    <span>เริ่มต้นการเดินทาง</span> 🧚‍♂️
+                </button>
+            </div>
+
+            <div class="fairy-footer-text">
+                🌟 ขอให้สนุกกับการผจญภัยในโลกดนตรีนะเชฟ!
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        function handleLogin() {
+            const nameInput = document.getElementById('chefName').value.trim();
+            
+            if (nameInput === "") {
+                alert("กรุณากรอกชื่อของคุณเชฟก่อนออกเดินทางนะเวทมนตร์รออยู่! ✨");
+                return;
+            }
+
+            // บันทึกชื่อเชฟลงใน LocalStorage
+            localStorage.setItem('chef_name', nameInput);
+
+            // ส่งต่อไปยังหน้าแผนที่หลัก (home.html)
+            window.location.href = 'home.html';
+        }
+    </script>
+
+</body>
+</html>
