@@ -361,9 +361,7 @@
             audio.play().catch(e => {}); 
         }
 
-        // ---------------- 📚 คลังโจทย์สเกล ~20 ข้อ พร้อมชื่อไมเนอร์แบบไร้คำว่า "แนเชอรัล" ----------------
         const scalesData = [
-            // Major Scales (6 ข้อ)
             { name: "C Major", notes: ["C", "D", "E", "F", "G", "A", "B"] },
             { name: "G Major", notes: ["G", "A", "B", "C", "D", "E", "F#"] },
             { name: "D Major", notes: ["D", "E", "F#", "G", "A", "B", "C#"] },
@@ -378,7 +376,6 @@
             { name: "Eb Major", notes: ["Eb", "F", "G", "Ab", "Bb", "C", "D"] },
             { name: "Bb Major", notes: ["Bb", "C", "D", "Eb", "F", "G", "A"] },
             
-            // Minor Scales (แบบธรรมชาติ) (5 ข้อ)
             { name: "A Minor", notes: ["A", "B", "C", "D", "E", "F", "G"] },
             { name: "E Minor", notes: ["E", "F#", "G", "A", "B", "C", "D"] },
             { name: "Eb Minor", notes: ["Eb", "F", "Gb", "Ab", "Bb", "Cb", "Db"] },
@@ -389,7 +386,6 @@
             { name: "C Minor", notes: ["C", "D", "Eb", "F", "G", "A", "B"] },
             { name: "G Minor", notes: ["G", "A", "Bb", "C", "D", "Eb", "F"] },
             
-            // Harmonic Minor Scales (4 ข้อ)
             { name: "F# Harmonic Minor", notes: ["F#", "G#", "A", "B", "C#", "D", "E#"] },
             { name: "D# Harmonic Minor", notes: ["D#", "E#", "F#", "G#", "A#", "B", "Cx"] },
             { name: "D Harmonic Minor", notes: ["D", "E", "F", "G", "A", "Bb", "C#"] },
@@ -398,7 +394,6 @@
             { name: "Eb Harmonic Minor", notes: ["Eb", "F", "Gb", "Ab", "Bb", "Cb", "Db"] },
             { name: "B Harmonic Minor", notes: ["B", "C#", "D", "E", "F#", "G", "A#"] },
             
-            // Melodic Minor Scales (4 ข้อ)
             { name: "A Melodic Minor", notes: ["A", "B", "C", "D", "E", "F#", "G#"] },
             { name: "A# Melodic Minor", notes: ["A#", "C", "C#", "D#", "F", "F#", "G#"] },
             { name: "E Melodic Minor", notes: ["E", "F#", "G", "A", "B", "C#", "D#"] },
@@ -429,6 +424,7 @@
         let isTransitioning = false; 
         let isPaused = false; 
         let lastSpawnedNote = ""; 
+        let lastScaleName = ""; // เพิ่มตัวแปรสำหรับจำชื่อสเกลข้อที่แล้ว
 
         const gameArea = document.getElementById('gameArea');
         const boardWrapper = document.getElementById('boardWrapper');
@@ -589,6 +585,7 @@
             spawnRate = 1800;
             isPaused = false;
             lastSpawnedNote = ""; 
+            lastScaleName = "";
             
             updateUI();
             gameLoopId = requestAnimationFrame(updateGame);
@@ -650,8 +647,15 @@
         }
 
         function loadNewScale() {
-            const randomIndex = Math.floor(Math.random() * scalesData.length);
+            // 🛡️ ป้องกันการสุ่มซ้ำกับข้อก่อนหน้า
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * scalesData.length);
+            } while (scalesData[randomIndex].name === lastScaleName && scalesData.length > 1);
+
             currentScaleInfo = scalesData[randomIndex];
+            lastScaleName = currentScaleInfo.name; // บันทึกชื่อสเกลปัจจุบันไว้กันซ้ำรอบหน้า
+
             targetNotes = [...currentScaleInfo.notes];
             collectedNotes = [];
             lastSpawnedNote = ""; 
@@ -820,8 +824,6 @@
             activeNotes.forEach(n => n.element.remove());
             activeNotes = [];
 
-            fallSpeed += 0.15; 
-            spawnRate = Math.max(800, spawnRate - 100);
             clearInterval(spawnId);
 
             setTimeout(() => {
