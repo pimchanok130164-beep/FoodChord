@@ -47,7 +47,6 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
 
-        /* จัดเรียงปุ่มและชื่อเกมให้อยู่ด้านบน */
         .header-top {
             width: 100%; display: flex; justify-content: space-between; align-items: center;
         }
@@ -62,7 +61,6 @@
             text-shadow: 2px 2px 0px rgba(0,0,0,0.4); width: 100%; text-align: center;
         }
 
-        /* ปุ่มหยุดเกม (Cozy Chalk Pause Button) ย้ายออกจาก absolute */
         .btn-pause {
             width: 42px; height: 42px; background: #fffcf4; border: 3px solid #8d6e63;
             border-radius: 14px; font-size: 1.2rem; color: #5d4037;
@@ -72,7 +70,6 @@
         }
         .btn-pause:active { transform: translateY(5px); box-shadow: 0 0 0 transparent; }
 
-        /* HUD - หัวใจและคะแนน */
         .hud-info {
             width: 100%; display: flex; justify-content: space-between; align-items: center;
             padding: 0 5px; margin-bottom: 5px;
@@ -80,7 +77,7 @@
         .score-board { font-size: 1.1rem; color: #2e4233; font-weight: 900; background: #a3c2a9; padding: 4px 12px; border-radius: 12px; }
         .lives-board { font-size: 1.3rem; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1)); letter-spacing: 2px; background: #fffcf4; padding: 4px 10px; border-radius: 12px; border: 2px dashed #bcaaa4; }
 
-        /* ---------------- พื้นที่เล่นเกม (Green Chalkboard Area) ---------------- */
+        /* ---------------- พื้นที่เล่นเกม ---------------- */
         .board-wrapper {
             position: relative; width: 100%; flex: 1; min-height: 0;
             background: #2e4233; border: 6px solid #8d6e63; border-radius: 25px; border-bottom: none;
@@ -92,11 +89,10 @@
             width: 100%; height: 100%; position: relative; overflow: hidden; cursor: pointer; 
         }
 
-        /* 💧 หยดน้ำโน้ตดนตรี */
         .falling-note {
             position: absolute; width: 55px; height: 55px; 
-            background: #e0f7fa; /* สีฟ้าพาสเทลใสๆ */
-            border-radius: 0 50% 50% 50%; /* ทรงหยดน้ำ (แหลมชี้ขึ้นบนเมื่อหมุน 45 องศา) */
+            background: #e0f7fa; 
+            border-radius: 0 50% 50% 50%; 
             color: #006064; font-size: 1.4rem; font-weight: 900; 
             display: flex; align-items: center; justify-content: center;
             box-shadow: inset 4px 4px 8px rgba(255,255,255,0.9), inset -4px -4px 8px rgba(0,96,100,0.15), 0 6px 12px rgba(0,0,0,0.3);
@@ -105,7 +101,6 @@
         }
         .falling-note span { transform: rotate(-45deg) translate(-2px, 2px); display: block; } 
 
-        /* ☕ ถ้วยดริปเปอร์ (Dripper) */
         #glass {
             position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
             width: 80px; height: 70px; z-index: 15;
@@ -128,7 +123,7 @@
         .shake { animation: shake 0.3s; }
         @keyframes shake { 0%, 100% { transform: translateX(-50%); } 25% { transform: translateX(calc(-50% - 15px)); } 75% { transform: translateX(calc(-50% + 15px)); } }
 
-        /* ---------------- แถบแสดงโน้ตด้านล่าง (Coffee Slots) ---------------- */
+        /* ---------------- แถบแสดงโน้ตด้านล่าง ---------------- */
         .collected-bar {
             width: 100%; display: flex; justify-content: center; gap: 6px; flex-wrap: wrap;
             margin-top: 12px; margin-bottom: 5px; flex-shrink: 0;
@@ -203,7 +198,6 @@
         
         .btn-secondary { background: #fff; color: #2e4233; box-shadow: 0 8px 0 #e6d8ce, 0 12px 18px rgba(0, 0, 0, 0.2); font-size: 1.15rem; }
 
-        /* Level Up Animation */
         .level-up-text {
             position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%) scale(0);
             font-size: 2.4rem; color: #fff8e1; font-weight: 900; text-shadow: 0 3px 0px #2e4233;
@@ -233,7 +227,6 @@
         .chord-title { font-weight: 900; color: #2e4233; font-size: 1.1rem;}
         .chord-desc { color: #5d4037; font-weight: 600; display: block; margin-top: 5px; line-height: 1.5; }
 
-        /* ---------------- 💀/🎉 หน้าจอจบเกมส์ และ ชนะเกม ---------------- */
         .go-box { background: #fff; padding: 30px 25px; border-radius: 35px; box-shadow: 0 10px 0 #f4e1d2, 0 20px 40px rgba(93, 64, 55, 0.15); width: 100%; text-align: center; border: 4px dashed #a3c2a9; }
         .go-box h2 { font-size: 2.2rem; margin-bottom: 20px; font-weight: 900; }
         .result-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; background: #fdfaf6; border-radius: 20px; overflow: hidden; border: 2px dashed #bcaaa4;}
@@ -262,14 +255,13 @@
             <div class="lives-board" id="livesDisplay">❤️❤️❤️</div>
         </div>
 
-        <!-- กระดานเล่นเกม (กระดานดำคาเฟ่สีเขียว) -->
+        <!-- กระดานเล่นเกม -->
         <div class="board-wrapper" id="boardWrapper">
             <div id="gameArea">
                 <div id="glass"></div>
                 <div class="level-up-text" id="levelUpMsg">รสชาติดีมาก! ✨<br><span style="font-size: 1.2rem; color: #a3c2a9;">ออเดอร์สเกลถัดไป</span></div>
             </div>
             
-            <!-- ⏱️ แผงแจ้งโจทย์และนับถอยหลัง -->
             <div id="countdownOverlay" class="countdown-overlay">
                 <div class="countdown-icon" id="countdownIcon">☕<br><span style="font-size:1.4rem; color:#fff;">ออเดอร์มาแล้ว!</span></div>
                 <div class="countdown-scale-name" id="countdownScaleName">C Major</div>
@@ -278,9 +270,7 @@
         </div>
 
         <!-- แถบแสดงโน้ตที่เก็บได้ -->
-        <div class="collected-bar" id="collectedBar">
-            <!-- จะถูกเติมด้วย Javascript -->
-        </div>
+        <div class="collected-bar" id="collectedBar"></div>
 
         <!-- หน้าต่างเริ่มเกม -->
         <div id="startOverlay" class="overlay-screen" style="display: flex;">
@@ -305,19 +295,19 @@
             <div class="review-box">
                 <div class="chord-info">
                     <span class="chord-title">☀️ Major Scale (เมเจอร์)</span>
-                    <span class="chord-desc">อารมณ์สว่าง สดใส (C, G, D, A, E, F Major ฯลฯ)</span>
+                    <span class="chord-desc">อารมณ์สว่าง สดใส (C, G, D, A, E, F, Bb ฯลฯ)</span>
                 </div>
                 <div class="chord-info">
-                    <span class="chord-title">🌧️ Natural Minor (เนเจอรัลไมเนอร์)</span>
-                    <span class="chord-desc">อารมณ์หม่น เศร้า (A, E, D, B, G Natural Minor)</span>
+                    <span class="chord-title">🌧️ Minor (ไมเนอร์)</span>
+                    <span class="chord-desc">อารมณ์หม่น เศร้า (A, E, D, B, G Minor)</span>
                 </div>
                 <div class="chord-info">
                     <span class="chord-title">🕌 Harmonic Minor (ฮาร์โมนิกไมเนอร์)</span>
-                    <span class="chord-desc">ยกระดับตัวที่ 7 ขึ้นครึ่งเสียง (A, E, D Harmonic Minor)</span>
+                    <span class="chord-desc">ยกระดับตัวที่ 7 ขึ้นครึ่งเสียง (A, E, D, B Harmonic Minor)</span>
                 </div>
                 <div class="chord-info">
                     <span class="chord-title">🌊 Melodic Minor (เมโลดิกไมเนอร์)</span>
-                    <span class="chord-desc">ยกระดับตัวที่ 6 และ 7 ขาขึ้น (A, E, D Melodic Minor)</span>
+                    <span class="chord-desc">ยกระดับตัวที่ 6 และ 7 ขาขึ้น (A, E, D, C Melodic Minor)</span>
                 </div>
             </div>
             
@@ -334,7 +324,7 @@
             </div>
         </div>
 
-        <!-- 🎉 หน้าจอชนะเกม (ผ่านด่าน) -->
+        <!-- 🎉 หน้าจอชนะเกม -->
         <div id="gameWinScreen" class="overlay-screen">
             <div class="go-box" style="border-color: #81c784;">
                 <h2 style="color: #2e7d32;">ชงสำเร็จ! 🎉</h2>
@@ -346,13 +336,13 @@
             </div>
         </div>
 
-        <!-- 💀 หน้าจอแพ้เกม (Game Over) -->
+        <!-- 💀 หน้าจอแพ้เกม -->
         <div id="gameOverScreen" class="overlay-screen">
             <div class="go-box">
                 <h2 style="color: #2e4233;">กาแฟขม! 🥺</h2>
                 <table class="result-table">
                     <tr><td>คะแนนรวม</td><td><span id="finalScore" style="color: #2e4233;">0</span></td></tr>
-                    <tr><td colspan="2" style="text-align: center;"><span style="font-size:1rem; color:#5d4037;">ยังไม่ผ่านด่านนะ ลองใหม่!</span></td></tr>
+                    <tr><td colspan="2" style="text-align: center;"><span style="font-size:1.0rem; color:#5d4037;">ยังไม่ผ่านด่านนะ ลองใหม่!</span></td></tr>
                 </table>
                 <button class="btn-action" onclick="restartGame()">ชงใหม่ 🔄</button>
                 <button class="btn-action btn-secondary" onclick="loseGameBackToMap()">กลับหน้าหลัก 🗺️</button>
@@ -362,7 +352,6 @@
     </div>
 
     <script>
-        // ---------------- 🎵 ระบบคลังเสียง ----------------
         const popSound = new Audio('https://assets.mixkit.co/active_storage/sfx/1114/1114-preview.mp3'); 
         const errorSound = new Audio('https://assets.mixkit.co/active_storage/sfx/314/314-preview.mp3');
         const successSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3'); 
@@ -372,9 +361,9 @@
             audio.play().catch(e => {}); 
         }
 
-        // ---------------- 📚 ฐานข้อมูลสเกลที่เพิ่มความหลากหลายมากขึ้น ----------------
+        // ---------------- 📚 คลังโจทย์สเกล ~20 ข้อ พร้อมชื่อไมเนอร์แบบไร้คำว่า "แนเชอรัล" ----------------
         const scalesData = [
-            // Major Scales
+            // Major Scales (6 ข้อ)
             { name: "C Major", notes: ["C", "D", "E", "F", "G", "A", "B"] },
             { name: "G Major", notes: ["G", "A", "B", "C", "D", "E", "F#"] },
             { name: "D Major", notes: ["D", "E", "F#", "G", "A", "B", "C#"] },
@@ -382,19 +371,20 @@
             { name: "F Major", notes: ["F", "G", "A", "Bb", "C", "D", "E"] },
             { name: "Bb Major", notes: ["Bb", "C", "D", "Eb", "F", "G", "A"] },
             
-            // Natural Minor Scales
-            { name: "A Natural Minor", notes: ["A", "B", "C", "D", "E", "F", "G"] },
-            { name: "E Natural Minor", notes: ["E", "F#", "G", "A", "B", "C", "D"] },
-            { name: "D Natural Minor", notes: ["D", "E", "F", "G", "A", "Bb", "C"] },
-            { name: "B Natural Minor", notes: ["B", "C#", "D", "E", "F#", "G", "A"] },
+            // Minor Scales (แบบธรรมชาติ) (5 ข้อ)
+            { name: "A Minor", notes: ["A", "B", "C", "D", "E", "F", "G"] },
+            { name: "E Minor", notes: ["E", "F#", "G", "A", "B", "C", "D"] },
+            { name: "D Minor", notes: ["D", "E", "F", "G", "A", "Bb", "C"] },
+            { name: "B Minor", notes: ["B", "C#", "D", "E", "F#", "G", "A"] },
+            { name: "G Minor", notes: ["G", "A", "Bb", "C", "D", "Eb", "F"] },
             
-            // Harmonic Minor Scales
-            { name: "A Harmonic Minor", notes: ["A", "B", "C", "D", "E", "F", "G#"] },
-            { name: "E Harmonic Minor", notes: ["E", "F#", "G", "A", "B", "C", "D#"] },
+            // Harmonic Minor Scales (4 ข้อ)
+            { name: "F# Harmonic Minor", notes: ["F#", "G#", "A", "B", "C#", "D", "E#"] },
+            { name: "D# Harmonic Minor", notes: ["D#", "E#", "F#", "G#", "A#", "B", "Cx"] },
             { name: "D Harmonic Minor", notes: ["D", "E", "F", "G", "A", "Bb", "C#"] },
             { name: "B Harmonic Minor", notes: ["B", "C#", "D", "E", "F#", "G", "A#"] },
             
-            // Melodic Minor Scales
+            // Melodic Minor Scales (4 ข้อ)
             { name: "A Melodic Minor", notes: ["A", "B", "C", "D", "E", "F#", "G#"] },
             { name: "E Melodic Minor", notes: ["E", "F#", "G", "A", "B", "C#", "D#"] },
             { name: "D Melodic Minor", notes: ["D", "E", "F", "G", "A", "B", "C#"] },
@@ -433,7 +423,6 @@
         const scoreDisplay = document.getElementById('scoreDisplay');
         const livesDisplay = document.getElementById('livesDisplay');
 
-        // ---------------- 🎮 ระบบควบคุมถ้วยดริปเปอร์ ----------------
         let glassX = gameArea.clientWidth / 2;
         let isDragging = false;
         
@@ -473,16 +462,9 @@
         window.addEventListener('touchmove', handleDragMove, { passive: false });
         window.addEventListener('touchend', handleDragEnd);
 
-        // ---------------- 📖 เมนูทบทวนสเกล ----------------
         function openReview() {
             playSound(popSound);
             document.getElementById('startOverlay').style.display = 'none';
-            document.getElementById('reviewScreen').style.display = 'flex';
-        }
-
-        function openReviewFromPause() {
-            playSound(popSound);
-            document.getElementById('pauseModal').style.display = 'none';
             document.getElementById('reviewScreen').style.display = 'flex';
         }
 
@@ -496,7 +478,6 @@
             }
         }
 
-        // ---------------- ⏸️ ระบบหยุดเกม / เริ่มใหม่ / นำทาง ----------------
         function pauseGame() {
             if (isTransitioning) return; 
             playSound(popSound);
@@ -574,7 +555,6 @@
             }, 500);
         }
 
-        // ---------------- 🚀 ฟังก์ชันหลักของเกม ----------------
         function startGame() {
             playSound(popSound);
             document.getElementById('startOverlay').style.display = 'none';
@@ -594,13 +574,10 @@
             lastSpawnedNote = ""; 
             
             updateUI();
-            
             gameLoopId = requestAnimationFrame(updateGame);
-            
             loadNewScale();
         }
 
-        // ---------------- ⏱️ ระบบแสดงโจทย์และนับถอยหลัง ----------------
         function startCountdown(scaleName) {
             isTransitioning = true;
             clearInterval(spawnId); 
@@ -698,7 +675,6 @@
             if (isTransitioning || isPaused) return; 
 
             const missingNotes = targetNotes.filter(n => !collectedNotes.includes(n));
-            
             let useMissing = (missingNotes.length > 0 && Math.random() < 0.60);
             let pool = useMissing ? missingNotes : allNotes;
 
@@ -742,7 +718,6 @@
                     const noteCenterY = noteObj.y + noteRadius;
                     const noteCenterX = noteObj.x;
 
-                    // ตรวจจับการชน (เก็บโน้ต)
                     if (noteCenterY >= glassTop && noteCenterY <= glassBottom) {
                         if (noteCenterX >= glassLeft && noteCenterX <= glassRight) {
                             handleCatch(noteObj, i);
@@ -751,12 +726,10 @@
                         }
                     }
 
-                    // ปล่อยให้ร่วงหายไป (เช็คว่าพลาดของดีหรือไม่)
                     if (noteObj.y > areaHeight) {
                         const isTarget = targetNotes.includes(noteObj.text);
                         const alreadyCollected = collectedNotes.includes(noteObj.text);
                         
-                        // ถ้าหล่นโน้ตที่ใช่และยังไม่มี = เสียหัวใจ 1 ดวง
                         if (isTarget && !alreadyCollected) {
                             lives--;
                             updateUI();
@@ -775,7 +748,6 @@
                     }
                 }
             }
-            
             gameLoopId = requestAnimationFrame(updateGame);
         }
 
@@ -789,7 +761,6 @@
             const alreadyCollected = collectedNotes.includes(noteObj.text);
 
             if (isTarget && !alreadyCollected) {
-                // เก็บสำเร็จ ถูกต้อง
                 playSound(popSound);
                 collectedNotes.push(noteObj.text); 
                 updateSlotsUI(); 
@@ -805,7 +776,6 @@
                     }
                 }
             } else {
-                // พลาด! (เก็บโน้ตผิด หรือโน้ตที่ซ้ำ) -> เสียหัวใจ 1 ดวง
                 playSound(errorSound);
                 boardWrapper.classList.add('flash-red');
                 glass.classList.add('shake');
@@ -830,14 +800,11 @@
             playSound(successSound);
             
             levelUpMsg.classList.add('show');
-            
             activeNotes.forEach(n => n.element.remove());
             activeNotes = [];
 
-            // ความยากเพิ่มขึ้นเรื่อยๆ
             fallSpeed += 0.15; 
             spawnRate = Math.max(800, spawnRate - 100);
-            
             clearInterval(spawnId);
 
             setTimeout(() => {
@@ -845,7 +812,6 @@
                 loadNewScale(); 
             }, 2000);
         }
-
     </script>
 </body>
 </html>
