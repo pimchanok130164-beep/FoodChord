@@ -156,7 +156,7 @@
             cursor: not-allowed;
         }
 
-        /* 🌟 ออนิเมชั่น ด่านปัจจุบันที่กำลังเล่น (Active / Current Level Gimmick) */
+        /* 🌟 ออนิเมชั่น ด่านปัจจุบันที่กำลังเล่น */
         .level-node.current .node-circle-outer {
             animation: pulseCurrentNode 1.5s ease-in-out infinite alternate;
             border-color: #fff;
@@ -275,20 +275,16 @@
         <div class="top-bar">
             <div class="icon-btn" onclick="playClickSfx(); logout();" title="ออกจากระบบ">🚪</div>
             <div id="chefDisplayName" style="font-size: 0.75rem;">FOOD CHORD</div>
-            <!-- ป้ายแสดงสะสมดาวเต็ม 5 ดวง -->
             <div class="progress-badge" id="progressBadge">⭐ 0/5 ดาว</div>
         </div>
 
         <div class="map-area">
             
             <img src="S__1892359.jpg" alt="Forest Map Background" class="map-bg-image">
-
-            <!-- ละอองเวทมนตร์ลอยไปมา -->
             <div class="fairy-particles" id="fairyParticles"></div>
 
             <div class="map-content-fixed">
 
-                <!-- ด่าน 5: Inversion -->
                 <div class="level-node" id="node-5" style="top: 18%; left: 50%;" onclick="checkAndPlay(5, 'level-inversion.html')">
                     <div class="star-badge" id="star-5">⭐</div>
                     <div class="node-circle-outer">
@@ -297,7 +293,6 @@
                     <div class="node-title">Inversion</div>
                 </div>
 
-                <!-- ด่าน 4: 7th Chord -->
                 <div class="level-node" id="node-4" style="top: 35%; left: 27.5%;" onclick="checkAndPlay(4, 'level-chord7.html')">
                     <div class="star-badge" id="star-4">⭐</div>
                     <div class="node-circle-outer">
@@ -306,7 +301,6 @@
                     <div class="node-title">7th Chord</div>
                 </div>
 
-                <!-- ด่าน 3: Triad -->
                 <div class="level-node" id="node-3" style="top: 52%; left: 72.5%;" onclick="checkAndPlay(3, 'level-triad.html')">
                     <div class="star-badge" id="star-3">⭐</div>
                     <div class="node-circle-outer">
@@ -315,7 +309,6 @@
                     <div class="node-title">Triad</div>
                 </div>
 
-                <!-- ด่าน 2: Interval -->
                 <div class="level-node" id="node-2" style="top: 68%; left: 27.5%;" onclick="checkAndPlay(2, 'level-interval.html')">
                     <div class="star-badge" id="star-2">⭐</div>
                     <div class="node-circle-outer">
@@ -324,7 +317,6 @@
                     <div class="node-title">Interval</div>
                 </div>
 
-                <!-- ด่าน 1: Scale -->
                 <div class="level-node" id="node-1" style="top: 82%; left: 50%;" onclick="checkAndPlay(1, 'level-scale.html')">
                     <div class="star-badge" id="star-1">⭐</div>
                     <div class="node-circle-outer">
@@ -354,32 +346,10 @@
                 <button class="btn-close" onclick="playClickSfx(); closeModal('theoryModal')">✕</button>
             </div>
             <div class="modal-body" id="theoryListBody">
-                
-                <div class="theory-card" onclick="playClickSfx(); openDetail('Scale (บันไดเสียง)', 'บันไดเสียงเมเจอร์และไมเนอร์', '<b>บันไดเสียงเมเจอร์ (Major scale)</b><br>• โครงสร้าง: ตัวที่ 3,4 และ 7,8 ห่างกันครึ่งเสียง<br><br><b>บันไดเสียงไมเนอร์ (Minor)</b><br>• <strong>เนเชอรัล:</strong> สร้างจากตัวที่ 6 ของบันไดเสียงเมเจอร์<br>• <strong>ฮาโมนิค:</strong> ตัวที่ 7 สูงขึ้นครึ่งเสียง')">
+                <div class="theory-card" onclick="playClickSfx(); openDetail('Scale (บันไดเสียง)', 'บันไดเสียงเมเจอร์และไมเนอร์', '<b>บันไดเสียงเมเจอร์ (Major scale)</b><br>• โครงสร้าง: ตัวที่ 3,4 และ 7,8 ห่างกันครึ่งเสียง')">
                     <h4>☕ 1. Scale (บันไดเสียง)</h4>
                     <p>บันไดเสียงเมเจอร์, เนเชอรัล, ฮาโมนิค และเมโลดิกไมเนอร์</p>
                 </div>
-
-                <div class="theory-card" onclick="playClickSfx(); openDetail('Interval (ขั้นคู่เสียง)', 'ประเภทและโครงสร้างของขั้นคู่เสียงต่างๆ', '• <strong>เพอร์เฟค (Perfect):</strong> คู่ 1, 4, 5 และ 8<br>• <strong>เมเจอร์ (Major):</strong> คู่ 2, 3, 6 และ 7')">
-                    <h4>🍕 2. Interval (ขั้นคู่เสียง)</h4>
-                    <p>เพอร์เฟค, เมเจอร์, ไมเนอร์, ดิมินิชท์ และอ็อกเมนเดท</p>
-                </div>
-
-                <div class="theory-card" onclick="playClickSfx(); openDetail('Triad (ทรัยแอด)', 'โน้ต 3 ตัวที่เรียงต่อกัน', '• <strong>Major:</strong> ตัวที่ 1, 3, 5 ของสเกลเมเจอร์<br>• <strong>Minor:</strong> ตัวที่ 3 ลดลงครึ่งเสียง')">
-                    <h4>🥪 3. Triad (คอร์ดสามเสียง)</h4>
-                    <p>โน้ต 3 ตัวที่เรียงต่อกัน (Major, Minor, Diminished, Augmented)</p>
-                </div>
-
-                <div class="theory-card" onclick="playClickSfx(); openDetail('7th Chord (คอร์ดทบเจ็ด)', 'คอร์ดพื้นฐานที่ทบด้วยโน้ตตัวที่ 7 เข้ามา', 'ประกอบด้วย Major 7th, Dominant 7th, Minor 7th ฯลฯ')">
-                    <h4>🍣 4. 7th Chord (คอร์ดเจ็ด)</h4>
-                    <p>คอร์ดพื้นฐานทบโน้ตตัวที่ 7 (6 ชนิดในการประสานเสียง)</p>
-                </div>
-
-                <div class="theory-card" onclick="playClickSfx(); openDetail('Inversion (การพลิกกลับคอร์ด)', 'การสลับโน้ตตัวล่างสุดมาเป็นเสียงเบส', '• <strong>Root Position</strong><br>• <strong>First Inversion</strong><br>• <strong>Second Inversion</strong>')">
-                    <h4>🍱 5. Inversion (การพลิกกลับคอร์ด)</h4>
-                    <p>รูปพื้นต้น และการพลิกกลับครั้งที่ 1, 2, 3</p>
-                </div>
-
             </div>
         </div>
     </div>
@@ -392,7 +362,7 @@
             </div>
             <div class="modal-body" style="display: flex; flex-direction: column; gap: 12px;">
                 <div class="detail-content" id="detailText"></div>
-                <button class="btn-back" onclick="playClickSfx(); closeDetail()">⬅ กลับหน้าคลังความรู้</button>
+                <button class="btn-back" onclick="playClickSfx(); closeDetail()">⬅ กลับ</button>
             </div>
         </div>
     </div>
@@ -410,6 +380,7 @@
         </div>
     </div>
 
+    <!-- ================= 🔤 คำศัพท์ดนตรีสากล (ที่อัปเดตข้อมูลเพิ่ม) ================= -->
     <div id="vocabModal" class="modal-overlay">
         <div class="modal-box" style="border-color: var(--palette-yellow);">
             <div class="modal-header">
@@ -422,8 +393,32 @@
                     <p>สัญลักษณ์บันทึกเสียงสูง เริ่มต้นเส้นแรกที่ตัว E4</p>
                 </div>
                 <div class="theory-card">
+                    <h4>Bass Clef (กุญแจฟา)</h4>
+                    <p>สัญลักษณ์บันทึกเสียงต่ำ เริ่มต้นคาบเส้นที่ 4 ที่ตัว F3</p>
+                </div>
+                <div class="theory-card">
                     <h4>Sharp (♯ / ชาร์ป)</h4>
                     <p>เครื่องหมายแปลงเสียงที่ทำให้โน้ตสูงขึ้นครึ่งเสียง</p>
+                </div>
+                <div class="theory-card">
+                    <h4>Flat (♭ / แฟลต)</h4>
+                    <p>เครื่องหมายแปลงเสียงที่ทำให้โน้ตต่ำลงครึ่งเสียง</p>
+                </div>
+                <div class="theory-card">
+                    <h4>Natural (♮ / เนเชอรัล)</h4>
+                    <p>เครื่องหมายลบล้างชาร์ปหรือแฟลต ให้กลับเป็นเสียงปกติ</p>
+                </div>
+                <div class="theory-card">
+                    <h4>Root Note (โน้ตราก)</h4>
+                    <p>โน้ตตัวแรกที่เป็นฐานและเป็นชื่อเรียกของคอร์ดนั้น ๆ</p>
+                </div>
+                <div class="theory-card">
+                    <h4>Tempo (เทมโป / ความเร็ว)</h4>
+                    <p>อัตราความเร็วช้าในการบรรเลงบทเพลง (เช่น Allegro, Andante)</p>
+                </div>
+                <div class="theory-card">
+                    <h4>Chord (คอร์ด)</h4>
+                    <p>กลุ่มเสียงตั้งแต่ 3 โน้ตขึ้นไปที่ถูกบรรเลงพร้อมกันอย่างมีความหมาย</p>
                 </div>
             </div>
         </div>
@@ -477,16 +472,13 @@
             let unlockedLevel = parseInt(localStorage.getItem('chordkupp_progress')) || 1;
             if (unlockedLevel > 5) unlockedLevel = 5;
 
-            // คำนวณดาวสะสม 5 ด่านเต็ม (ผ่านแต่ละด่านจะได้เพิ่ม 1 ดาว)
             let starsEarned = unlockedLevel > 1 ? unlockedLevel - 1 : 0;
             if (unlockedLevel === 5 && localStorage.getItem('chordkupp_progress') >= 5) {
-                // เช็กเผื่อกรณีผ่านด่านสุดท้ายครบ จะได้ 5 ดาวเต็ม
                 starsEarned = 5;
             } else if (unlockedLevel > 5) {
                 starsEarned = 5;
             }
             
-            // อัปเดตป้ายแสดงดาวเป็น 5 ดวง
             document.getElementById('progressBadge').textContent = `⭐ ${starsEarned}/5 ดาว`;
 
             for (let i = 1; i <= 5; i++) {
