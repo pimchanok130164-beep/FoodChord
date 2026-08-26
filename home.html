@@ -36,11 +36,8 @@
         /* ================= TOP BAR ================= */
         .top-bar {
             position: absolute;
-            top: 12px;
-            left: 20px;
-            right: 20px;
-            height: 44px; 
-            padding: 0 14px;
+            top: 12px; left: 20px; right: 20px;
+            height: 44px; padding: 0 14px;
             display: flex; justify-content: space-between; align-items: center;
             color: #fff; font-weight: 700; font-size: 0.8rem;
             letter-spacing: 0.5px; z-index: 100; flex-shrink: 0;
@@ -57,13 +54,9 @@
         .progress-badge {
             background: rgba(254, 200, 104, 0.25);
             border: 1px solid var(--palette-yellow);
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            color: #fff8e1;
-            display: flex;
-            align-items: center;
-            gap: 4px;
+            padding: 3px 8px; border-radius: 12px;
+            font-size: 0.75rem; color: #fff8e1;
+            display: flex; align-items: center; gap: 4px;
         }
 
         /* ================= MAP AREA ================= */
@@ -74,13 +67,9 @@
         }
 
         .map-bg-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 1;
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover; z-index: 1;
         }
 
         .map-content-fixed {
@@ -88,26 +77,22 @@
             padding-top: 60px; 
         }
 
-        /* ================= 🧚‍♂️ ละอองเวทมนตร์ / หิ่งห้อย ================= */
+        /* ================= 🧚‍♂️ ละอองเวทมนตร์ / หิ่งห้อยลอยช้าๆ ผ่อนคลาย ================= */
         .fairy-particles {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 3;
-            pointer-events: none;
-            overflow: hidden;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 3; pointer-events: none; overflow: hidden;
         }
         .particle {
-            position: absolute;
-            background: #fff6bd;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #fec868;
-            animation: floatUpward linear infinite;
+            position: absolute; background: #fff6bd; border-radius: 50%;
+            box-shadow: 0 0 10px #fec868, 0 0 18px rgba(254, 200, 104, 0.5);
+            animation: floatSlowAndCalm linear infinite;
         }
-        @keyframes floatUpward {
-            0% { transform: translateY(100vh) scale(0.3); opacity: 0; }
-            20% { opacity: 0.8; }
-            80% { opacity: 0.8; }
-            100% { transform: translateY(-50px) scale(1.2); opacity: 0; }
+        @keyframes floatSlowAndCalm {
+            0% { transform: translateY(105vh) translateX(0px) scale(0.4); opacity: 0; }
+            15% { opacity: 0.7; }
+            50% { transform: translateY(50vh) translateX(15px) scale(1); opacity: 0.9; }
+            85% { opacity: 0.7; }
+            100% { transform: translateY(-50px) translateX(-15px) scale(0.5); opacity: 0; }
         }
 
         /* ================= LEVEL NODES ================= */
@@ -122,24 +107,16 @@
             width: 90px; height: 90px; border-radius: 50%;
             background: var(--palette-green); display: flex; justify-content: center; align-items: center;
             box-shadow: 0 10px 20px var(--node-shadow-outer), inset 0 -4px 8px rgba(0,0,0,0.1), inset 0 4px 8px rgba(255,255,255,0.4);
-            position: relative;
-            border: 3px solid var(--palette-yellow);
-            transition: all 0.3s ease;
+            position: relative; border: 3px solid var(--palette-yellow); transition: all 0.3s ease;
         }
 
         .node-circle-inner {
             width: 70px; height: 70px; border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
-            background: #fffcf4;
-            box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
-            overflow: hidden; 
+            background: #fffcf4; box-shadow: inset 0 3px 6px rgba(0,0,0,0.1); overflow: hidden; 
         }
 
-        .node-image {
-            width: 75%; height: 75%; 
-            object-fit: contain;
-            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15)); 
-        }
+        .node-image { width: 75%; height: 75%; object-fit: contain; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15)); }
 
         .node-title {
             margin-top: 5px; font-size: 0.85rem; font-weight: 700;
@@ -150,16 +127,11 @@
 
         .star-badge { position: absolute; top: -6px; right: -2px; font-size: 1.2rem; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); z-index: 5; color: var(--palette-yellow); }
 
-        .level-node.locked {
-            opacity: 0.5;
-            filter: grayscale(0.8);
-            cursor: not-allowed;
-        }
+        .level-node.locked { opacity: 0.5; filter: grayscale(0.8); cursor: not-allowed; }
 
         .level-node.current .node-circle-outer {
             animation: pulseCurrentNode 1.5s ease-in-out infinite alternate;
-            border-color: #fff;
-            background: var(--palette-orange);
+            border-color: #fff; background: var(--palette-orange);
         }
 
         @keyframes pulseCurrentNode {
@@ -169,29 +141,16 @@
 
         /* ================= BOTTOM NAVIGATION ================= */
         .bottom-nav { 
-            position: absolute;
-            bottom: 15px;
-            left: 0;
-            right: 0;
-            height: auto; 
-            background: transparent; 
-            backdrop-filter: none;
-            -webkit-backdrop-filter: none;
-            width: 100%; 
+            position: absolute; bottom: 15px; left: 0; right: 0;
+            height: auto; background: transparent; width: 100%; 
             display: flex; justify-content: space-around; align-items: center; 
-            z-index: 200; 
-            box-shadow: none; 
-            padding-bottom: env(safe-area-inset-bottom); 
-            border: none;
+            z-index: 200; padding-bottom: env(safe-area-inset-bottom); 
         }
 
         .nav-item { 
-            width: 52px; height: 52px; 
-            background: var(--palette-green); 
-            border: 2px solid var(--palette-yellow);
-            border-radius: 50%; 
-            display: flex; justify-content: center; align-items: center; 
-            cursor: pointer; 
+            width: 52px; height: 52px; background: var(--palette-green); 
+            border: 2px solid var(--palette-yellow); border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center; cursor: pointer; 
             box-shadow: 0 6px 15px rgba(0,0,0,0.4), inset 0 -2px 4px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.6);
             transition: all 0.2s ease;
         }
@@ -199,9 +158,7 @@
         .nav-icon { font-size: 1.3rem; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3)); }
         
         .nav-item.active { 
-            background: var(--palette-orange); 
-            border-color: #fff;
-            transform: translateY(-4px);
+            background: var(--palette-orange); border-color: #fff; transform: translateY(-4px);
             box-shadow: 0 8px 20px rgba(253, 167, 105, 0.6), inset 0 -2px 4px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.7);
         }
 
@@ -210,18 +167,14 @@
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(71, 60, 51, 0.85); z-index: 1000; display: none;
             flex-direction: column; align-items: center; justify-content: center;
-            backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); 
-            padding: 20px; animation: fadeIn 0.2s ease;
+            backdrop-filter: blur(5px); padding: 20px; animation: fadeIn 0.2s ease;
         }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .modal-box {
-            background: #fffcf4; 
-            width: 100%; max-width: 350px; max-height: 80vh;
+            background: #fffcf4; width: 100%; max-width: 350px; max-height: 80vh;
             border-radius: 24px; padding: 25px 20px; display: flex; flex-direction: column;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4); 
-            border: 3px dashed var(--palette-green); 
-            position: relative;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 3px dashed var(--palette-green); position: relative;
         }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-shrink: 0; }
         .modal-title { font-size: 1.15rem; font-weight: 700; color: var(--palette-brown); }
@@ -242,11 +195,7 @@
             background: #fff; padding: 14px 16px; border-radius: 16px; border: 2px solid #f0ead6;
             box-shadow: 0 4px 10px rgba(0,0,0,0.03); cursor: pointer; transition: all 0.2s ease;
         }
-        .theory-card:hover {
-            border-color: var(--palette-orange);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(253, 167, 105, 0.2);
-        }
+        .theory-card:hover { border-color: var(--palette-orange); transform: translateY(-2px); }
         .theory-card h4 { color: var(--palette-brown); font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
         .theory-card h4::after { content: '➔'; font-size: 0.85rem; color: var(--palette-orange); }
         .theory-card p { color: #6d5b4c; font-size: 0.8rem; font-weight: 500; line-height: 1.4; }
@@ -264,53 +213,32 @@
             background: var(--palette-green); color: var(--palette-brown); border: none; padding: 8px 16px;
             border-radius: 12px; font-weight: 700; cursor: pointer; align-self: flex-start; margin-top: 5px;
             box-shadow: 0 4px 10px rgba(171, 194, 112, 0.3); flex-shrink: 0;
-            transition: transform 0.2s;
         }
         .btn-back:active { transform: scale(0.95); }
 
         .reward-card {
-            background: #fff; 
-            border: 2px solid var(--palette-yellow);
-            border-radius: 16px;
-            padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-            transition: all 0.2s ease;
+            background: #fff; border: 2px solid var(--palette-yellow); border-radius: 16px;
+            padding: 14px 16px; display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: all 0.2s ease;
         }
-        .reward-card:hover {
-            border-color: var(--palette-orange);
-            transform: translateY(-2px);
-        }
+        .reward-card:hover { border-color: var(--palette-orange); transform: translateY(-2px); }
         .reward-info h4 { color: var(--palette-brown); font-size: 0.95rem; font-weight: 700; margin-bottom: 3px; }
         .reward-info p { color: #6d5b4c; font-size: 0.75rem; font-weight: 500; }
         
         .btn-claim {
-            background: var(--palette-orange);
-            color: #fff;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 0.8rem;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(253, 167, 105, 0.3);
-            transition: transform 0.2s;
+            background: var(--palette-orange); color: #fff; border: none; padding: 8px 14px;
+            border-radius: 12px; font-weight: 700; font-size: 0.8rem; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(253, 167, 105, 0.3); transition: transform 0.2s;
         }
         .btn-claim:active { transform: scale(0.92); }
-        .btn-claim.claimed {
-            background: #e0d8cc;
-            color: #8d6e63;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
+        .btn-claim.claimed { background: #e0d8cc; color: #8d6e63; cursor: not-allowed; box-shadow: none; }
     </style>
 </head>
 <body>
 
     <div id="app-container">
         
+        <!-- TOP BAR -->
         <div class="top-bar">
             <div class="icon-btn" onclick="playClickSfx(); logout();" title="ออกจากระบบ">🚪</div>
             <div id="chefDisplayName" style="font-size: 0.75rem;">FOOD CHORD</div>
@@ -385,10 +313,32 @@
                 <button class="btn-close" onclick="playClickSfx(); closeModal('theoryModal')">✕</button>
             </div>
             <div class="modal-body" id="theoryListBody">
-                <div class="theory-card" onclick="playClickSfx(); openDetail('Scale (บันไดเสียง)', 'บันไดเสียงเมเจอร์และไมเนอร์', '<b>บันไดเสียงเมเจอร์ (Major scale)</b><br>• โครงสร้าง: ตัวที่ 3,4 และ 7,8 ห่างกันครึ่งเสียง')">
+                
+                <div class="theory-card" onclick="playClickSfx(); openDetail('Scale (บันไดเสียง)', 'บันไดเสียงเมเจอร์และไมเนอร์', '<b>บันไดเสียงเมเจอร์ (Major Scale)</b><br>• โครงสร้าง: ตัวที่ 3,4 และ 7,8 ห่างกันครึ่งเสียง<br>• ทางชาร์ปสร้างจากตัวที่ 5, ทางแฟลตสร้างจากตัวที่ 4<br><br><b>บันไดเสียงไมเนอร์ (Minor Scale)</b><br>• <b>Natural Minor:</b> สร้างจากตัวที่ 6 ของบันไดเสียงเมเจอร์<br>• <b>Harmonic Minor:</b> โครงสร้างแบบเนเชอรัล แต่ตัวที่ 7 สูงขึ้นครึ่งเสียง<br>• <b>Melodic Minor:</b> ขาขึ้นตัวที่ 6 และ 7 สูงขึ้นครึ่งเสียง, ขาลงกลับเป็นเนเชอรัล')">
                     <h4>☕ 1. Scale (บันไดเสียง)</h4>
                     <p>บันไดเสียงเมเจอร์, เนเชอรัล, ฮาโมนิค และเมโลดิกไมเนอร์</p>
                 </div>
+
+                <div class="theory-card" onclick="playClickSfx(); openDetail('Interval (ขั้นคู่)', 'ระยะห่างระหว่างโน้ตเพลง', '<b>การนับขั้นคู่:</b> นับตัวด้านล่างเป็นตัวที่ 1 แล้วนับขึ้นไปตามโน้ต แบ่งได้ดังนี้<br>• <b>Perfect (เพอร์เฟค):</b> คู่ 1, 4, 5 และ 8<br>• <b>Major (เมเจอร์):</b> คู่ที่ 2, 3, 6 และ 7<br>• <b>Minor (ไมเนอร์):</b> ขั้นคู่เมเจอร์ที่ลดลงมาครึ่งเสียง<br>• <b>Diminished (ดิมินิชท์):</b> ขั้นคู่เพอร์เฟคลดลงครึ่งเสียง และขั้นคู่เมเจอร์ลดลงเต็มเสียง<br>• <b>Augmented (อ็อกเมนเดท):</b> ขั้นคู่เพอร์เฟคและเมเจอร์เพิ่มขึ้นครึ่งเสียง')">
+                    <h4>🍕 2. Interval (ขั้นคู่ดนตรี)</h4>
+                    <p>การนับระยะห่างขั้นคู่ เพอร์เฟค, เมเจอร์, ไมเนอร์, ดิมินิชท์ และอ็อกเมนเดท</p>
+                </div>
+
+                <div class="theory-card" onclick="playClickSfx(); openDetail('Triad (คอร์ดสามเสียง / ทรัยแอด)', 'โครงสร้างโน้ต 3 ตัวเรียงต่อกัน', '<b>โครงสร้างทรัยแอด:</b><br>• <b>Major:</b> ตัวที่ 1, 3, 5 ของสเกลเมเจอร์<br>• <b>Minor:</b> ตัวที่ 3 จากทรัยแอดเมเจอร์ลดลงครึ่งเสียง<br>• <b>Diminished:</b> ตัวที่ 3 และ 5 จากทรัยแอดเมเจอร์ลดลงครึ่งเสียง<br>• <b>Augmented:</b> ตัวที่ 5 จากทรัยแอดเมเจอร์เพิ่มขึ้นครึ่งเสียง')">
+                    <h4>🥪 3. Triad (ทรัยแอด)</h4>
+                    <p>โน้ต 3 ตัวเรียงต่อกัน เมเจอร์, ไมเนอร์, ดิมินิชท์ และอ็อกเมนเทด</p>
+                </div>
+
+                <div class="theory-card" onclick="playClickSfx(); openDetail('Inversion (การพลิกกลับคอร์ด)', 'การสลับเสียงเบสด้านล่างสุด', '• <b>Root Position (รูปพื้นต้น):</b> โน้ตตัวราก (Root) อยู่ล่างสุดเป็นเสียงเบส<br>• <b>First Inversion (พลิกกลับครั้งที่ 1):</b> นำโน้ตตัวที่ 3 (Third) มาเป็นเสียงเบส<br>• <b>Second Inversion (พลิกกลับครั้งที่ 2):</b> นำโน้ตตัวที่ 5 (Fifth) มาเป็นเสียงเบส<br>• <b>Third Inversion (พลิกกลับครั้งที่ 3):</b> (เฉพาะคอร์ดทบเจ็ด) นำโน้ตตัวที่ 7 (Seventh) มาเป็นเสียงเบส')">
+                    <h4>🍣 4. Inversion (การพลิกกลับ)</h4>
+                    <p>รูปพื้นต้น, การพลิกกลับครั้งที่ 1, 2 และ 3</p>
+                </div>
+
+                <div class="theory-card" onclick="playClickSfx(); openDetail('Seventh Chord (คอร์ดทบเจ็ด)', 'คอร์ดพื้นฐานที่ทบด้วยโน้ตตัวที่ 7', '<b>คอร์ดทบเจ็ด (6 ชนิดหลัก):</b><br>1. <b>Major Seventh Chord:</b> ทรัยแอดเมเจอร์ + โน้ตตัวที่ 7 เมเจอร์<br>2. <b>Dominant Seventh Chord (Major-minor):</b> ทรัยแอดเมเจอร์ + โน้ตตัวที่ 7 ไมเนอร์<br>3. <b>Minor Seventh Chord:</b> ทรัยแอดไมเนอร์ + โน้ตตัวที่ 7 ไมเนอร์<br>4. <b>Minor-Major Seventh Chord:</b> ทรัยแอดไมเนอร์ + โน้ตตัวที่ 7 เมเจอร์<br>5. <b>Half-Diminished Seventh (Diminished-minor):</b> ทรัยแอดดิมินิช + โน้ตตัวที่ 7 ไมเนอร์<br>6. <b>Fully-Diminished Seventh Chord:</b> ทรัยแอดดิมินิช + โน้ตตัวที่ 7 ดิมินิช (ระยะเท่าคู่ 6 เมเจอร์)')">
+                    <h4>🍱 5. Seventh Chord (คอร์ดทบเจ็ด)</h4>
+                    <p>คอร์ดทบเจ็ดทั้ง 6 ชนิดสำหรับการประสานเสียงพื้นฐาน</p>
+                </div>
+
             </div>
         </div>
     </div>
@@ -495,23 +445,20 @@
             }
 
             document.getElementById('chefDisplayName').textContent = `CHEF: ${savedChefName.toUpperCase()}`;
-            checkDailyReset(); // ตรวจสอบเวลาสุ่มรีเซ็ตประจำวัน
+            checkDailyReset();
             loadGameProgress();
             loadRewardsData();
             createParticles();
             setInterval(updateResetCountdown, 1000);
         });
 
-        // 🔄 ระบบตรวจสอบและรีเซ็ตกล่องสุ่มทุก 24 ชั่วโมง
         function checkDailyReset() {
             const now = new Date().getTime();
             let lastResetTime = parseInt(localStorage.getItem('chef_last_reset_time')) || 0;
             const twentyFourHours = 24 * 60 * 60 * 1000;
 
             if (now - lastResetTime >= twentyFourHours || lastResetTime === 0) {
-                // ครบ 24 ชั่วโมง รีเซ็ตสถานะกล่องสุ่มประจำวัน (กล่องที่ 2)
                 localStorage.setItem('reward_claimed_2', 'false');
-                // สุ่มแต้มรางวัลใหม่สำหรับวันรุ่งขึ้น (ระหว่าง 150 ถึง 400 คะแนน)
                 let randomPoints = Math.floor(Math.random() * 6) * 50 + 150; 
                 localStorage.setItem('chef_daily_random_points', randomPoints);
                 localStorage.setItem('chef_last_reset_time', now);
@@ -539,16 +486,16 @@
 
         function createParticles() {
             const container = document.getElementById('fairyParticles');
-            const particleCount = 15;
+            const particleCount = 12;
             for (let i = 0; i < particleCount; i++) {
                 const p = document.createElement('div');
                 p.className = 'particle';
-                const size = Math.random() * 6 + 4;
+                const size = Math.random() * 5 + 4;
                 p.style.width = `${size}px`;
                 p.style.height = `${size}px`;
                 p.style.left = `${Math.random() * 100}%`;
-                p.style.animationDuration = `${Math.random() * 4 + 3}s`;
-                p.style.animationDelay = `${Math.random() * 3}s`;
+                p.style.animationDuration = `${Math.random() * 6 + 8}s`;
+                p.style.animationDelay = `${Math.random() * 5}s`;
                 container.appendChild(p);
             }
         }
@@ -588,7 +535,6 @@
             let totalScore = parseInt(localStorage.getItem('chef_total_score')) || 0;
             document.getElementById('totalScoreDisplay').textContent = `${totalScore.toLocaleString()} คะแนน`;
 
-            // โหลดแต้มสุ่มประจำวันมาแสดงที่กล่องที่ 2
             let dailyPts = parseInt(localStorage.getItem('chef_daily_random_points')) || 250;
             document.getElementById('dailyBoxTitle').textContent = `🎁 กล่องสุ่มนำโชคประจำวัน (+${dailyPts} แต้ม)`;
 
@@ -635,7 +581,6 @@
             alert(`🎉 ยินดีด้วยครับ! คุณเชฟได้รับโบนัส +${points} คะแนนเรียบร้อยแล้ว!`);
         }
 
-        // ฟังก์ชันกดรับรางวัลกล่องสุ่มประจำวัน
         function claimDailyRandomReward() {
             let dailyPts = parseInt(localStorage.getItem('chef_daily_random_points')) || 250;
             claimReward(2, dailyPts);
