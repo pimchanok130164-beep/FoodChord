@@ -11,24 +11,22 @@
         
         /* 🤎 พื้นหลังหน้าจอด้านนอก สีน้ำตาลตุ่นๆ ดูอบอุ่น */
         body { 
-            background: #a89f91;
+            background: #8e7a68;
             color: #5d4037; 
             height: 100vh; height: 100dvh; 
             display: flex; align-items: center; justify-content: center; 
             overflow: hidden; touch-action: none;
         }
 
-        /* 📱 กรอบร้านคาเฟ่ สไตล์ Cozy Indie Game */
+        /* 📱 กรอบร้านคาเฟ่ สไตล์ Wood & Paper อ้างอิง S__17539106.jpg */
         #app-container {
             width: 100%; max-width: 420px; 
             height: 100%; height: 100dvh; 
-            background-color: #fdfaf6;
-            background-image: radial-gradient(#d7ccc8 15%, transparent 16%), 
-                              radial-gradient(#d7ccc8 15%, transparent 16%);
-            background-size: 36px 36px;
-            background-position: 0 0, 18px 18px;
-            border-radius: 35px; /* ขอบจอโค้งมนละมุน */
-            box-shadow: 0 20px 50px rgba(93, 64, 55, 0.4), inset 0 0 0 8px #fff; 
+            background-color: #faede3; /* สีพื้นไม้ครีมอ่อน */
+            /* ลายเส้นแผ่นไม้กระดานแนวนอน */
+            background-image: repeating-linear-gradient(to bottom, transparent, transparent 68px, rgba(139, 90, 43, 0.1) 68px, rgba(139, 90, 43, 0.1) 70px);
+            border-radius: 35px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 0 6px rgba(255, 255, 255, 0.6); 
             position: relative; 
             overflow: hidden; 
             display: flex; flex-direction: column;
@@ -36,7 +34,7 @@
 
         #warmOverlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.7) 0%, transparent 80%);
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.4) 0%, transparent 80%);
             pointer-events: none; z-index: 1; animation: pulseGlow 4s infinite alternate ease-in-out;
         }
         @keyframes pulseGlow { 0% { opacity: 0.6; } 100% { opacity: 1; } }
@@ -49,35 +47,69 @@
         /* ---------------- 🏠 หน้า Lobby ---------------- */
         .lobby-header { width: 100%; flex-shrink: 0; text-align: center; margin-top: 10px; }
 
+        /* ป้ายไม้แขวน Café Triad */
         .game-logo {
-            background: #fff; border-radius: 30px;
-            padding: 12px 35px; font-size: 2.2rem; color: #8d6e63; margin-bottom: 25px;
+            background: #9c6840; 
+            border-radius: 12px;
+            padding: 15px 35px; font-size: 2.2rem; color: #fff; margin-bottom: 35px; margin-top: 40px;
             font-weight: 900; text-align: center; 
-            box-shadow: 0 8px 0 #e6d8ce, 0 15px 20px rgba(93, 64, 55, 0.15);
+            box-shadow: 0 8px 0 #5c3a21, 0 15px 20px rgba(0,0,0,0.3);
             display: inline-block; 
+            position: relative;
+            border: 2px solid #5c3a21;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+        }
+        
+        /* เชือกแขวนป้ายไม้ */
+        .game-logo::before, .game-logo::after {
+            content: ''; position: absolute; top: -65px; width: 8px; height: 65px;
+            background: repeating-linear-gradient(45deg, #d4a373, #d4a373 4px, #b37e4c 4px, #b37e4c 8px);
+            border: 1px solid #5c3a21; border-radius: 4px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        }
+        .game-logo::before { left: 20%; }
+        .game-logo::after { right: 20%; }
+
+        /* กล่องกระดาษคำแนะนำติดหมุด */
+        .start-instruction-box {
+            background: #fdfaf4; padding: 30px 20px 22px 20px; 
+            border-radius: 12px; width: 100%; text-align: center; margin-bottom: 25px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+            border: 1px solid #e8ddd0;
+            position: relative;
+        }
+        /* เส้นประด้านในกระดาษ */
+        .start-instruction-box::before {
+            content: ''; position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px;
+            border: 2px dashed #d7ccc8; border-radius: 8px; pointer-events: none;
         }
 
-        .start-instruction-box {
-            background: #fff; padding: 22px 18px; 
-            border-radius: 25px; width: 100%; text-align: center; margin-bottom: 25px;
-            box-shadow: 0 8px 0 #e6d8ce, 0 15px 20px rgba(93, 64, 55, 0.08);
-            border: 3px dashed #d7ccc8;
+        /* หมุดติดกระดาษ ซ้าย-ขวา */
+        .pin-left, .pin-right {
+            position: absolute; top: 16px; width: 14px; height: 14px;
+            background: #6d4c41; border-radius: 50%;
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.6), 2px 2px 3px rgba(0,0,0,0.3);
+            z-index: 2;
         }
+        .pin-left { left: 16px; }
+        .pin-right { right: 16px; }
 
         /* 📦 กล่องจัดระเบียบปุ่ม (แก้ปุ่มทับกัน) */
-        .btn-group-vertical { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 280px; margin: 0 auto; }
+        .btn-group-vertical { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 280px; margin: 0 auto; }
         
         .btn-action {
-            padding: 16px; font-size: 1.3rem; font-weight: 900; color: #fff;
-            background: #d4a373; border: none; border-radius: 30px;
-            cursor: pointer; box-shadow: 0 8px 0 #b37e4c, 0 15px 20px rgba(93, 64, 55, 0.2); transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); width: 100%;
+            padding: 18px; font-size: 1.3rem; font-weight: 900; color: #fff;
+            background: #c38b5b; border: 2px solid #8e582e; border-radius: 30px;
+            cursor: pointer; box-shadow: 0 8px 0 #8e582e, 0 15px 20px rgba(93, 64, 55, 0.2); 
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); width: 100%;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
         .btn-action:active { transform: translateY(8px); box-shadow: 0 0px 0 transparent, 0 5px 10px rgba(93, 64, 55, 0.2); }
         
         .btn-secondary {
-            background: #fff; color: #8d6e63;
-            box-shadow: 0 8px 0 #e6d8ce, 0 15px 20px rgba(93, 64, 55, 0.1);
-            font-size: 1.15rem;
+            background: #fdfaf4; color: #8e582e; border: 2px solid #d7ccc8;
+            box-shadow: 0 8px 0 #d7ccc8, 0 15px 20px rgba(93, 64, 55, 0.1);
+            font-size: 1.15rem; text-shadow: none;
         }
 
         /* ---------------- 📖 หน้าต่างป๊อปอัป ---------------- */
@@ -87,7 +119,7 @@
             flex-direction: column; align-items: center; justify-content: center;
             backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); text-align: center; padding: 20px;
         }
-        .overlay-title { font-size: 2.2rem; color: #d4a373; font-weight: 900; margin-bottom: 15px; text-shadow: 0px 3px 0px #fff; line-height: 1.2;}
+        .overlay-title { font-size: 2.2rem; color: #9c6840; font-weight: 900; margin-bottom: 15px; text-shadow: 0px 3px 0px #fff; line-height: 1.2;}
         
         .review-box {
             background: #fff; padding: 20px; 
@@ -210,11 +242,12 @@
                 <div class="game-logo">Café Triad ☕</div>
                 
                 <div class="start-instruction-box">
-                    <p style="font-size: 1.25rem; color: #8d6e63; font-weight: 900; line-height: 1.5; margin-bottom:10px;">
+                    <div class="pin-left"></div><div class="pin-right"></div>
+                    <p style="font-size: 1.25rem; color: #7a4f2e; font-weight: 900; line-height: 1.5; margin-bottom:10px;">
                         🥪 พร้อมเสิร์ฟออเดอร์หรือยัง?
                     </p>
-                    <p style="font-size: 0.95rem; color: #795548; font-weight: 700;">จำให้แม่น! โครงสร้างของคอร์ดแต่ละชนิด</p>
-                    <div style="background:#fff; border-radius:15px; padding:12px; margin-top:15px; border:2px dashed #d4a373;">
+                    <p style="font-size: 0.95rem; color: #8e582e; font-weight: 700;">จำให้แม่น! โครงสร้างของคอร์ดแต่ละชนิด</p>
+                    <div style="background:#fff; border-radius:8px; padding:12px; margin-top:15px; border:2px dashed #d7ccc8;">
                         <p style="font-size: 0.95rem; color: #2e7d32; font-weight: 900;">✅ ตอบถูก 1 ข้อ = ได้ 10 ยอดขาย</p>
                         <p style="font-size: 0.95rem; color: #c62828; font-weight: 900; margin-top:8px;">🎯 สะสมครบ 50 คะแนน เพื่อปลดล็อคด่าน 4!</p>
                     </div>
@@ -303,11 +336,11 @@
 
         <!-- ⏸️ หน้าต่างหยุดเกม -->
         <div id="pauseScreen" class="overlay-screen">
-            <h1 class="overlay-title" style="color: #d4a373;">พักจิบชา ☕</h1>
+            <h1 class="overlay-title" style="color: #9c6840;">พักจิบชา ☕</h1>
             <div class="btn-group-vertical" style="margin-top: 20px;">
                 <button class="btn-action" onclick="resumeGame()">▶ ลุยงานต่อ</button>
                 <button class="btn-action btn-secondary" onclick="openReview()">ทบทวนเมนู 📖</button>
-                <button class="btn-action" style="background:#fff; color:#e57373; box-shadow: 0 8px 0 #ffcdd2;" onclick="loseAndGoToMap()">🗺️ กลับหน้าแผนที่</button>
+                <button class="btn-action" style="background:#fff; color:#e57373; border-color:#e57373; box-shadow: 0 8px 0 #ffcdd2;" onclick="loseAndGoToMap()">🗺️ กลับหน้าแผนที่</button>
             </div>
         </div>
 
@@ -340,7 +373,7 @@
                     <tr><td colspan="2" style="text-align: center; border-bottom: none;"><span style="font-size:1.1rem; color:#5d4037; font-weight: 700;">ยินดีด้วย! คุณปลดล็อคด่านที่ 4 แล้ว</span></td></tr>
                 </table>
                 <div class="btn-group-vertical">
-                    <button class="btn-action" style="background: #2e7d32; box-shadow: 0 8px 0 #1b5e20;" onclick="winAndGoToMap()">รับรางวัล & กลับแผนที่ 🗺️</button>
+                    <button class="btn-action" style="background: #2e7d32; box-shadow: 0 8px 0 #1b5e20; border-color:#2e7d32;" onclick="winAndGoToMap()">รับรางวัล & กลับแผนที่ 🗺️</button>
                 </div>
             </div>
         </div>
