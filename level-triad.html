@@ -563,10 +563,17 @@
             setTimeout(() => { document.getElementById('gameWrapper').style.display = 'none'; document.getElementById('gameWinScreen').style.display = 'flex'; document.getElementById('winScore').textContent = score; }, 400);
         }
 
-        function winAndGoToMap() {
+        function winGame() {
             playSound(popSound);
+            
+            // ➕ เพิ่มระบบบวกคะแนนสะสมรวมเข้าห้องรางวัล
+            let currentTotal = parseInt(localStorage.getItem('chef_total_score')) || 0;
+            localStorage.setItem('chef_total_score', currentTotal + score);
+
             let currentProgress = parseInt(localStorage.getItem('chordkupp_progress')) || 1;
-            if(currentProgress < 4) { localStorage.setItem('chordkupp_progress', 4); }
+            if(currentProgress < 2) { 
+                localStorage.setItem('chordkupp_progress', 2); 
+            }
             window.location.href = 'home.html'; 
         }
 

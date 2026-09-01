@@ -377,15 +377,15 @@
                 <div class="reward-card">
                     <div class="reward-info">
                         <h4>✨ กล่องต้อนรับเชฟหน้าใหม่</h4>
-                        <p>รับทันที +100 คะแนนโบนัสแรกเข้า</p>
+                        <p>รับทันที +30 คะแนนโบนัสแรกเข้า</p>
                     </div>
-                    <button class="btn-claim" id="btnReward1" onclick="claimReward(1, 100)">รับรางวัล</button>
+                    <button class="btn-claim" id="btnReward1" onclick="claimReward(1, 30)">รับรางวัล</button>
                 </div>
 
                 <div class="reward-card">
                     <div class="reward-info">
                         <h4 id="dailyBoxTitle">🎁 กล่องโบนัสสุ่มประจำวัน</h4>
-                        <p id="dailyBoxDesc">สุ่มรับคะแนนโบนัสเปลี่ยนใหม่ทุก 24 ชม.</p>
+                        <p id="dailyBoxDesc">รับคะแนนโบนัส 20 หรือ 30 แต้ม ทุก 24 ชม.</p>
                     </div>
                     <button class="btn-claim" id="btnReward2" onclick="claimDailyRandomReward()">เปิดกล่อง</button>
                 </div>
@@ -393,9 +393,9 @@
                 <div class="reward-card">
                     <div class="reward-info">
                         <h4>⭐ โบนัสดาวสะสมครบ 5 ดวง</h4>
-                        <p>สำหรับเชฟที่ผ่านด่านความรู้ครบ (+500 คะแนน)</p>
+                        <p>สำหรับเชฟที่ผ่านด่านความรู้ครบ (+100 คะแนน)</p>
                     </div>
-                    <button class="btn-claim" id="btnReward3" onclick="claimReward(3, 500)">รับรางวัล</button>
+                    <button class="btn-claim" id="btnReward3" onclick="claimReward(3, 100)">รับรางวัล</button>
                 </div>
 
             </div>
@@ -459,7 +459,8 @@
 
             if (now - lastResetTime >= twentyFourHours || lastResetTime === 0) {
                 localStorage.setItem('reward_claimed_2', 'false');
-                let randomPoints = Math.floor(Math.random() * 6) * 50 + 150; 
+                // สุ่มโบนัสรายวันเป็น 20 หรือ 30 คะแนน
+                let randomPoints = Math.random() < 0.5 ? 20 : 30; 
                 localStorage.setItem('chef_daily_random_points', randomPoints);
                 localStorage.setItem('chef_last_reset_time', now);
             }
@@ -535,7 +536,7 @@
             let totalScore = parseInt(localStorage.getItem('chef_total_score')) || 0;
             document.getElementById('totalScoreDisplay').textContent = `${totalScore.toLocaleString()} คะแนน`;
 
-            let dailyPts = parseInt(localStorage.getItem('chef_daily_random_points')) || 250;
+            let dailyPts = parseInt(localStorage.getItem('chef_daily_random_points')) || 20;
             document.getElementById('dailyBoxTitle').textContent = `🎁 กล่องสุ่มนำโชคประจำวัน (+${dailyPts} แต้ม)`;
 
             for (let id = 1; id <= 3; id++) {
@@ -582,7 +583,7 @@
         }
 
         function claimDailyRandomReward() {
-            let dailyPts = parseInt(localStorage.getItem('chef_daily_random_points')) || 250;
+            let dailyPts = parseInt(localStorage.getItem('chef_daily_random_points')) || 20;
             claimReward(2, dailyPts);
         }
 

@@ -80,7 +80,9 @@
         /* ⚪ โน้ตตัวกลม */
         .note {
             position: absolute; width: 14px; height: 10px; 
-            border: 2.5px solid #5c4322; border-radius: 50%;
+            background: #2a1a10; /* ถมพื้นหลังให้เป็นสีเข้ม/ดำ */
+            border: 1px solid #2a1a10;
+            border-radius: 50%;
             margin-bottom: -5px;
             display: flex; align-items: center; justify-content: center; z-index: 5;
             transition: bottom 0.2s ease, left 0.2s ease;
@@ -639,43 +641,44 @@
         }
 
         function renderStaff() {
-            notesContainer.innerHTML = '';
-            let sortedNotes = [...placedNotes].sort((a, b) => a.pos - b.pos);
+    notesContainer.innerHTML = '';
+    let sortedNotes = [...placedNotes].sort((a, b) => a.pos - b.pos);
 
-            sortedNotes.forEach((noteData, index) => {
-                const el = document.createElement('div');
-                el.className = 'note bounce';
-                
-                let leftOffset = 45;
-                if (index > 0) {
-                    let prev = sortedNotes[index - 1];
-                    if (noteData.pos - prev.pos <= 1) {
-                        leftOffset = 57; 
-                    }
-                }
-                el.style.left = leftOffset + '%';
-                
-                let calculatedBottom = 2 + (noteData.pos * 5);
-                el.style.bottom = calculatedBottom + 'px';
-
-                let accidentalSym = "";
-                if (noteData.acc === '#') accidentalSym = '&#9839;';
-                if (noteData.acc === 'b') accidentalSym = '&#9837;';
-                if (noteData.acc === '##') accidentalSym = '&#119082;'; 
-                if (noteData.acc === 'bb') accidentalSym = '&#119083;'; 
-
-                let ledgerHTML = '';
-                if (noteData.pos <= 0 || noteData.pos >= 12) {
-                    ledgerHTML = '<div class="ledger-line"></div>';
-                }
-
-                el.innerHTML = `
-                    ${accidentalSym ? `<span class="accidental">${accidentalSym}</span>` : ''}
-                    ${ledgerHTML}
-                `;
-                notesContainer.appendChild(el);
-            });
+    sortedNotes.forEach((noteData, index) => {
+        const el = document.createElement('div');
+        el.className = 'note bounce';
+        
+        let leftOffset = 45; // ตำแหน่งพื้นฐาน
+        if (index > 0) {
+            let prev = sortedNotes[index - 1];
+            // ถ้าโน้ตซ้อนกันหรืออยู่ติดกัน (ระยะห่าง <= 1)
+            if (noteData.pos - prev.pos <= 1) {
+                leftOffset = 49; // ปรับลดจาก 57% เพื่อให้ชิดกันมากขึ้น
+            }
         }
+        el.style.left = leftOffset + '%';
+        
+        let calculatedBottom = 2 + (noteData.pos * 5);
+        el.style.bottom = calculatedBottom + 'px';
+
+        let accidentalSym = "";
+        if (noteData.acc === '#') accidentalSym = '&#9839;';
+        if (noteData.acc === 'b') accidentalSym = '&#9837;';
+        if (noteData.acc === '##') accidentalSym = '&#119082;'; 
+        if (noteData.acc === 'bb') accidentalSym = '&#119083;'; 
+
+        let ledgerHTML = '';
+        if (noteData.pos <= 0 || noteData.pos >= 12) {
+            ledgerHTML = '<div class="ledger-line"></div>';
+        }
+
+        el.innerHTML = `
+            ${accidentalSym ? `<span class="accidental">${accidentalSym}</span>` : ''}
+            ${ledgerHTML}
+        `;
+        notesContainer.appendChild(el);
+    });
+}
 
         function serveOrder() {
             if (isWaiting) return;
@@ -742,11 +745,16 @@
             screens.gamewin.style.display = 'flex';
         }
 
-        function winAndGoToMap() {
+        function winGame() {
             playSound(popSound);
+            
+            // ➕ เพิ่มระบบบวกคะแนนสะสมรวมเข้าห้องรางวัล
+            let currentTotal = parseInt(localStorage.getItem('chef_total_score')) || 0;
+            localStorage.setItem('chef_total_score', currentTotal + score);
+
             let currentProgress = parseInt(localStorage.getItem('chordkupp_progress')) || 1;
-            if(currentProgress < 5) { 
-                localStorage.setItem('chordkupp_progress', 5); 
+            if(currentProgress < 2) { 
+                localStorage.setItem('chordkupp_progress', 2); 
             }
             window.location.href = 'home.html'; 
         }
