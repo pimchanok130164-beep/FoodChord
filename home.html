@@ -300,7 +300,7 @@
             <div class="nav-item active" onclick="playClickSfx(); switchTab(0)"><div class="nav-icon">🎓</div></div>
             <div class="nav-item" onclick="playPageSfx(); switchTab(1)"><div class="nav-icon">📖</div></div>
             <div class="nav-item" onclick="playClickSfx(); switchTab(2)"><div class="nav-icon">🎁</div></div>
-            <div class="nav-item" onclick="playClickSfx(); switchTab(3)"><div class="nav-icon">🔤</div></div>
+            <div class="nav-item" onclick="playClickSfx(); switchTab(3)"><div class="nav-icon">🎵</div></div>
         </div>
 
     </div>
@@ -405,17 +405,54 @@
     <div id="vocabModal" class="modal-overlay">
         <div class="modal-box" style="border-color: var(--palette-yellow);">
             <div class="modal-header">
-                <div class="modal-title">🔤 คำศัพท์ดนตรีสากล</div>
+                <div class="modal-title">🎵 สัญลักษณ์ดนตรีสากล</div>
                 <button class="btn-close" onclick="playClickSfx(); closeModal('vocabModal')">✕</button>
             </div>
             <div class="modal-body">
-                <div class="theory-card">
-                    <h4>Treble Clef (กุญแจซอล)</h4>
-                    <p>สัญลักษณ์บันทึกเสียงสูง เริ่มต้นเส้นแรกที่ตัว E4</p>
+                <div style="font-size: 0.82rem; color: #6d5b4c; font-weight: 600; line-height: 1.5; margin-bottom: 4px; background: #fff; padding: 10px 12px; border-radius: 12px; border: 2px solid #f0ead6;">
+                    ในการบันทึกและวิเคราะห์ดนตรี มีการใช้สัญลักษณ์เพื่อระบุชนิดของบันไดเสียงเมเจอร์ ไมเนอร์ ขั้นคู่ คอร์ด โครงสร้างการพลิกกลับ และคอร์ทบเจ็ด เพื่อให้เข้าใจตรงกันอย่างรวดเร็ว ดังนี้[cite: 7]
                 </div>
+
                 <div class="theory-card">
-                    <h4>Bass Clef (กุญแจฟา)</h4>
-                    <p>สัญลักษณ์บันทึกเสียงต่ำ เริ่มต้นคาบเส้นที่ 4 ที่ตัว F3</p>
+                    <h4>5.1 เครื่องหมายแปลงเสียง (Accidentals)</h4>
+                    <p>ใช้สำหรับแปลงเสียงโน้ตแต่ละตัวให้สูงขึ้นหรือต่ำลงตามเครื่องหมาย ดังนี้[cite: 7]</p>
+                    <hr style="border:0; border-top:1px dashed #eee; margin:8px 0;">
+                    <p>• <b>เครื่องหมายชาร์ป (Sharp / #):</b> สัญลักษณ์วางหน้าโน้ต เพิ่มระดับเสียงสูงขึ้นครึ่งเสียง (Half Step)[cite: 7]<br>
+                    • <b>เครื่องหมายแฟลต (Flat / b):</b> สัญลักษณ์วางหน้าโน้ต ลดระดับเสียงลงครึ่งเสียง (Half Step)[cite: 7]<br>
+                    • <b>เครื่องหมายเทอชอรัล (Natural / ♮):</b> ยกเลิกผลชาร์ปหรือแฟลต ให้โน้ตกลับคืนสู่ระดับเสียงปกติ[cite: 7]<br>
+                    • <b>เครื่องหมายดับเบิ้ลชาร์ป (Double Sharp / ×):</b> เพิ่มระดับเสียงสูงขึ้นเต็มเสียง (Whole Step)[cite: 7]<br>
+                    <span style="display:block; margin-top:4px; font-size:0.75rem; color:#8d6e63;">(ณรุทธ์ สุทธจิตต์, 2565)[cite: 7]</span></p>
+                </div>
+
+                <div class="theory-card">
+                    <h4>5.2 สัญลักษณ์แทนคอร์ด (Popular Chord Symbols)</h4>
+                    <p>ใช้เพื่อบอกแทนชนิดของคอร์ด (Chord) ดังนี้[cite: 7]:</p>
+                    <hr style="border:0; border-top:1px dashed #eee; margin:8px 0;">
+                    <p>• <b>ตัวอักษรเปล่า / M / ∆:</b> คอร์ดเมเจอร์ (Major)[cite: 7]<br>
+                    • <b>m หรือ -:</b> คอร์ดไมเนอร์ (Minor)[cite: 7]<br>
+                    • <b>dim หรือ °:</b> คอร์ดดิมินิชท์ (Diminished)[cite: 7]<br>
+                    • <b>aug หรือ +:</b> คอร์ดอ็อกเมนเทด (Augmented)[cite: 7]<br>
+                    • <b>เลข 7:</b> คอร์ดทบเจ็ด (Seventh chord)[cite: 7]</p>
+                </div>
+
+                <div class="theory-card">
+                    <h4>5.3 สัญลักษณ์เลขโรมัน (Roman Numeral)</h4>
+                    <p>ใช้ในวิเคราะห์หน้าที่ของคอร์ด (Harmonic Functions) ว่าเป็นลำดับขั้นที่เท่าไหร่ภายในบันไดเสียง[cite: 7]:</p>
+                    <hr style="border:0; border-top:1px dashed #eee; margin:8px 0;">
+                    <p>• <b>พิมพ์ใหญ่ (I, II, III...):</b> คอร์ด Major[cite: 7]<br>
+                    • <b>พิมพ์เล็ก (i, ii, iii...):</b> คอร์ด Minor[cite: 7]<br>
+                    • <b>พิมพ์เล็กพร้อมวงกลม (ii°, vii°):</b> คอร์ด Diminished[cite: 7]<br>
+                    • <b>พิมพ์ใหญ่พร้อมเครื่องหมายบวก (III+):</b> คอร์ด Augmented[cite: 7]</p>
+                </div>
+
+                <div class="theory-card">
+                    <h4>5.4 สัญลักษณ์การพลิกกลับ (Inversion Symbols)</h4>
+                    <p>สัญลักษณ์ตัวเลขขนาดเล็กกำกับมุมขวาเลขโรมัน เพื่อระบุสภาพการพลิกกลับหรือเสียงเบส[cite: 7]:</p>
+                    <hr style="border:0; border-top:1px dashed #eee; margin:8px 0;">
+                    <p>• <b>ไม่มีตัวเลข (เช่น I):</b> Root Position โน้ตตัวรากอยู่ล่างสุด[cite: 7]<br>
+                    • <b>เลข 6 (เช่น I⁶):</b> First Inversion ใช้โน้ตตัวที่ 3 เป็นเบส[cite: 7]<br>
+                    • <b>เลข 6/4 (เช่น I⁶/⁴):</b> Second Inversion ใช้โน้ตตัวที่ 5 เป็นเบส[cite: 7]<br>
+                    • <b>คอร์ดทบเจ็ด:</b> ใช้เลข 7, 6⁵, 4³ ตามลำดับการพลิกกลับ[cite: 7]</p>
                 </div>
             </div>
         </div>
@@ -459,7 +496,6 @@
 
             if (now - lastResetTime >= twentyFourHours || lastResetTime === 0) {
                 localStorage.setItem('reward_claimed_2', 'false');
-                // สุ่มโบนัสรายวันเป็น 20 หรือ 30 คะแนน
                 let randomPoints = Math.random() < 0.5 ? 20 : 30; 
                 localStorage.setItem('chef_daily_random_points', randomPoints);
                 localStorage.setItem('chef_last_reset_time', now);
