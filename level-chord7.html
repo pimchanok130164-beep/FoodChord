@@ -77,13 +77,13 @@
             position: absolute; left: -14px; bottom: -18px; width: 60px; height: 100px; pointer-events: none; z-index: 2; opacity: 0.9;
         }
 
-        /* ⚪ โน้ตตัวกลม (รองรับระบบขยับหลบเมื่อโน้ตชิดกัน) */
+        /* ⚪ โน้ตตัวกลม */
         .note {
             position: absolute; width: 14px; height: 10px; 
             border: 2.5px solid #5c4322; border-radius: 50%;
             margin-bottom: -5px;
             display: flex; align-items: center; justify-content: center; z-index: 5;
-            transition: bottom 0.2s ease, transform 0.2s ease;
+            transition: bottom 0.2s ease, left 0.2s ease;
         }
         .note.bounce { animation: popNote 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         @keyframes popNote { 0% { transform: scale(0); } 100% { transform: scale(1); } }
@@ -478,6 +478,7 @@
         let score = 0;
         let mistakes = 0;
         let currentOrder = null;
+        let lastOrder = null; // 🛡️ เพิ่มตัวแปรสำหรับจำออเดอร์ล่าสุดเพื่อกันสุ่มซ้ำ
         let placedNotes = []; 
         let isWaiting = false;
         let isPaused = false; 
@@ -534,6 +535,7 @@
             hideAllScreens();
             isPaused = false;
             score = 0; mistakes = 0;
+            lastOrder = null;
             scoreDisplay.textContent = score;
             nextCustomer();
         }
@@ -560,11 +562,19 @@
             customerImg.src = getAvatarUrl(currentCustomerSeed, 'normal');
             
             customerImg.style.transform = 'scale(0)';
-            setTimeout(() => { customerImg.style.transform = 'scale(1)'; }, 100);
+            setTimeout(() => { customerImg.style.transform = 'scale(1);'; }, 100);
 
             const phrases = ["ขอสั่ง", "รับคอร์ด", "หิว", "จัดมาเลย"];
             
-            currentOrder = menuBank[Math.floor(Math.random() * menuBank.length)];
+            // 🛡️ ระบบสุ่มโจทย์ใหม่โดยบังคับไม่ให้ซ้ำกับโจทย์ล่าสุด (lastOrder)
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * menuBank.length);
+            } while (menuBank[randomIndex] === lastOrder && menuBank.length > 1);
+
+            currentOrder = menuBank[randomIndex];
+            lastOrder = currentOrder; // บันทึกโจทย์ปัจจุบันเก็บไว้กันซ้ำรอบถัดไป
+
             targetRoot.textContent = currentOrder.root;
             targetType.textContent = currentOrder.type;
             
@@ -620,24 +630,16 @@
             notesContainer.innerHTML = '';
             let sortedNotes = [...placedNotes].sort((a, b) => a.pos - b.pos);
 
-            // 🛡️ ป้องกันโน้ตติดกันหรือซ้อนทับกัน (เช่น คู่ 2) โดยตรวจสอบช่องห่างแนวตั้ง
-            for (let i = 1; i < sortedNotes.length; i++) {
-                let prev = sortedNotes[i - 1];
-                let curr = sortedNotes[i];
-                // ถ้าตำแหน่งโน้ตห่างกันน้อยกว่าหรือเท่ากับ 1 ขั้น (เช่น อยู่ติดกันเป็นคู่ 2)
-                if (curr.pos - prev.pos <= 1) {
-                    curr.pos = prev.pos + 1; // ดันโน้ตตัวบนให้ขยับขึ้นไปอีก 1 ช่องบรรทัดทันทีเพื่อไม่ให้ทับกัน
-                }
-            }
-
             sortedNotes.forEach((noteData, index) => {
                 const el = document.createElement('div');
                 el.className = 'note bounce';
                 
-                // 🔀 ถ้าโน้ตตัวไหนถูกดันให้เยื้องขึ้น ให้ขยับตำแหน่งซ้าย-ขวาเล็กน้อย (Offset) เพื่อความสวยงามเหมือนโน้ตประสาน
                 let leftOffset = 45;
-                if (index > 0 && sortedNotes[index].pos === sortedNotes[index - 1].pos) {
-                    leftOffset = 57; // เยื้องขวาเล็กน้อยหากตำแหน่งทับกันสนิท
+                if (index > 0) {
+                    let prev = sortedNotes[index - 1];
+                    if (noteData.pos - prev.pos <= 1) {
+                        leftOffset = 57; 
+                    }
                 }
                 el.style.left = leftOffset + '%';
                 
@@ -691,7 +693,7 @@
                 
                 setTimeout(() => {
                     customerImg.style.transform = 'scale(1)';
-                    if (score >= 40) {
+                    if (score >= 200) {
                         gameWin();
                     } else {
                         nextCustomer();
