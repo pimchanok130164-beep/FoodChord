@@ -467,6 +467,7 @@
         
         const customerSeeds = ["Felix", "Oliver", "Zoe", "Leo", "Mia", "Jack", "Lily"];
         let currentCustomerSeed = "Felix";
+        let lastCustomerSeed = null; // 🛡️ ตัวแปรจำลูกค้าคนล่าสุดเพื่อไม่ให้ซ้ำคนเดิม
 
         function getAvatarUrl(seed, emotion) {
             let mouth = "default"; 
@@ -478,7 +479,7 @@
         let score = 0;
         let mistakes = 0;
         let currentOrder = null;
-        let lastOrder = null; // 🛡️ เพิ่มตัวแปรสำหรับจำออเดอร์ล่าสุดเพื่อกันสุ่มซ้ำ
+        let lastOrder = null; // 🛡️ ตัวแปรจำออเดอร์ล่าสุดเพื่อไม่ให้ซ้ำโจทย์เดิม
         let placedNotes = []; 
         let isWaiting = false;
         let isPaused = false; 
@@ -536,6 +537,7 @@
             isPaused = false;
             score = 0; mistakes = 0;
             lastOrder = null;
+            lastCustomerSeed = null;
             scoreDisplay.textContent = score;
             nextCustomer();
         }
@@ -558,22 +560,32 @@
             placedNotes = [];
             renderStaff();
             
-            currentCustomerSeed = customerSeeds[Math.floor(Math.random() * customerSeeds.length)];
+            // 🛡️ สุ่มตัวละครลูกค้าใหม่โดยไม่ให้ซ้ำกับคนล่าสุด
+            let randomSeed;
+            do {
+                randomSeed = customerSeeds[Math.floor(Math.random() * customerSeeds.length)];
+            } while (randomSeed === lastCustomerSeed && customerSeeds.length > 1);
+            
+            currentCustomerSeed = randomSeed;
+            lastCustomerSeed = currentCustomerSeed;
+
             customerImg.src = getAvatarUrl(currentCustomerSeed, 'normal');
             
             customerImg.style.transform = 'scale(0)';
-            setTimeout(() => { customerImg.style.transform = 'scale(1);'; }, 100);
+            setTimeout(() => { 
+                customerImg.style.transform = 'scale(1)'; // ✅ แก้ไขจุดที่มีเครื่องหมาย ; เกินมาให้แล้ว
+            }, 100);
 
             const phrases = ["ขอสั่ง", "รับคอร์ด", "หิว", "จัดมาเลย"];
             
-            // 🛡️ ระบบสุ่มโจทย์ใหม่โดยบังคับไม่ให้ซ้ำกับโจทย์ล่าสุด (lastOrder)
+            // 🛡️ สุ่มโจทย์ใหม่โดยไม่ให้ซ้ำกับโจทย์ล่าสุด
             let randomIndex;
             do {
                 randomIndex = Math.floor(Math.random() * menuBank.length);
             } while (menuBank[randomIndex] === lastOrder && menuBank.length > 1);
 
             currentOrder = menuBank[randomIndex];
-            lastOrder = currentOrder; // บันทึกโจทย์ปัจจุบันเก็บไว้กันซ้ำรอบถัดไป
+            lastOrder = currentOrder;
 
             targetRoot.textContent = currentOrder.root;
             targetType.textContent = currentOrder.type;
@@ -693,7 +705,7 @@
                 
                 setTimeout(() => {
                     customerImg.style.transform = 'scale(1)';
-                    if (score >= 200) {
+                    if (score >= 40) {
                         gameWin();
                     } else {
                         nextCustomer();
