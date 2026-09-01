@@ -659,7 +659,7 @@
                 targetPlate.el.style.transform = 'translateY(-80px) scale(0)';
                 targetPlate.el.style.opacity = '0';
                 
-                score += 15; 
+                score += 10; 
                 correctSinceLevelUp++;
                 updateUI();
                 
@@ -672,7 +672,7 @@
                 setTimeout(() => targetPlate.el.remove(), 300);
                 plates.shift();
 
-                if (score >= 200) {
+                if (score >= 50) {
                     gameActive = false;
                     document.getElementById('winScore').textContent = score;
                     setTimeout(() => { screens.gamewin.style.display = 'flex'; }, 500);
