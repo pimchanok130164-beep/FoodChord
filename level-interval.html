@@ -173,12 +173,6 @@
         .result-table td { padding: 15px; border-bottom: 2px dashed #ffccbc; font-size: 1.2rem; }
         .result-table td:first-child { text-align: left; color: #5d4037; font-weight: bold; }
         .result-table td:last-child { text-align: right; font-weight: 900; font-size: 1.6rem;}
-
-        .how-to-overlay { background: rgba(78, 52, 46, 0.88); z-index: 1200; }
-        .guide-modal { position: relative; width: 100%; max-width: 360px; display: flex; flex-direction: column; align-items: center; }
-        .guide-header { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .guide-title { font-size: 2.2rem; color: #aed581; font-weight: 900; text-shadow: 0 3px 0 #33691e; }
-
         .btn-close-x {
             width: 42px; height: 42px; background: #ff5252; border: 3px solid #fff; border-radius: 50%;
             color: #fff; font-size: 1.4rem; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center;
@@ -209,6 +203,40 @@
         .theory-info { margin-bottom: 10px; font-size: 0.9rem; padding: 12px; border-radius: 15px; background: #fff; border: 2px dashed #ffccbc; }
         .theory-title { font-weight: 900; color: #d32f2f; font-size: 1rem;}
         .theory-desc { color: #5d4037; font-weight: 600; display: block; margin-top: 4px; line-height: 1.4; font-size: 0.85rem; }
+
+        /* ---------------- 📖 กล่องคู่มือการเล่น (How to Play Modal) ---------------- */
+        .how-to-overlay { background: rgba(42, 26, 16, 0.95); z-index: 1200; }
+        .guide-modal { position: relative; width: 100%; max-width: 360px; display: flex; flex-direction: column; align-items: center; }
+        .guide-header { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .guide-title { font-size: 2.2rem; color: #78c850; font-weight: 900; text-shadow: 0 3px 0 #1b2e22; }
+
+        .btn-close-x {
+            width: 45px; height: 45px; background: #ff5252; border: 3px solid #fff; border-radius: 50%;
+            color: #fff; font-size: 1.5rem; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4); transition: 0.1s; -webkit-tap-highlight-color: transparent;
+        }
+        .btn-close-x:active { transform: scale(0.9); }
+
+        .guide-diagram-canvas {
+            width: 100%; height: 500px; position: relative; overflow-y: auto; overflow-x: hidden;
+            background: rgba(0,0,0,0.2); border-radius: 20px; padding: 15px;
+            border: 2px dashed rgba(255,255,255,0.2); display: flex; flex-direction: column; align-items: center; gap: 15px;
+        }
+        .guide-diagram-canvas::-webkit-scrollbar { width: 0; }
+
+        .demo-board { background: #fdfaf1; border: 3px solid #ffccbc; border-radius: 15px; width: 90%; padding: 10px; text-align: center; }
+        .demo-keyboard { background: #8d6e63; border-radius: 15px; padding: 10px; width: 100%; }
+        .demo-key-row { display: flex; gap: 4px; justify-content: center; margin-bottom: 5px; }
+        .demo-key-sm { flex: 1; height: 35px; background: #fdfaf1; border: 2px solid #D7CCC8; border-bottom: 3px solid #bcaaa4; border-radius: 8px; font-size: 0.9rem; font-weight: 900; color: #5c4322; display: flex; align-items: center; justify-content: center; }
+        .demo-serve-btn { background: #3e8e41; border: 2px solid #2b662d; border-bottom: 3px solid #1b451d; color: white; padding: 8px 15px; border-radius: 8px; font-weight: 900; font-size: 1.1rem; }
+
+        .chalk-text { color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); font-weight: 700; line-height: 1.4; text-align: center; width: 100%; font-size: 1.05rem; }
+        .down-arrow { width: 40px; height: 40px; margin: -5px 0; opacity: 0.9; }
+
+        .feedback { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); font-size: 3.5rem; z-index: 500; opacity: 0; pointer-events: none;}
+        .feedback.show { animation: popFeedbackFX 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popFeedbackFX { 0% { transform: translate(-50%, -20%) scale(0.3); opacity: 0; } 50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; } 100% { transform: translate(-50%, -60%) scale(1); opacity: 0; } }
+
     </style>
 </head>
 <body>
@@ -277,7 +305,8 @@
             <button class="btn-action btn-secondary" onclick="openReview()">ทบทวนสูตรขั้นคู่ 📖</button>
         </div>
 
-        <div id="howToPlayScreen" class="overlay-screen how-to-overlay">
+        <!-- 📖 หน้าต่างคู่มือการเล่น (แสดงเป็นหน้าแรกสุด) -->
+        <div id="howToPlayScreen" class="overlay-screen how-to-overlay" style="display: flex;">
             <div class="guide-modal">
                 <div class="guide-header">
                     <span class="guide-title">คู่มือการเล่น</span>
@@ -285,29 +314,31 @@
                 </div>
 
                 <div class="guide-diagram-canvas">
-                    <div style="width: 120px; height: 75px; background: #ffffff; border-radius: 12px; display: flex; justify-content: center; align-items: center; border: 2px solid #ffccbc; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                        <img id="guideImg" src="" alt="Example" style="max-width: 90%; max-height: 90%; object-fit: contain;">
+                    <div class="demo-board">
+                        <span style="font-size: 0.9rem; color: #5c4322;">✨ออเดอร์ขั้นคู่ (Interval Order)✨</span></span>
+                        <div style="height: 20px; border-bottom: 2px solid #ffccbc; margin-bottom: 10px;"></div>
                     </div>
-                    <div class="chalk-text">ดูบิลออเดอร์ขั้นคู่<br>ตรงกลาง</div>
-
-                    <svg class="down-arrow" viewBox="0 0 24 24" fill="none" stroke="#aed581" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <div class="chalk-text">ดูออเดอร์ขั้นคู่และเลือกเสิร์ฟให้ตรงกับออเดอร์</div>
+                    
+                    <svg class="down-arrow" viewBox="0 0 24 24" fill="none" stroke="#8bc34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="2" x2="12" y2="22"></line>
                         <polyline points="19 15 12 22 5 15"></polyline>
                     </svg>
 
-                    <div style="background: #d7ccc8; border: 3px solid #795548; border-radius: 12px; padding: 8px; width: 100%;">
-                        <div style="display: flex; gap: 4px; justify-content: center; margin-bottom: 4px;">
-                            <div style="flex:1; height:30px; background:#fff; border-radius:6px; font-size:0.8rem; font-weight:900; display:flex; align-items:center; justify-content:center;">2</div>
-                            <div style="flex:1; height:30px; background:#fff; border-radius:6px; font-size:0.8rem; font-weight:900; display:flex; align-items:center; justify-content:center;">3</div>
-                            <div style="flex:1; height:30px; background:#fff; border-radius:6px; font-size:0.8rem; font-weight:900; display:flex; align-items:center; justify-content:center;">4</div>
+                    <div class="demo-keyboard">
+                        <div class="demo-key-row">
+                            <div class="demo-key-sm">2</div><div class="demo-key-sm">3</div><div class="demo-key-sm">4</div><div class="demo-key-sm">5</div>
+                            <div class="demo-key-sm">6</div><div class="demo-key-sm">7</div><div class="demo-key-sm">8</div>
                         </div>
-                        <div style="display: flex; gap: 4px; justify-content: center;">
-                            <div style="flex:1; height:30px; background:#fff; border-radius:6px; font-size:0.8rem; font-weight:900; display:flex; align-items:center; justify-content:center;">M</div>
-                            <div style="flex:1; height:30px; background:#fff; border-radius:6px; font-size:0.8rem; font-weight:900; display:flex; align-items:center; justify-content:center;">m</div>
-                            <div style="flex:1; height:30px; background:#fff; border-radius:6px; font-size:0.8rem; font-weight:900; display:flex; align-items:center; justify-content:center;">P</div>
+                        <div class="demo-key-row">
+                            <div class="demo-key-sm" style="color:#4E342E; font-family:serif;">M</div>
+                            <div class="demo-key-sm" style="color:#4E342E; font-family:serif;">m</div>
+                            <div class="demo-key-sm" style="color:#4E342E; font-family:serif;">P</div>
+                            <div class="demo-key-sm" style="color:#4E342E; font-family:serif;">A</div>
+                            <div class="demo-key-sm" style="color:#4E342E; font-family:serif;">d</div>
                         </div>
                     </div>
-                    <div class="chalk-text">กดเลือกชนิดและเลขขั้นคู่</div>
+                    <div class="chalk-text">กดปุ่มตัวอักษรให้ถูกตามออเดอร์<br>เติมชนิดและระยะห่างให้ถูกต้อง!</div>
                 </div>
             </div>
         </div>
