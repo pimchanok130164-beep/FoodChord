@@ -772,8 +772,8 @@
             localStorage.setItem('chef_total_score', currentTotal + score);
 
             let currentProgress = parseInt(localStorage.getItem('chordkupp_progress')) || 1;
-            if(currentProgress < 2) { 
-                localStorage.setItem('chordkupp_progress', 2); 
+            if(currentProgress < 5) { 
+                localStorage.setItem('chordkupp_progress', 5); 
             }
             window.location.href = 'home.html'; 
         }
