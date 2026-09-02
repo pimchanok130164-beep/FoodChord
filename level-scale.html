@@ -351,7 +351,7 @@
                 </p>
             </div>
             <button class="btn-action" onclick="startGame()">เริ่มดริปกาแฟ ▶</button>
-            <button class="btn-action btn-secondary" onclick="openReview()">ทบทวนสเกล 🎼</button>
+            <button class="btn-action btn-secondary" onclick="openReviewFromPause()">ทบทวนบทเรียน 📖</button>
         </div>
 
         <!-- 📖 หน้าต่างทบทวนเมนู -->
@@ -368,7 +368,7 @@
                     <span class="chord-desc">อารมณ์หม่น เศร้า (A, E, D, B, G Minor)</span>
                 </div>
                 <div class="chord-info">
-                    <span class="chord-title">🕌 Harmonic Minor (ฮาร์โมนิกไมเนอร์)</span>
+                    <span class="chord-title">🕌 Harmonic Minor (ฮาร์มอนิกไมเนอร์)</span>
                     <span class="chord-desc">ยกระดับตัวที่ 7 ขึ้นครึ่งเสียง (A, E, D, B Harmonic Minor)</span>
                 </div>
                 <div class="chord-info">
@@ -386,7 +386,7 @@
             <div style="display: flex; flex-direction: column; width:100%; align-items:center;">
                 <button class="btn-action" onclick="resumeGame()">▶ ลุยงานต่อ</button>
                 <button class="btn-action btn-secondary" onclick="restartGame()">🔄 เททิ้งเริ่มใหม่</button>
-                <button class="btn-action btn-secondary" onclick="openReview()">ทบทวนสเกล 🎼</button>
+                <button class="btn-action btn-secondary" onclick="openReviewFromPause()">ทบทวนบทเรียน 📖</button>
                 <button class="btn-action btn-secondary" style="border-color:#e57373; color:#e57373;" onclick="loseGameBackToMap()">กลับหน้าหลัก 🗺️</button>
             </div>
         </div>
@@ -542,20 +542,26 @@
         window.addEventListener('touchmove', handleDragMove, { passive: false });
         window.addEventListener('touchend', handleDragEnd);
 
-        function openReview() {
-            playSound(popSound);
-            document.getElementById('startOverlay').style.display = 'none';
-            document.getElementById('reviewScreen').style.display = 'flex';
+        function openReview() { 
+            playSound(popSound); 
+            hideAllScreens(); 
+            screens.review.style.display = 'flex'; 
         }
 
-        function closeReview() {
-            playSound(popSound);
-            document.getElementById('reviewScreen').style.display = 'none';
-            if (isPaused) {
-                document.getElementById('pauseModal').style.display = 'flex';
-            } else {
-                document.getElementById('startOverlay').style.display = 'flex';
-            }
+        function openReviewFromPause() { 
+            playSound(popSound); 
+            pauseModal.style.display = 'none'; // ปิดหน้าต่างพักเกมชั่วคราว
+            document.getElementById('reviewScreen').style.display = 'flex'; // เปิดหน้าทบทวนขึ้นมา
+        }
+
+        function closeReview() { 
+            playSound(popSound); 
+            document.getElementById('reviewScreen').style.display = 'none'; 
+            if (isPaused) { 
+                pauseModal.style.display = 'flex'; // เปิดหน้าต่าง Pause กลับขึ้นมา
+            } else { 
+            document.getElementById('startOverlay').style.display = 'flex'; 
+            } 
         }
 
         function closeHowToPlay() {
