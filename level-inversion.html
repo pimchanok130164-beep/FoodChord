@@ -549,7 +549,8 @@
         function resumeGame() {
             isPaused = false;
             playSound(popSound);
-            screens.pause.style.display = 'none';
+            hideAllScreens(); // ซ่อนหน้าต่างทับทั้งหมด (รวมถึงหน้าจอ Pause)
+            screens.game.style.display = 'flex'; // เปิดหน้าจอเล่นเกมขึ้นมาใหม่
         }
 
         function backToStartScreen() {
